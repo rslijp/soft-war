@@ -1,0 +1,4 @@
+SoftWar
+-------
+
+Empire based game

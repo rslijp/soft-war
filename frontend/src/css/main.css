@@ -1,0 +1,50 @@
+:root {
+    --logo-height: 30px;
+    --logo-margin-top: 0px;
+    --logo-left-margin-at-login: 0px;
+    --header-height: calc(100% - 116px);
+    --header-font-size: inherit;
+
+    --tile-size: 32px;
+}
+
+body {
+
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+    color: red;
+}
+
+.land-tile {
+    height: var(--tile-size);
+    width: var(--tile-size);
+    background-color: black;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.land-tile.land-tile-type-M {
+    background-color: gray;
+}
+
+.land-tile.land-tile-type-S {
+    background-color: blue;
+}
+
+.land-tile.land-tile-type-L {
+    background-color: green;
+}
+
+.map-view-port {
+    overflow: hidden;
+    width: 500px;
+    height: 500px;
+}
+
+.map-view-port > .map-view-port-canvas {
+    width: inherit;
+    height: inherit;}

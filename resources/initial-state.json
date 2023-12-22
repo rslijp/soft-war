@@ -1,0 +1,4348 @@
+{
+    "turn" : 1,
+    "currentPlayer" : 2,
+    "players" : [
+        {
+            "id" : 1,
+            "name" : "Renzo",
+            "type": "Human",
+            "color": "Cyan",
+            "units": [
+                {"pos": {
+                    "y": 3, "x" :3}  , "type": "I"},
+                {"pos": {
+                    "y": 3, "x" :7}  , "type": "t"},
+                {"pos": {
+                    "y": 6, "x" :6}  , "type": "A"},
+                {"pos": {
+                    "y": 2, "x" :7}  , "type": "T"},
+                {"pos": {
+                    "y": 13, "x" :12}, "type": "I"},
+                {"pos": {
+                    "y": 9, "x" : 8} , "type": "I"},
+                {"pos": {
+                    "y": 9, "x" :9}  , "type": "t", "load": [{
+                    "type": "I"},{
+                    "type": "T"}]},
+                {"pos": {
+                    "y": 5, "x" : 5} , "type": "I"},
+                {"pos": {
+                    "y": 9, "x" : 9} , "type": "F"}
+            ],
+            "cities":
+                [
+                    {"pos": {
+                        "y": 1, "x" :5}},
+                    {"pos": {
+                        "y": 2, "x" :7}, "producingType": "T", "production": 3},
+                    {"pos": {
+                        "y": 9, "x" :9}},
+                    {"pos": {
+                        "y": 13, "x" :12}, "producingType": "C", "production": 17}
+                ]
+        },
+        {
+            "id" : 2,
+            "name" : "Bram",
+            "type": "Human",
+            "color": "Orange",
+            "units": [
+                {"pos": {"y": 7, "x" :7}, "type": "b"},
+                {"pos": {"y": 1, "x" :3} , "type": "M"},
+                {"pos": {"y": 1, "x" :4} , "type": "T"},
+                {"pos": {"y": 0, "x" :11}, "type": "I"},
+                {"pos": {"y": 0, "x" :12}, "type": "I"},
+                {"pos": {"y": 1, "x" :12}, "type": "I"},
+                {"pos": {"y": 2, "x" :13}, "type": "I"},
+                {"pos": {"y": 7, "x" :14}, "type": "I"},
+                {"pos": {"y": 8, "x" :14}, "type": "I"},
+                {"pos": {"y": 10, "x" :10}, "type": "S"}
+            ],
+            "cities" : [
+                {"pos": {"y": 1, "x" :12}}
+            ]
+        }
+    ],
+    "map" : {
+        "dimensions": {
+            "width": 32,
+            "height": 32
+        },
+        "world" : [
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "b1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "b1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "b1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "b1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "s1",
+                    "type" : "S"
+                }
+            ],
+            [
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "m1",
+                    "type" : "M"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                },
+                {
+                    "tile" : "l1",
+                    "type" : "L"
+                }
+            ]
+        ],
+        "cities" : [
+            {
+                "y" : 1,
+                "x" : 5
+            },
+            {
+                "y" : 1,
+                "x" : 12
+            },
+            {
+                "y" : 1,
+                "x" : 21
+            },
+            {
+                "y" : 1,
+                "x" : 28
+            },
+            {
+                "y" : 2,
+                "x" : 7
+            },
+            {
+                "y" : 2,
+                "x" : 23
+            },
+            {
+                "y" : 9,
+                "x" : 9
+            },
+            {
+                "y" : 9,
+                "x" : 25
+            },
+            {
+                "y" : 10,
+                "x" : 9
+            },
+            {
+                "y" : 10,
+                "x" : 25
+            },
+            {
+                "y" : 12,
+                "x" : 5
+            },
+            {
+                "y" : 12,
+                "x" : 21
+            },
+            {
+                "y" : 13,
+                "x" : 12
+            },
+            {
+                "y" : 13,
+                "x" : 28
+            },
+            {
+                "y" : 17,
+                "x" : 5
+            },
+            {
+                "y" : 17,
+                "x" : 12
+            },
+            {
+                "y" : 17,
+                "x" : 21
+            },
+            {
+                "y" : 17,
+                "x" : 28
+            },
+            {
+                "y" : 18,
+                "x" : 7
+            },
+            {
+                "y" : 18,
+                "x" : 23
+            },
+            {
+                "y" : 25,
+                "x" : 9
+            },
+            {
+                "y" : 25,
+                "x" : 25
+            },
+            {
+                "y" : 26,
+                "x" : 9
+            },
+            {
+                "y" : 26,
+                "x" : 25
+            },
+            {
+                "y" : 28,
+                "x" : 5
+            },
+            {
+                "y" : 28,
+                "x" : 21
+            },
+            {
+                "y" : 29,
+                "x" : 12
+            },
+            {
+                "y" : 29,
+                "x" : 28
+            }
+        ]
+    }
+}
