@@ -1,0 +1,23 @@
+{
+  "name": "soft-war",
+  "version": "0.0.1",
+  "description": "A sample turn based strategy game",
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "start": "cd frontend && npm run build && cd ../backend && DEBUG=backend:* npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rslijp/soft-war.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "TSG",
+    "empire",
+    "SoftCause"
+  ],
+  "license": "MIT"
+}

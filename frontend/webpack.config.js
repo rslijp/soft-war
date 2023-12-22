@@ -24,7 +24,7 @@ const config = {
                 use: ["babel-loader"],
             },
         ],
-    }, q
+    },
     // pass all js files through Babel
     resolve: {
         extensions: ["*", ".js", ".jsx"],    // <-- added `.jsx` here
