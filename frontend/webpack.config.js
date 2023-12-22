@@ -9,7 +9,7 @@ const config = {
     watch: false,
     output: {
         filename: "main.js",
-        path: path.resolve(__dirname, "..", "web", "src", "main", "resources", "static"),
+        path: path.resolve(__dirname, "..", "backend", "public"),
     },
     module: {
         // exclude node_modules

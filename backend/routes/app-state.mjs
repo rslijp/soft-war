@@ -2,23 +2,6 @@ import connection from '../connections.mjs';
 import express from 'express';
 const router = express.Router();
 
-
-async function findOneListingByName(client, code) {
-  console.log(`Looking for an app state in the collection with the code '${code}':`);
-  const result = await   connection.collection("app-state").findOne({code: code});
-  console.log("xxx",result);
-  return result;
-  // const result = await client.db("softwar").collection("app-state").findOne({ code: code });
-  // console.log("xxx",result);
-  // if (result) {
-  //   console.log(`Found an app state in the collection with the code '${code}':`);
-  //   console.log(result);
-  //   return result;
-  // } else {
-  //   console.log(`No app state found with the code '${success}'`);
-  // }
-}
-
 async function appStates(){
     return connection.collection("app-state");
 }

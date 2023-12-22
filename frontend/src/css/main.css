@@ -29,14 +29,17 @@ body {
 
 .land-tile.land-tile-type-M {
     background-color: gray;
+    background-image: url("/content/map/mountain1_1.png");
 }
 
 .land-tile.land-tile-type-S {
     background-color: blue;
+    background-image: url("/content/map/water.png");
 }
 
 .land-tile.land-tile-type-L {
     background-color: green;
+    background-image: url("/content/map/grass1.png");
 }
 
 .map-view-port {
