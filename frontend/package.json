@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
-    "watch": "webpack --mode development",
+    "build": "node_modules/webpack/bin/webpack.js --mode production",
+    "watch": "node_modules/webpack/bin/webpack.js --mode development",
     "eslint": "node node_modules/eslint/bin/eslint.js  src/",
     "eslint-fix": "node node_modules/eslint/bin/eslint.js  --fix src/"
   },
