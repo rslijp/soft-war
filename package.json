@@ -6,7 +6,7 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "cd frontend && npm install && pwd && ls && ls node_modules npm run build && cd ../backend && npm install && DEBUG=backend:* npm start"
+    "start": "cd frontend && npm install && npm install --save-dev && ls node_modules && npm run build && cd ../backend && npm install && DEBUG=backend:* npm start"
   },
   "repository": {
     "type": "git",
