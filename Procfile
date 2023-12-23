@@ -1,1 +1,1 @@
-web: npm run start
+web: ls && node --experimental-modules ./bin/www.mjs
