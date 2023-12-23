@@ -7,9 +7,9 @@
   "engines": {
     "node": "18.x"
   },
-  "main": "bin/www.mjs",
+  "main": "index.mjs",
   "scripts": {
-    "start": "node --experimental-modules ./bin/www.mjs"
+    "start": "node --experimental-modules index.mjs"
   },
   "repository": {
     "type": "git",
