@@ -1,10 +1,12 @@
 import {LEGEND_SIZE, TILE_SIZE} from "./Constants";
 import React, {useEffect, useState} from "react";
 import HorizontalMapLegend from "./HorizontalMapLegend";
+import HorizontalScrollBar from "./HorizontalScrollBar";
 import ScrollableViewPort from "./ScrollableViewPort";
 import VerticalMapLegend from "./VerticalMapLegend";
 import WorldMap from "./WorldMap";
 import {loadGameState} from "./GameStateLoader";
+import VerticalScrollBar from "./VerticalScrollBar";
 
 function SoftWarApp() {
     const [state, setState] = useState('');
@@ -16,6 +18,8 @@ function SoftWarApp() {
         document.documentElement.style.setProperty(`--legend-size`, LEGEND_SIZE+"px");
         loadGameState().then(gameState=>{
             setGameState(gameState);
+            const dimensions = gameState.map.dimensions;
+            setViewPort({...viewPort, width: dimensions.width, height: dimensions.height});
             setState('ready');
         }).catch(error=>{
             console.error(error);
@@ -27,16 +31,20 @@ function SoftWarApp() {
         return <p>{state}</p>;
     }
 
+    var grid = {
+        corner: <div className={"legend-junction"}></div>,
+        north:<HorizontalMapLegend range={viewPort}/>,
+        west: <VerticalMapLegend map={gameState.map} range={viewPort}/>,
+        south: <HorizontalScrollBar range={viewPort} onUpdate={value=>setViewPort(value)}/>,
+        east: <VerticalScrollBar range={viewPort} onUpdate={value=>setViewPort(value)}/>,
+        center: <WorldMap map={gameState.map} range={viewPort}/>
+    };
     return <>
         <ScrollableViewPort
             dimensions={gameState.map.dimensions}
             value={viewPort}
             onUpdate={value=>setViewPort(value)}
-            legend={<div className={"legend-junction"}></div>}
-            horizontalLegend={<HorizontalMapLegend map={gameState.map} range={viewPort}/>}
-            verticalLegend={<VerticalMapLegend map={gameState.map} range={viewPort}/>}>
-            <WorldMap map={gameState.map} range={viewPort}/>
-        </ScrollableViewPort>
+            grid={grid}/>
     </>;
 }
 

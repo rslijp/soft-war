@@ -1,8 +1,8 @@
+import {LEGEND_SIZE, TILE_SIZE} from "./Constants";
 import React, {useLayoutEffect, useState} from "react";
 import {func, node, number, shape} from "prop-types";
-import {LEGEND_SIZE, TILE_SIZE} from "./Constants";
 
-function ScrollableViewPort({dimensions, value, onUpdate, legend, horizontalLegend, verticalLegend, children}) {
+function ScrollableViewPort({dimensions, value, onUpdate, grid}) {
     const [state, setState] = useState({track: false, touch: null});
     const [size, setSize] = useState([0, 0]);
     useLayoutEffect(() => {
@@ -40,12 +40,12 @@ function ScrollableViewPort({dimensions, value, onUpdate, legend, horizontalLege
 
     return <div className={"map-view-port"} style={{"width": `${size[0]}px`, "height": `${size[1]}px`}} >
         <div className={"map-view-port-top"} style={{"width": `${size[0]}px`, "height": `${LEGEND_SIZE}px`}}>
-            <div className={"map-view-port-legend"} style={{"top": 0, "left": 0}}>{legend}</div>
-            <div className={"map-view-port-horizontal-legend"} style={{"width": `${size[0]-2*LEGEND_SIZE}px`, "marginLeft": `${marginLeft}px`}}>{horizontalLegend}</div>
-            <div className={"map-view-port-legend"}  style={{"top": 0, "right": 0}}>{legend}</div>
+            <div className={"map-view-port-legend"} style={{"top": 0, "left": 0}}>{grid.corner}</div>
+            <div className={"map-view-port-horizontal-legend"} style={{"width": `${size[0]-2*LEGEND_SIZE}px`, "marginLeft": `${marginLeft}px`}}>{grid.north}</div>
+            <div className={"map-view-port-legend"}  style={{"top": 0, "right": 0}}>{grid.corner}</div>
         </div>
         <div className={"map-view-port-main"} style={{"height": `${size[1]-2*LEGEND_SIZE}px`}}>
-            <div className={"map-view-port-vertical-legend"} style={{"marginTop": `${marginTop}px`, "height": `${size[1]-2*LEGEND_SIZE}px`}}>{verticalLegend}</div>
+            <div className={"map-view-port-vertical-legend"} style={{"marginTop": `${marginTop}px`, "height": `${size[1]-2*LEGEND_SIZE}px`}}>{grid.west}</div>
             <div style={{"width": `${size[0]-2*LEGEND_SIZE}px`, "height": `${size[1]-2*LEGEND_SIZE}px`}}>
                 <div className={"map-view-port-canvas"}
                     onMouseDown={()=>setState({...state, track: true})}
@@ -55,15 +55,15 @@ function ScrollableViewPort({dimensions, value, onUpdate, legend, horizontalLege
                     onTouchEnd={()=>setState({...state, touch: null})}
                     onTouchMove={moveViewPortOnTouch}
                     style={{"marginTop": `${marginTop}px`, "marginLeft": `${marginLeft}px`}}>
-                    {children}
+                    {grid.center}
                 </div>
             </div>
-            <div className={"map-view-port-vertical-legend"} style={{"marginTop": `${marginTop}px`, "height": `${size[1]-2*LEGEND_SIZE}px`}}>{verticalLegend}</div>
+            <div className={"map-view-port-vertical-legend"} style={{"height": `${size[1]-2*LEGEND_SIZE}px`}}>{grid.east}</div>
         </div>
         <div className={"map-view-port-bottom"} style={{"width": `${size[0]}px`, "height": `${LEGEND_SIZE}px`, "bottom": 0, "position": "fixed"}}>
-            <div className={"map-view-port-legend"} style={{"bottom": 0, "left": 0}}>{legend}</div>
-            <div className={"map-view-port-horizontal-legend"} style={{"width": `${size[0]-2*LEGEND_SIZE}px`, "marginLeft": `${marginLeft}px`}}>{horizontalLegend}</div>
-            <div className={"map-view-port-legend"}  style={{"bottom": 0, "right": 0}}>{legend}</div>
+            <div className={"map-view-port-legend"} style={{"bottom": 0, "left": 0}}>{grid.corner}</div>
+            <div className={"map-view-port-horizontal-legend"} style={{"width": `${size[0]-2*LEGEND_SIZE}px`}}>{grid.south}</div>
+            <div className={"map-view-port-legend"}  style={{"bottom": 0, "right": 0}}>{grid.corner}</div>
         </div>
     </div>;
 }
@@ -79,10 +79,14 @@ ScrollableViewPort.propTypes = {
         deltaX: number,
         deltaY: number
     }),
+    grid: shape({
+        north: node,
+        west: node,
+        south: node,
+        east: node,
+        center: node,
+        corner: node
+    }),
     onUpdate: func,
-    legend:node,
-    horizontalLegend: node,
-    verticalLegend: node,
-    children: node
 };
 export default ScrollableViewPort;

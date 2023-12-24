@@ -7,6 +7,7 @@
 
     --tile-size: 32px;
     --legend-size: 32px;
+    --scroll-color: #de8928;
 }
 
 html {
@@ -23,7 +24,6 @@ body {
 .app {
     width: 100%;
     height: 100%;
-    color: red;
 }
 
 .land-tile {
@@ -102,6 +102,7 @@ body {
 }
 
 .map-view-port > .map-view-port-top > .map-view-port-horizontal-legend {
+    left: var(--legend-size);
     width: inherit;
     z-index: 2;
     position: relative;
@@ -121,6 +122,7 @@ body {
     position: fixed;
     display: inline-block;
     bottom: calc(0 - var(--legend-size));
+    left: var(--legend-size);
 }
 
 
@@ -136,4 +138,90 @@ body {
     height: inherit;
     z-index: 1;
     position: relative;
+}
+
+.map-view-port-horizontal-legend {
+    /*margin-left: var(--legend-size);*/
+    background-color: red;
+}
+.scroll-horizontal {
+    background-color: darkgrey;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: row;
+}
+
+.scroll-horizontal > .scroll-horizontal-wagon {
+    height: var(--legend-size);
+    background-color: white;
+    border: 1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    cursor: ew-resize;
+}
+
+.scroll-horizontal > .scroll-horizontal-wagon .scroll-left {
+    width: 0;
+    height: 0;
+    border-top: calc(var(--legend-size) /2) solid transparent;
+    border-bottom: calc(var(--legend-size) /2) solid transparent;
+
+    border-right: calc(var(--legend-size) /2) solid var(--scroll-color);
+}
+
+.scroll-horizontal > .scroll-horizontal-wagon .scroll-right {
+    width: 0;
+    height: 0;
+    border-top: calc(var(--legend-size) /2) solid transparent;
+    border-bottom: calc(var(--legend-size) /2) solid transparent;
+
+    border-left: calc(var(--legend-size) /2) solid var(--scroll-color);
+}
+
+
+.scroll-horizontal > .scroll-horizontal-wagon.scroll-horizontal-wagon-overun {
+    justify-content: end;
+}
+
+.scroll-vertical {
+    background-color: darkgrey;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.scroll-vertical > .scroll-vertical-wagon {
+    width: var(--legend-size);
+    background-color: white;
+    border: 1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
+    cursor: ns-resize;
+    flex-direction: column;
+}
+
+.scroll-vertical > .scroll-vertical-wagon .scroll-up {
+    width: 0;
+    height: 0;
+    border-left: calc(var(--legend-size) /2) solid transparent;
+    border-right: calc(var(--legend-size) /2) solid transparent;
+
+    border-bottom: calc(var(--legend-size) /2) solid var(--scroll-color);
+}
+
+.scroll-vertical > .scroll-vertical-wagon .scroll-down {
+    width: 0;
+    height: 0;
+    border-left: calc(var(--legend-size) /2) solid transparent;
+    border-right: calc(var(--legend-size) /2) solid transparent;
+
+    border-top: calc(var(--legend-size) /2) solid var(--scroll-color);
+    margin-top: calc(0 - var(--legend-size));
+}
+
+
+.scroll-vertical > .scroll-vertical-wagon.scroll-vertical-wagon-overun {
+    justify-content: end;
 }
