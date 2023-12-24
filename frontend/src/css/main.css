@@ -6,6 +6,7 @@
     --header-font-size: inherit;
 
     --tile-size: 32px;
+    --legend-size: 32px;
 }
 
 body {
@@ -42,12 +43,70 @@ body {
     /*background-image: url("/content/map/grass1.png");*/
 }
 
-.map-view-port {
-    overflow: hidden;
-    width: 500px;
-    height: 500px;
+
+.legend-junction {
+    width: var(--legend-size);
+    height: var(--legend-size);
+    background-color: white;
+    border: 1px solid lightgray;
 }
 
-.map-view-port > .map-view-port-canvas {
+.legend-top th, .legend-left th {
+    height: var(--tile-size);
+    width: var(--tile-size);
+    background-color: white;
+    color: black;
+    text-align: center;
+    font-size: 10px;
+    vertical-align: middle;
+}
+
+.legend-top th {
+    height: var(--legend-size);
+    width: var(--tile-size);
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+
+.legend-left th {
+    height: var(--tile-size);
+    width: var(--legend-size);
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+.map-view-port {
+    overflow: hidden;
+}
+
+.map-view-port > .map-view-port-top, .map-view-port > .map-view-port-main {
+    display: flex;
+    flex-direction: row;
+}
+
+.map-view-port > .map-view-port-top > .map-view-port-legend {
+    z-index: 3;
+    position: relative;
+    display: inline-block;
+}
+
+.map-view-port > .map-view-port-top> .map-view-port-horizontal-legend {
     width: inherit;
-    height: inherit;}
+    z-index: 2;
+    position: relative;
+    display: inline-block;
+}
+
+.map-view-port > .map-view-port-main > .map-view-port-vertical-legend {
+    width: inherit;
+    z-index: 2;
+    position: relative;
+    display: inline-block;
+}
+
+.map-view-port > .map-view-port-main > .map-view-port-canvas {
+    width: inherit;
+    height: inherit;
+    z-index: 1;
+    position: relative;
+}

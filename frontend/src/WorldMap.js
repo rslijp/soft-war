@@ -34,20 +34,11 @@ function WorldMap({map, range}) {
         const deltaY = range.deltaY;
         return <table style={{width: `${deltaX*TILE_SIZE}px`, height: `${deltaY*TILE_SIZE}px`}}>
             <tbody>
-                {/*<tr>*/}
-                {/*    <th key={"row-h"}></th>*/}
-                {/*    {[...Array(deltaX)].map((_, x) => {*/}
-                {/*        let lx = range.startX + x;*/}
-                {/*        if(lx<0) lx+=dimensions.width;*/}
-                {/*        return <th key={`cell-hx${x}`}>{lx + 1}</th>;*/}
-                {/*    })}*/}
-                {/*</tr>*/}
                 {[...Array(deltaY)].map((_, y) => {
                     let ly = (range.startY + y) % dimensions.height;
                     if(ly<0) ly+=dimensions.height;
                     const line = world[ly];
                     return <tr key={`row-${y}`}>
-                        {/*<th key={`cell-${y}xh`}>{ly + 1}</th>*/}
                         {[...Array(deltaX)].map((_, x) => {
                             let lx = (range.startX + x) % dimensions.width;
                             if(lx<0) lx+=dimensions.width;
@@ -58,8 +49,6 @@ function WorldMap({map, range}) {
             </tbody>
         </table>;
     }
-
-
 
     return viewport(normalizedRange(range), map.world);
 }

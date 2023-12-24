@@ -44,6 +44,10 @@ const config = {
                     to: '[path]/[name][ext]'
                 },
                 {
+                    from: path.resolve(__dirname, 'public/about/**/*'),
+                    to: '[path]/[name][ext]'
+                },
+                {
                     from: path.resolve(__dirname, 'src/404.html'),
                     to: '404.html'
                 },
@@ -65,7 +69,7 @@ const config = {
 
 module.exports = (env, argv) => {
     if (argv.mode === 'development') {
-        console.log("WATCHING")
+        console.log("WATCHING");
         config.watch=true;
         config.output.path=path.resolve(__dirname, "..", "backend", "public");
     }
