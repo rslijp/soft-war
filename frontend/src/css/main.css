@@ -9,8 +9,15 @@
     --legend-size: 32px;
 }
 
-body {
+html {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
 
+body {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .app {
@@ -79,23 +86,43 @@ body {
     overflow: hidden;
 }
 
-.map-view-port > .map-view-port-top, .map-view-port > .map-view-port-main {
+.map-view-port > .map-view-port-top, .map-view-port > .map-view-port-main,.map-view-port > .map-view-port-bottom {
     display: flex;
     flex-direction: row;
 }
 
+.map-view-port > .map-view-port-bottom {
+    z-index:3
+}
+
 .map-view-port > .map-view-port-top > .map-view-port-legend {
-    z-index: 3;
-    position: relative;
+    z-index: 10;
+    position: fixed;
     display: inline-block;
 }
 
-.map-view-port > .map-view-port-top> .map-view-port-horizontal-legend {
+.map-view-port > .map-view-port-top > .map-view-port-horizontal-legend {
     width: inherit;
     z-index: 2;
     position: relative;
     display: inline-block;
 }
+
+.map-view-port > .map-view-port-bottom > .map-view-port-legend {
+    z-index: 10;
+    position: fixed;
+    display: inline-block;
+}
+
+
+.map-view-port > .map-view-port-bottom > .map-view-port-horizontal-legend {
+    width: inherit;
+    z-index: 2;
+    position: fixed;
+    display: inline-block;
+    bottom: calc(0 - var(--legend-size));
+}
+
 
 .map-view-port > .map-view-port-main > .map-view-port-vertical-legend {
     width: inherit;
