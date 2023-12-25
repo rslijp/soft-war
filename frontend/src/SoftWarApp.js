@@ -4,9 +4,9 @@ import HorizontalMapLegend from "./HorizontalMapLegend";
 import HorizontalScrollBar from "./HorizontalScrollBar";
 import ScrollableViewPort from "./ScrollableViewPort";
 import VerticalMapLegend from "./VerticalMapLegend";
+import VerticalScrollBar from "./VerticalScrollBar";
 import WorldMap from "./WorldMap";
 import {loadGameState} from "./GameStateLoader";
-import VerticalScrollBar from "./VerticalScrollBar";
 
 function SoftWarApp() {
     const [state, setState] = useState('');

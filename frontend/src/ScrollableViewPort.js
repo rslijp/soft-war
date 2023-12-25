@@ -22,7 +22,11 @@ function ScrollableViewPort({dimensions, value, onUpdate, grid}) {
         if(!state.track) return;
         const dx = -e.movementX/10;
         const dy = -e.movementY/10;
-        onUpdate({...value, startX: (value.startX+dx)%dimensions.width, startY: (value.startY+dy)%dimensions.height});
+        let sx = (value.startX+dx)%dimensions.width;
+        if(sx<0) sx=sx+dimensions.width;
+        let sy = (value.startY+dy)%dimensions.height;
+        if(sy<0) sx=sx+dimensions.height;
+        onUpdate({...value, startX: sx, startY: sy});
     }
 
     function moveViewPortOnTouch(e){
