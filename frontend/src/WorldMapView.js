@@ -2,7 +2,7 @@ import {arrayOf, number, shape, string} from "prop-types";
 import React from "react";
 import {TILE_SIZE} from "./Constants";
 
-function WorldMap({map, range}) {
+function WorldMapView({map, range}) {
     const cities = {};
     const dimensions = map.dimensions;
     map.cities.forEach(c => cities[`${c.x},${c.y}`] = true);
@@ -20,11 +20,11 @@ function WorldMap({map, range}) {
     }
 
     function cell(key, x, y, entry){
-        const type = cities[`${x},${y}`] ? 'C' : entry.type;
+        const type = cities[`${x},${y}`] ? 'C' : (entry.detail || entry.type);
         const clazzes = ["land-tile","land-tile-type-" + type];
 
         return <td key={key} className={clazzes.join(" ")}>
-            {type}
+            {type.length<=2?type:''}
         </td>;
     }
 
@@ -53,7 +53,7 @@ function WorldMap({map, range}) {
     return viewport(normalizedRange(range), map.world);
 }
 
-WorldMap.propTypes = {
+WorldMapView.propTypes = {
     range: shape({
         startX: number,
         startY: number,
@@ -81,4 +81,4 @@ WorldMap.propTypes = {
         )
     }),
 };
-export default WorldMap;
+export default WorldMapView;

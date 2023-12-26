@@ -1,0 +1,98 @@
+.land-tile {
+    height: var(--tile-size);
+    width: var(--tile-size);
+    background-color: black;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.land-tile.land-tile-type-M {
+    background-color: gray;
+    /*background-image: url("/content/map/mountain1_1.png");*/
+}
+
+.land-tile.land-tile-type-S {
+    background-color: blue;
+    /*background-image: url("/content/map/water.png");*/
+}
+
+.land-tile.land-tile-type-L {
+    background-color: green;
+    /*background-image: url("/content/map/grass1.png");*/
+}
+
+.land-tile.land-tile-type-grass, .land-tile.land-tile-type-grass1 {
+    background-color: green;
+    background-image: url("/content/maptiles/grass1.png");
+}
+
+.land-tile.land-tile-type-grass2 {
+    background-color: green;
+    background-image: url("/content/maptiles/grass2.png");
+}
+
+.land-tile.land-tile-type-grass3 {
+    background-color: green;
+    background-image: url("/content/maptiles/grass3.png");
+}
+
+.land-tile.land-tile-type-sea {
+    background-color: blue;
+    background-image: url("/content/maptiles/sea.png");
+}
+
+.land-tile.land-tile-type-grass-w-sea {
+    background-color: blue;
+    background-image: url("/content/maptiles/grass-w-sea.png");
+}
+
+.land-tile.land-tile-type-grass-e-sea {
+    background-color: blue;
+    background-image: url("/content/maptiles/grass-e-sea.png");
+}
+
+.land-tile.land-tile-type-grass-n-sea {
+    background-color: blue;
+    background-image: url("/content/maptiles/grass-n-sea.png");
+}
+
+.land-tile.land-tile-type-grass-s-sea {
+    background-color: blue;
+    background-image: url("/content/maptiles/grass-s-sea.png");
+}
+
+.land-tile.land-tile-type-sea-e-grass {
+    background-color: blue;
+    background-image: url("/content/maptiles/sea-e-grass.png");
+}
+
+.land-tile.land-tile-type-sea-w-grass {
+    background-color: blue;
+    background-image: url("/content/maptiles/sea-w-grass.png");
+}
+
+.land-tile.land-tile-type-mountain, .land-tile.land-tile-type-mountain1 {
+    background-color: gray;
+    background-image: url("/content/maptiles/mountain1.png");
+}
+
+.land-tile.land-tile-type-mountain1_nw {
+    background-color: gray;
+    background-image: url("/content/maptiles/mountain1_nw.png");
+}
+
+.land-tile.land-tile-type-mountain1_ne {
+    background-color: gray;
+    background-image: url("/content/maptiles/mountain1_ne.png");
+}
+
+.land-tile.land-tile-type-mountain1_se {
+    background-color: gray;
+    background-image: url("/content/maptiles/mountain1_se.png");
+}
+
+.land-tile.land-tile-type-mountain1_sw {
+    background-color: gray;
+    background-image: url("/content/maptiles/mountain1_sw.png");
+}

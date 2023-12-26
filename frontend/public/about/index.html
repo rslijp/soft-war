@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="menu">
+    <span class="brand-name">SoftCause</span>
+    <div class="menu-items">
+        <a class="menu-item" href="#challenge">The challenge</a>
+        <a class="menu-item" href="#step1">Step 1</a>
+        <a class="menu-item" href="#step2">Step 2</a>
+        <a class="menu-item" href="#step3">Step 3</a>
+        <a class="menu-item" href="#step4">Step 4</a>
+    </div>
+    <img class="end" src="style/decoration.png">
+</div>
+<div id="content">
+    <img id="logo" src="style/logo.png"/>
+    <div id="pages">
+        <p>
+            <i style="color: red">I will fix the styling of this page for mobile devices with the next release. <br/>
+                Last updated 26th December 2023. Take me to the last <a href="#step4">Step 4</a></i>
+        </p>
+        <a id="challenge"></a>
+        <h1>Code challenge accepted</h1>
+        <p>Hi all,</p>
+        <p>One of my kids dared me to code a game I used to play. I used to play a long time ago. The game was named <a href="https://en.wikipedia.org/wiki/Empire_(1977_video_game)">"Empire"</a> by <a href="https://en.wikipedia.org/wiki/Walter_Bright">Walter Bright</a>. It was the "War game of the century". If you don't believe me...It says so on the box ;-). And yes I only could play the CGA four color version.</p>
+        <img src="content/Empire-Wargame-of-The-Century.png" style="display: inline-block; width: 300px"/>
+        <img src="content/Empire-Wargame-of-The-Century.png CGA.jpg" style="display: inline-block; width: 300px; vertical-align: top"/>
+        <p>So I took up the challenge and I will try to recreate it. Of course, I want to learn from it as well. So these are my rules of engagement (okay, the war slang is getting to my head already):</p>
+        <ul>
+            <li>Cost of operation and development should be less than 100$ a year</li>
+            <li>Make use of AI for graphic design</li>
+            <li>Use cloud hosting for all components</li>
+            <li>Write about it(this page)</li>
+            <li>Show the development steps</li>
+            <li>Get it in the app stores of Android and iPhone</li>
+        </ul>
+        <a id="step1"></a>
+        <h2>Step 1 - WorldMap</h2>
+        <p>First, we focus on the most prominent part of the game a view of the world map. It needs to be fast and only render the visual part. Since I'm going for a web stack I decided to make it a table. The trick here is to update the cells smart and to also allow for scrolling the table for half a cell.</p>
+        <img src="content/WorldMap-Original.png" style="display: inline-block; width: 600px"/>
+        <p>I added ReactJS and Webpack as development frameworks for now I'm sticking to plan vanilla javascript.
+         As a back-end server, I'm going to use NodeJS. This will allow me to reuse the code from the front end for the back end as well.
+        The game state including the map is hosted by NodeJS using a MongoDB for storage. Using their free tier. So no cost added.
+            I'm using GitHub as my cloud git repository (<a href="https://github.com/rslijp/soft-war">rslijp/soft-war</a>). I made the repository public and feel free to track my progress</p>
+        <img src="content/WorldMap-Step1.png" style="display: inline-block; width: 600px"/>
+        <p>You see here a viewport of the map with land(L), sea(S), mountains(M) and cities(C). The graphics will be improved after I'm able to deploy</p>
+        <dl>
+            <dt>Time:</dt>
+            <dd>6h</dd>
+            <dt>Cost:</dt>
+            <dd>0$</dd><br/>
+            <dt>Stack:</dt>
+            <dd>
+                <ul>
+                    <li>NodeJS</li>
+                    <li>WebPack</li>
+                    <li>ReactJS</li>
+                </ul>
+            </dd>
+            <dt>Cloud:</dt>
+            <dd>
+                <ul>
+                    <li><a href="https://www.mongodb.com">https://www.mongodb.com</a></li>
+                    <li><a href="https://github.com">https://github.com</a></li>
+                </ul>
+            </dd>
+        </dl>
+
+        <a id="step2"></a>
+        <h2>Step 2 - Deploy</h2>
+        <p>Now we have some parts running, we need to deploy the application(and this site). For this, I'm looking at Heroku. They of a 5$ a month plan. This should keep me well within my budget. They offer a command line CLI which will deploy the application using a git repository. So whatever is in the git repository it will be deployed.
+        To make this work I'm bundling my front-end and back-end as one package for now I do this with a simple shell script. You can create an Heroku account online. After that in a new folder it is relatively easy to host your app.</p>
+        <code style="display:block; white-space:pre-wrap">
+            npm install -g heroku
+            heroku login
+            heroku create soft-war
+            git commit -am "Initial commit"
+            git push heroku main
+            heroku logs --tail
+        </code>
+        <p>Secret are injected in the environment (same as most modern docker-based, kubernetes environments). Injecting a secret is done with the same cli. For example the database url to MongoDB:<br/>
+            <br/>
+            <code>heroku config:set ATLAS_URI=mongodb+srv://renzoslijp:&lt;YOUR_SECRET_PASSWORD&gt;@clustersoftwar.i5zrm6h.mongodb.net/?retryWrites=true&w=majority</code>
+            <br/>
+            <br/>
+            After updating an environment variable the application redeploys automatically. When you want to update your application the following steps are enough. The beauty of using GIT as a delivery mechanism is that versioning and effective file storage are build-in. So updating the application required the following steps:
+        </p>
+        <code style="display:block; white-space:pre-wrap">
+            git commit -am "My new feature"
+            git push heroku main
+            heroku logs --tail
+        </code>
+        <p>Deploying is quite easy after you get the kinks out. You get a pretty ugly URL <a href="https://soft-war-009a7cfaebd9.herokuapp.com/">https://soft-war-009a7cfaebd9.herokuapp.com/</a> and that is not handy and nice. My regular DNS entries are managed with Trans IP. So I linked my application to the actual Heroku deployed app under <a href="https://game.softcause.com">https://game.softcause.com</a>. I used a subdomain an CNAME to do this. There were no additional costs involved.
+        </p>
+        <p>Last I enabled SSL. Heroku offers that feature for free within the bundle of 5$. So I enabled it. Unfortunately, they don't offer an option for automated redirection to SSL. So I had to throw in a few lines of code for that.
+            But I got that sorted now as well. Done for the day.</p>
+
+        <dl>
+            <dt>Time:</dt>
+            <dd>9h <b>(+3h)</b></dd>
+            <dt>Cost:</dt>
+            <dd><b>60$ (a year)</b></dd><br/>
+            <dt>Stack:</dt>
+            <dd>
+                <ul>
+                    <li>NodeJS</li>
+                    <li>WebPack</li>
+                    <li>ReactJS</li>
+                    <li><b>Heroku</b></li>
+                </ul>
+            </dd>
+            <dt>Cloud:</dt>
+            <dd>
+                <ul>
+                    <li><a href="https://www.mongodb.com">https://www.mongodb.com</a></li>
+                    <li><a href="https://github.com">https://github.com</a></li>
+                    <li><b><a href="https://heroku.com">https://heroku.com</a></b></li>
+                </ul>
+            </dd>
+        </dl>
+        <a id="step3"></a>
+        <h2>Step 3 - More work on the world map</h2>
+        <p>Yes, I updated the styling of this page a bit. Let me know what you think of it. I also made the viewport react to the screen size updates. And..you can now drag it with the mouse.
+        A more complex bit was getting the horizontal and vertical axis legends in. They scroll similar but different than the full map. It involved quite a bit of coding. The next big job would be to make the land look nice and not as plain blocks.
+        </p>
+        <img src="content/WorldMap-Step3.png" style="display: inline-block; width: 600px"/>
+        <p>I think the viewport is okay. It still needs some extra styling on the scroll bars, but other than that. I'm happy. I do regret making the world cyclic and to allow to scroll partial cells in to the viewport. What a pain that creates...with scroll bars and so. :'-D</p>
+        <dl>
+            <dt>Time:</dt>
+            <dd>12h <b>(+3h)</b></dd>
+            <dt>Cost:</dt>
+            <dd>60$ (a year)</dd><br/>
+            <dt>Stack:</dt>
+            <dd>
+                <ul>
+                    <li>NodeJS</li>
+                    <li>WebPack</li>
+                    <li>ReactJS</li>
+                    <li>Heroku</li>
+                </ul>
+            </dd>
+            <dt>Cloud:</dt>
+            <dd>
+                <ul>
+                    <li><a href="https://www.mongodb.com">https://www.mongodb.com</a></li>
+                    <li><a href="https://github.com">https://github.com</a></li>
+                    <li><a href="https://heroku.com">https://heroku.com</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <a id="step4"></a>
+        <h2>Step 4 - Make the map (more) pretty</h2>
+        <p> So finally I have time to make the map look less like a a kid playing with bricks. I found a tileset
+            generated by a co worker back(Rudy Bruning) in 2013. And I decided to use that one. I don't have a better one at
+            this point and to be honest. I tried generating it with the AI DALL-E and that became an epic failure.
+
+            The map was stored in the database in a rather big structure so first I put it on a diet. It is now stored
+            as follows. In the previous storage each cell looked like <pre>{"type": 'L', "detail":'grass'}</pre>. You
+            can see how many times "type" and  "detail" would be repeated and create a lot of data traffic.
+        </p>
+
+        <code style="display:block; white-space:pre-wrap">
+            "world" : [
+                "LLLLLLSSSSSLLLLLLLLLLSSSSSSLLLLL",
+                "MMLLLLSSSSSSLLLLMMLLLLSSSSSSLLLL",
+                "MMMMLLLLSSSSSLLLMMMMLLLLSSSSSLLL",
+                "MMMLLLLSSSSSLLLLMMMLLLSSSSSSLLLL",
+                "MMMLLLLSSSSSLLLLMMMLLLSSSSSSLLLL",
+                "MMLLLLLSSSSSLLLLMMMLLLSSSSSSLLLL",
+                "LSSSSSSSSSSSSSLSLSSSSSSSSSSSSSLS",
+                "LSSSSSSSSSSSSSLSLSSSSSSSSSSSSSLS",
+                "LSSSSSSSSSSSSSLSLSSSSSSSSSSSSSLS",
+                "SSLLLLLLLLSSSSSSSSLLLLLLLLSSSSSS",
+                "SSLLLLLLLLSSSSSSSSLLLLLLLLSSSSSS",
+                "LLLLLLLLLLSSSSSSLLLLLLLLLLSSSSSS",
+                "LLLLLLLLLLLLSSSSLLLLLLLLLLLLSSSS",
+                "LLLLLLLLLLLLLSSSLLLLLLLLLLLLLSSS",
+                "MMMMMMLLLLLLLLLSMMMMMMLLLLLLLLLS",
+                "MMMMMMMMMLMLMMLLMMMMMMMMMLMLMMLL",
+                "LLLLLSSSSSSLLLLLLLLLLSSSSSSLLLLL",
+                "MMLLLLSSSSSSLLLLMMLLLLSSSSSSLLLL",
+                "MMMMLLLLSSSSSLLLMMMMLLLLSSSSSLLL",
+                "MMMLLLSSSSSSLLLLMMMLLLSSSSSSLLLL",
+                "MMMLLLSSSSSSLLLLMMMLLLSSSSSSLLLL",
+                "MMMLLLSSSSSSLLLLMMMLLLSSSSSSLLLL",
+                "LSSSSSSSSSSSSSLSLSSSSSSSSSSSSSLS",
+                "LSSSSSSSSSSSSSLSLSSSSSSSSSSSSSLS",
+                "LSSSSSSSSSSSSSLSLSSSSSSSSSSSSSLS",
+                "SSLLLLLLLLSSSSSSSSLLLLLLLLSSSSSS",
+                "SSLLLLLLLLSSSSSSSSLLLLLLLLSSSSSS",
+                "LLLLLLLLLLSSSSSSLLLLLLLLLLSSSSSS",
+                "LLLLLLLLLLLLSSSSLLLLLLLLLLLLSSSS",
+                "LLLLLLLLLLLLLSSSLLLLLLLLLLLLLSSS",
+                "MMMMMMLLLLLLLLLSMMMMMMLLLLLLLLLS",
+                "MMMMMMMMMLMLMMLLMMMMMMMMMLMLMMLL"
+            ]
+        </code>
+        <p>This is the hand made map you see on the game page. To make this map look pretty. After loading it from the
+            datbase the old structure is still inflated. The biggest step is to get the detail field set correctly.
+            This determines the look of a tile. I want to do the following steps</p>
+        <ol>
+            <li>Apply default tile styling (with some variation)</li>
+            <li>Add some landscape transitions using pattern matching</li>
+            <li>Generate random new maps, with a growth algorithm</li>
+        </ol>
+        <p><u>Step one</u> was pretty straight forward. And the map now looks like this</p>
+        <img src="content/WorldMap-Step4-1.png" style="display: inline-block; width: 600px"/>
+        <p>As you can see the pattern repetition is pretty visible. Hopefully <u>step 2</u> will sort this out.</p>
+        <p>...work in progress</p>
+        <dl>
+            <dt>Time:</dt>
+            <dd>13h <b>(+1h)</b></dd>
+            <dt>Cost:</dt>
+            <dd>60$ (a year)</dd><br/>
+            <dt>Stack:</dt>
+            <dd>
+                <ul>
+                    <li>NodeJS</li>
+                    <li>WebPack</li>
+                    <li>ReactJS</li>
+                    <li>Heroku</li>
+                </ul>
+            </dd>
+            <dt>Cloud:</dt>
+            <dd>
+                <ul>
+                    <li><a href="https://www.mongodb.com">https://www.mongodb.com</a></li>
+                    <li><a href="https://github.com">https://github.com</a></li>
+                    <li><a href="https://heroku.com">https://heroku.com</a></li>
+                </ul>
+            </dd>
+        </dl>
+    </div>
+</body>
+</html>

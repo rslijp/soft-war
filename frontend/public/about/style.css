@@ -1,0 +1,152 @@
+:root {
+    --text-color: #E8E5DE;
+    --main-color: black;
+    --menu-background-color: var(--main-color);
+    --menu-height: 60px;
+}
+
+html {
+    width:100%;
+    height:100%;
+    background:url(style/background.jpg) repeat;
+    margin: 0;
+    padding: 0;
+    font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: normal;
+    border-bottom: 1px solid black;
+}
+
+
+body {
+    width:100%;
+    height:100%;
+    margin: 0;
+    padding: 0;
+    font-weight: lighter;
+}
+
+p {
+    width: inherit;
+}
+
+@keyframes fade-out {
+    0% {opacity: 1; }
+    99% {opacity: 0; }
+    100% {opacity: 0; z-index: -1;}
+}
+
+@keyframes appear {
+    0% {opacity: 0; }
+    99% {opacity: 0; }
+    100% {opacity: 1; z-index: 0;}
+}
+
+@keyframes appear-from-top {
+    from {top: calc(0px - var(--menu-height));}
+    to {top: 0;}
+}
+
+
+
+img#logo {
+    z-index: inherit;
+    position: absolute;
+    top: 250px;
+    left: 50%;
+    width: 500px;
+    height: 368px;
+    margin-top: -184px; /* Half the height */
+    margin-left: -250px; /* Half the width */
+    opacity: 0;
+    animation: fade-out 2s 1 linear forwards;
+}
+
+@media screen and (max-width: 550px) {
+    img#logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 250px;
+        height: 184px;
+        margin-top: -92px; /* Half the height */
+        margin-left: -125px; /* Half the width */
+    }
+}
+
+
+div#menu {
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: var(--menu-height);
+    position: fixed;
+    background-color: var(--menu-background-color);
+    animation-name: appear-from-top;
+    animation-duration: 2s;
+    color: var(--text-color);
+}
+
+div#menu span.brand-name {
+    display: inline-block;
+    font-size: 40px;
+    /*text-transform: uppercase;*/
+    font-weight: bolder;
+    font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
+    line-height: var(--menu-height);
+    margin: 0 calc(var(--menu-height) / 6);
+    margin-left: var(--menu-height);
+}
+
+div#menu .menu-items {
+    position: inherit;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    height: var(--menu-height);;
+}
+div#menu .menu-items a {
+    /*display: inline-block;*/
+    text-transform: uppercase;
+    line-height: var(--menu-height);
+    margin: 0 calc(var(--menu-height) / 6);
+    text-decoration: none;
+}
+
+div#menu a.menu-item:hover {
+    text-decoration: underline;
+    filter: brightness(120%);
+}
+
+div#menu .menu-item {
+    display: inline-block;
+    line-height: var(--menu-height);
+    color: var(--text-color);
+    margin: 0;
+}
+div#menu img.end {
+    /*width: var(--menu-height);*/
+    height: var(--menu-height);
+    background-color: white;
+    float: right;
+}
+
+div#content {
+    position: absolute;
+    top: var(--menu-height);
+}
+
+div#pages {
+    z-index: -1;
+    animation: appear 2s 1 linear forwards;
+    /*position: fixed;*/
+    margin: 0 var(--menu-height);
+}
+
+dl dt {
+    font-weight: bold;
+    float: left;
+    width: 80px;
+}

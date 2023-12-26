@@ -5,7 +5,8 @@ import HorizontalScrollBar from "./HorizontalScrollBar";
 import ScrollableViewPort from "./ScrollableViewPort";
 import VerticalMapLegend from "./VerticalMapLegend";
 import VerticalScrollBar from "./VerticalScrollBar";
-import WorldMap from "./WorldMap";
+import WorldMapView from "./WorldMapView";
+import {inflateMap} from "./utils/WorldMap";
 import {loadGameState} from "./GameStateLoader";
 
 function SoftWarApp() {
@@ -20,6 +21,7 @@ function SoftWarApp() {
             setGameState(gameState);
             const dimensions = gameState.map.dimensions;
             setViewPort({...viewPort, width: dimensions.width, height: dimensions.height});
+            gameState.map = inflateMap(gameState.map);
             setState('ready');
         }).catch(error=>{
             console.error(error);
@@ -37,7 +39,7 @@ function SoftWarApp() {
         west: <VerticalMapLegend map={gameState.map} range={viewPort}/>,
         south: <HorizontalScrollBar range={viewPort} onUpdate={value=>setViewPort(value)}/>,
         east: <VerticalScrollBar range={viewPort} onUpdate={value=>setViewPort(value)}/>,
-        center: <WorldMap map={gameState.map} range={viewPort}/>
+        center: <WorldMapView map={gameState.map} range={viewPort}/>
     };
     return <>
         <ScrollableViewPort
