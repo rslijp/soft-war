@@ -150,3 +150,38 @@ dl dt {
     float: left;
     width: 80px;
 }
+
+table.pattern {
+    border-collapse: separate;
+    border-spacing:0
+}
+
+table.pattern td {
+    padding: 0px;
+    height: 45px;
+    width: 45px;
+}
+
+table.pattern td.grass {
+    background-color: green;
+    background-image: url("content/grass1.png");
+}
+
+
+table.pattern td.sea {
+    background-color: blue;
+    background-image: url("content/sea.png");
+}
+
+table.pattern td.grass-w-sea {
+    background-color: blue;
+    background-image: url("content/grass-w-sea.png");
+    border: 1px solid red;
+}
+
+
+.inline {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}

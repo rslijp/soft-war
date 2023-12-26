@@ -20,11 +20,11 @@ function WorldMapView({map, range}) {
     }
 
     function cell(key, x, y, entry){
-        const type = cities[`${x},${y}`] ? 'C' : (entry.detail || entry.type);
-        const clazzes = ["land-tile","land-tile-type-" + type];
+        const detail = cities[`${x},${y}`] ? 'C' : (entry.detail || entry.type);
+        const clazzes = ["land-tile","land-tile-type-" + detail];
 
         return <td key={key} className={clazzes.join(" ")}>
-            {type.length<=2?type:''}
+            {detail==='C'?'C':''}
         </td>;
     }
 

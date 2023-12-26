@@ -212,10 +212,59 @@
         <p><u>Step one</u> was pretty straight forward. And the map now looks like this</p>
         <img src="content/WorldMap-Step4-1.png" style="display: inline-block; width: 600px"/>
         <p>As you can see the pattern repetition is pretty visible. Hopefully <u>step 2</u> will sort this out.</p>
-        <p>...work in progress</p>
+        <p>By making a pattern of 3x3 or 4x4 we can sweep the map and look for transitions and then update one ore more tiles.
+        For example creating a shore, could be detected with the following pattern. And then we can change the center tile.
+            The sweep should take care of the adjecing tiles.</p>
+        <div class="inline">
+            <table class="pattern">
+                <tr>
+                    <td class="grass"/>
+                    <td class="grass"/>
+                    <td class="sea"/>
+                </tr>
+                <tr>
+                    <td class="grass"/>
+                    <td class="grass"/>
+                    <td class="sea"/>
+                </tr>
+                <tr>
+                    <td class="grass"/>
+                    <td class="grass"/>
+                    <td class="sea"/>
+                </tr>
+            </table>
+        </div>
+        <div class="inline">
+            &rightarrow;
+        </div>
+        <div class="inline">
+            <table class="pattern">
+                <tr>
+                    <td class="grass"/>
+                    <td class="grass"/>
+                    <td class="sea"/>
+                </tr>
+                <tr>
+                    <td class="grass"/>
+                    <td class="grass-w-sea"/>
+                    <td class="sea"/>
+                </tr>
+                <tr>
+                    <td class="grass"/>
+                    <td class="grass"/>
+                    <td class="sea"/>
+                </tr>
+            </table>
+        </div>
+        <p>So let's put this to the test</p>
+        <img src="content/WorldMap-Step4-2a.png" style="display: inline-block; width: 600px"/>
+        <p>To keep the number of tiles under control. I make it a bit easy for myself. For example no mountains near the sea.</p>
+        <p>Making the transitions is quite tedious job to be honest, but slowly the shore lines are getting there. I think I do need to make so variations on the long shores, and fiddle witht the corner tiles to make it look okay. And then next some green field variations with combined mountains, lakes and dry lands...may be a bit of now. Anyway my progress so far:</p>
+        <img src="content/WorldMap-Step4-2b.png" style="display: inline-block; width: 600px"/>
+
         <dl>
             <dt>Time:</dt>
-            <dd>13h <b>(+1h)</b></dd>
+            <dd>14h <b>(+3h)</b></dd>
             <dt>Cost:</dt>
             <dd>60$ (a year)</dd><br/>
             <dt>Stack:</dt>
