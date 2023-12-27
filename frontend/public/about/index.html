@@ -8,13 +8,13 @@
 </head>
 <body>
 <div id="menu">
-    <span class="brand-name">SoftCause</span>
+    <a class="brand-name" href="#challenge"><img src="content/logo_square.png" alt="SoftCause"/></a>
     <div class="menu-items">
-        <a class="menu-item" href="#challenge">The challenge</a>
-        <a class="menu-item" href="#step1">Step 1</a>
-        <a class="menu-item" href="#step2">Step 2</a>
-        <a class="menu-item" href="#step3">Step 3</a>
-        <a class="menu-item" href="#step4">Step 4</a>
+        <a class="menu-item responsive-hide" href="#challenge">The challenge</a>
+        <a class="menu-item" href="#step1"><span class="responsive-hide">Step</span> 1</a>
+        <a class="menu-item" href="#step2"><span class="responsive-hide">Step</span> 2</a>
+        <a class="menu-item" href="#step3"><span class="responsive-hide">Step</span> 3</a>
+        <a class="menu-item" href="#step4"><span class="responsive-hide">Step</span> 4</a>
     </div>
     <img class="end" src="style/decoration.png">
 </div>
@@ -43,12 +43,12 @@
         <a id="step1"></a>
         <h2>Step 1 - WorldMap</h2>
         <p>First, we focus on the most prominent part of the game a view of the world map. It needs to be fast and only render the visual part. Since I'm going for a web stack I decided to make it a table. The trick here is to update the cells smart and to also allow for scrolling the table for half a cell.</p>
-        <img src="content/WorldMap-Original.png" style="display: inline-block; width: 600px"/>
+        <img src="content/WorldMap-Original.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
         <p>I added ReactJS and Webpack as development frameworks for now I'm sticking to plan vanilla javascript.
          As a back-end server, I'm going to use NodeJS. This will allow me to reuse the code from the front end for the back end as well.
         The game state including the map is hosted by NodeJS using a MongoDB for storage. Using their free tier. So no cost added.
             I'm using GitHub as my cloud git repository (<a href="https://github.com/rslijp/soft-war">rslijp/soft-war</a>). I made the repository public and feel free to track my progress</p>
-        <img src="content/WorldMap-Step1.png" style="display: inline-block; width: 600px"/>
+        <img src="content/WorldMap-Step1.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
         <p>You see here a viewport of the map with land(L), sea(S), mountains(M) and cities(C). The graphics will be improved after I'm able to deploy</p>
         <dl>
             <dt>Time:</dt>
@@ -129,7 +129,7 @@
         <p>Yes, I updated the styling of this page a bit. Let me know what you think of it. I also made the viewport react to the screen size updates. And..you can now drag it with the mouse.
         A more complex bit was getting the horizontal and vertical axis legends in. They scroll similar but different than the full map. It involved quite a bit of coding. The next big job would be to make the land look nice and not as plain blocks.
         </p>
-        <img src="content/WorldMap-Step3.png" style="display: inline-block; width: 600px"/>
+        <img src="content/WorldMap-Step3.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
         <p>I think the viewport is okay. It still needs some extra styling on the scroll bars, but other than that. I'm happy. I do regret making the world cyclic and to allow to scroll partial cells in to the viewport. What a pain that creates...with scroll bars and so. :'-D</p>
         <dl>
             <dt>Time:</dt>
@@ -164,6 +164,8 @@
             as follows. In the previous storage each cell looked like <pre>{"type": 'L', "detail":'grass'}</pre>. You
             can see how many times "type" and  "detail" would be repeated and create a lot of data traffic.
         </p>
+        <p>Before I started refactoring I added a git workflow: <a href="https://github.com/rslijp/soft-war/blob/main/.github/workflows/webpack.yml">ES Lint check</a>.
+            This will create a pipeline on git you can view <a href="https://github.com/rslijp/soft-war/actions">here</a>. For now it only checks my styling, but unit test will be added when generating models</p>
 
         <code style="display:block; white-space:pre-wrap">
             "world" : [
@@ -210,7 +212,7 @@
             <li>Generate random new maps, with a growth algorithm</li>
         </ol>
         <p><u>Step one</u> was pretty straight forward. And the map now looks like this</p>
-        <img src="content/WorldMap-Step4-1.png" style="display: inline-block; width: 600px"/>
+        <img src="content/WorldMap-Step4-1.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
         <p>As you can see the pattern repetition is pretty visible. Hopefully <u>step 2</u> will sort this out.</p>
         <p>By making a pattern of 3x3 or 4x4 we can sweep the map and look for transitions and then update one ore more tiles.
         For example creating a shore, could be detected with the following pattern. And then we can change the center tile.
@@ -257,14 +259,16 @@
             </table>
         </div>
         <p>So let's put this to the test</p>
-        <img src="content/WorldMap-Step4-2a.png" style="display: inline-block; width: 600px"/>
+        <img src="content/WorldMap-Step4-2a.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
         <p>To keep the number of tiles under control. I make it a bit easy for myself. For example no mountains near the sea.</p>
         <p>Making the transitions is quite tedious job to be honest, but slowly the shore lines are getting there. I think I do need to make so variations on the long shores, and fiddle witht the corner tiles to make it look okay. And then next some green field variations with combined mountains, lakes and dry lands...may be a bit of now. Anyway my progress so far:</p>
-        <img src="content/WorldMap-Step4-2b.png" style="display: inline-block; width: 600px"/>
-
+        <img src="content/WorldMap-Step4-2b.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
+        <p>For now I'm happy with my map. Some variations and it looks like all parts are there. Moving to the next step generation of maps</p>
+        <img src="content/WorldMap-Step4-2c.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
+        <p><u>Step three</u> generating a map</p>
         <dl>
             <dt>Time:</dt>
-            <dd>14h <b>(+3h)</b></dd>
+            <dd>16h <b>(+5h)</b></dd>
             <dt>Cost:</dt>
             <dd>60$ (a year)</dd><br/>
             <dt>Stack:</dt>
@@ -286,5 +290,6 @@
             </dd>
         </dl>
     </div>
+</div>
 </body>
 </html>

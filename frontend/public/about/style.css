@@ -89,7 +89,7 @@ div#menu {
     color: var(--text-color);
 }
 
-div#menu span.brand-name {
+div#menu span.brand-name, div#menu a.brand-name {
     display: inline-block;
     font-size: 40px;
     /*text-transform: uppercase;*/
@@ -98,6 +98,12 @@ div#menu span.brand-name {
     line-height: var(--menu-height);
     margin: 0 calc(var(--menu-height) / 6);
     margin-left: var(--menu-height);
+}
+
+div#menu span.brand-name, div#menu a.brand-name img {
+    margin-top: calc(var(--menu-height) / 6);
+    height: calc(var(--menu-height) / 6 * 4);
+    background: white;
 }
 
 div#menu .menu-items {
@@ -114,6 +120,7 @@ div#menu .menu-items a {
     margin: 0 calc(var(--menu-height) / 6);
     text-decoration: none;
 }
+
 
 div#menu a.menu-item:hover {
     text-decoration: underline;
@@ -184,4 +191,20 @@ table.pattern td.grass-w-sea {
     display: inline-block;
     text-align: center;
     vertical-align: middle;
+}
+
+
+@media screen and (max-width: 550px) {
+    .responsive-hide {
+        display: none !important;
+    }
+
+    #pages {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+
+    :root {
+        --menu-height: 40px;
+    }
 }
