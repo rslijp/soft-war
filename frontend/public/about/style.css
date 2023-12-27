@@ -64,10 +64,10 @@ img#logo {
     animation: fade-out 2s 1 linear forwards;
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 800px) {
     img#logo {
         position: absolute;
-        top: 50%;
+        top: 100px;
         left: 50%;
         width: 250px;
         height: 184px;
@@ -194,7 +194,7 @@ table.pattern td.grass-w-sea {
 }
 
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 800px) {
     .responsive-hide {
         display: none !important;
     }
@@ -208,3 +208,32 @@ table.pattern td.grass-w-sea {
         --menu-height: 40px;
     }
 }
+
+.sea-tile {
+    background-color: lightblue;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.land-tile {
+    background-color: lightgreen;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.land-mountain {
+    background-color: lightgray;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.land-tile.change, .land-mountain.change {
+    border: 1px solid red;
+}
+

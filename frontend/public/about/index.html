@@ -15,6 +15,7 @@
         <a class="menu-item" href="#step2"><span class="responsive-hide">Step</span> 2</a>
         <a class="menu-item" href="#step3"><span class="responsive-hide">Step</span> 3</a>
         <a class="menu-item" href="#step4"><span class="responsive-hide">Step</span> 4</a>
+        <a class="menu-item" href="#step5"><span class="responsive-hide">Step</span> 5</a>
     </div>
     <img class="end" src="style/decoration.png">
 </div>
@@ -22,13 +23,13 @@
     <img id="logo" src="style/logo.png"/>
     <div id="pages">
         <p>
-            <i style="color: red">I will fix the styling of this page for mobile devices with the next release. <br/>
-                Last updated 26th December 2023. Take me to the last <a href="#step4">Step 4</a></i>
+            <i style="color: red">
+                Last updated 27th December 2023. Take me to the last <a href="#step5">Step 5</a></i>
         </p>
         <a id="challenge"></a>
         <h1>Code challenge accepted</h1>
         <p>Hi all,</p>
-        <p>One of my kids dared me to code a game I used to play. I used to play a long time ago. The game was named <a href="https://en.wikipedia.org/wiki/Empire_(1977_video_game)">"Empire"</a> by <a href="https://en.wikipedia.org/wiki/Walter_Bright">Walter Bright</a>. It was the "War game of the century". If you don't believe me...It says so on the box ;-). And yes I only could play the CGA four color version.</p>
+        <p>One of my kids dared me to code a game. A game I used to play a long time ago. The game was named <a href="https://en.wikipedia.org/wiki/Empire_(1977_video_game)">"Empire"</a> by <a href="https://en.wikipedia.org/wiki/Walter_Bright">Walter Bright</a>. It was the "War game of the century". If you don't believe me...It says so on the box ;-). And yes I only could play the CGA four color version.</p>
         <img src="content/Empire-Wargame-of-The-Century.png" style="display: inline-block; width: 300px"/>
         <img src="content/Empire-Wargame-of-The-Century.png CGA.jpg" style="display: inline-block; width: 300px; vertical-align: top"/>
         <p>So I took up the challenge and I will try to recreate it. Of course, I want to learn from it as well. So these are my rules of engagement (okay, the war slang is getting to my head already):</p>
@@ -263,12 +264,92 @@
         <p>To keep the number of tiles under control. I make it a bit easy for myself. For example no mountains near the sea.</p>
         <p>Making the transitions is quite tedious job to be honest, but slowly the shore lines are getting there. I think I do need to make so variations on the long shores, and fiddle witht the corner tiles to make it look okay. And then next some green field variations with combined mountains, lakes and dry lands...may be a bit of now. Anyway my progress so far:</p>
         <img src="content/WorldMap-Step4-2b.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
-        <p>For now I'm happy with my map. Some variations and it looks like all parts are there. Moving to the next step generation of maps</p>
+        <p>Below here you can see the final map and for now I'm happy with my map tile set. It has some variations and it looks like all transistions are there.</p>
         <img src="content/WorldMap-Step4-2c.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
-        <p><u>Step three</u> generating a map</p>
+        <p>Moving to the next step generation of maps...<br/><u>Step three - A</u> generating a map. This is actually quite easy. We first make an empty canvas in this case filled with sea (S)</p>
+        <table>
+            <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+            <tr><th>1</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>2</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>3</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>4</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>5</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>6</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>7</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>8</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+        </table>
+        <p><u>Step three - B</u> Now we drop some random land slots. We use a seed-factor for this. We pick a random
+            number between 0 and 1 and if that number is below <code>0.008</code> we marked that piece of sea as
+            Land (L).</p>
+        <table>
+            <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+            <tr><th>1</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>2</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>3</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>4</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>5</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>6</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>7</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="sea-tile">S</td></tr>
+            <tr><th>8</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+        </table>
+        <p><u>Step three - C</u> In a couple of cycles we are growing our land mass. For a regular land configuration we use 5 cycles and a cycle consists of a swoop over the whole map. We want so randomization here as well. So we use a matrix which
+            doesn't promote equal growth. The center element with factor <code>1.0</code> is the land tile we investigate. With factor <code>1.0</code> we never loose previously generated land.
+        </p>
+        <code style="display:block; white-space:pre-wrap">
+const matrix = [
+      [0.6,0.8,0,6],
+      [0.8,1.0,0,8],
+      [0.6,0.8,0,6]
+];
+        </code>
+        <p>Cylce 1</p>
+        <table>
+            <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+            <tr><th>1</th><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>2</th><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile">L</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>3</th><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>4</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>5</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>6</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile change">L</td></tr>
+            <tr><th>7</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile">L</td><td class="land-tile change">L</td></tr>
+            <tr><th>8</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="sea-tile">S</td></tr>
+        </table>
+        <p>Cylce 2 (notice the map is cyclic</p>
+        <table>
+            <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+            <tr><th>1</th><td class="land-tile change">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile change">L</td></tr>
+            <tr><th>2</th><td class="land-tile change">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>3</th><td class="land-tile change">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>4</th><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>5</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile change">L</td><td class="land-tile change">L</td></tr>
+            <tr><th>6</th><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile">L</td><td class="land-tile">L</td></tr>
+            <tr><th>7</th><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td></tr>
+            <tr><th>8</th><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile change">L</td><td class="land-tile">L</td><td class="land-tile change">L</td></tr>
+        </table>
+        <p><u>Step three - D</u> In one sweep we generate mountains. For a mountain to be created we need a 3x3 grid of
+            land only. Once a mountain is generated the change for a joining mountain is higher. We start with a seed factor of
+            <code>0.2</code>. For each mountain in that grid we add a <code>0.1</code> to the change factor.
+        </p>
+        <table>
+            <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+            <tr><th>1</th><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile">L</td><td class="land-tile">L</td></tr>
+            <tr><th>2</th><td class="land-tile">L</td><td class="land-mountain change">M</td><td class="land-mountain change">M</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>3</th><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>4</th><td class="sea-tile">S</td><td class="land-tile">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td></tr>
+            <tr><th>5</th><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td></tr>
+            <tr><th>6</th><td class="land-tile">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td></tr>
+            <tr><th>7</th><td class="land-tile">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-mountain change">M</td><td class="land-tile">L</td></tr>
+            <tr><th>8</th><td class="sea-tile">S</td><td class="land-tile">L</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="sea-tile">S</td><td class="land-tile">L</td><td class="land-tile">L</td><td class="land-tile">L</td></tr>
+        </table>
+        <p><u>Step three - E</u> Cities are generated. On a map with dimensions <code>width x weight</code> we use the
+            formulate <code>(width + weight) / 2</code>. Cities can be created on land. Cities repel each other. Mountains also repel cities,
+            but land gives a small bonus. Water gives even more bonus; so there is a likelyhood that cities are placed near water.
+            Since we use change here as well. It is not garantueed that the cities are all near water. Or tht each 'continent' has the
+            same amount of cities. For now I consider this 'part of life'.
+        </p>
         <dl>
             <dt>Time:</dt>
-            <dd>16h <b>(+5h)</b></dd>
+            <dd>19h <b>(+7h)</b></dd>
             <dt>Cost:</dt>
             <dd>60$ (a year)</dd><br/>
             <dt>Stack:</dt>
@@ -289,6 +370,10 @@
                 </ul>
             </dd>
         </dl>
+        <a id="step5"></a>
+        <h2>Step 5 - Users and gamestate</h2>
+        <p> Next step we will focus on logging in with oAuth2 (gmail). And we retain states for that user, but tht is for tomorrow.
+        </p>
     </div>
 </div>
 </body>

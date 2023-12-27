@@ -169,9 +169,9 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
             {x: 1, y: 1, detail: "grass-ne-sea"}
         ],
         pattern: [
-            "LLS",
+            "XLS",
             "XLL",
-            "XXL"
+            "XXX"
         ]
     },
     {
@@ -299,6 +299,18 @@ const LAND_SCAPE_TRANSITION_PHASE2 = [
             "?XX?",
             "XMMX",
             "?XX?"
+        ]
+    },
+    {
+        update: [
+            {x: 1, y: 1, detail: "mountain1_n"},
+            {x: 1, y: 2, detail: "mountain1_s"}
+        ],
+        pattern: [
+            "?X?",
+            "XMX",
+            "XMX",
+            "?X?"
         ]
     },
     {

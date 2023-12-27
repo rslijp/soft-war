@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import indexRouter from './routes/index.mjs';
 import apeStateRouter from './routes/app-state.mjs';
+import mapGeneratorRouter from './routes/map-generator.mjs';
 
 // var express = require('express');
 // var path = require('path');
@@ -33,6 +34,7 @@ if(process.env.NODE_ENV === 'production') {
 app.use(express.static(path.join(".", 'public')));
 app.use('/', indexRouter);
 app.use('/api/app-state', apeStateRouter);
+app.use('/api/map-generator', mapGeneratorRouter);
 
 
 export default app;

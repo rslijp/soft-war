@@ -211,6 +211,12 @@
     background-image: url("/content/maptiles/mountain1_sw.png");
 }
 
+.land-tile.land-tile-type-mountain1_nw {
+    background-color: gray;
+    background-image: url("/content/maptiles/mountain1_nw.png");
+}
+
+
 .land-tile.land-tile-type-mountain1_w {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_w.png");
@@ -221,10 +227,16 @@
     background-image: url("/content/maptiles/mountain1_e.png");
 }
 
-.land-tile.land-tile-type-mountain1_nw {
+.land-tile.land-tile-type-mountain1_n {
     background-color: gray;
-    background-image: url("/content/maptiles/mountain1_nw.png");
+    background-image: url("/content/maptiles/mountain1_n.png");
 }
+
+.land-tile.land-tile-type-mountain1_s {
+    background-color: gray;
+    background-image: url("/content/maptiles/mountain1_s.png");
+}
+
 
 .land-tile.land-tile-type-grass_lake1_ne {
     background-color: green;

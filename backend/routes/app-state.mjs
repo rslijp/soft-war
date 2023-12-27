@@ -20,6 +20,7 @@ router.get('/:code', async function(req, res, next) {
   console.log(">",req.params.code);
   if(!req.params.code || req.params.code.length>16) {
     res.status("412");
+    return;
   }
   let collection = await connection.collection("app-state");
   let result = await collection.findOne({code: req.params.code});
