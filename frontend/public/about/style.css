@@ -237,3 +237,12 @@ table.pattern td.grass-w-sea {
     border: 1px solid red;
 }
 
+.land-tile-factors th {
+    text-align: left;
+}
+
+.land-tile-factors td {
+    text-align: right;
+    border: 1px solid black;
+    width: 40px;
+}

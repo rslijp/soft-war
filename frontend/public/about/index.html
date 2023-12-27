@@ -347,6 +347,15 @@ const matrix = [
             Since we use change here as well. It is not garantueed that the cities are all near water. Or tht each 'continent' has the
             same amount of cities. For now I consider this 'part of life'.
         </p>
+        <p>I will allow the user to select 3 types of maps. 'REGULAR', 'CONTINENTS' and 'ISLANDS'. I can achieve this by
+        playing with the initial seed factor(Step three - B), cycles(Step three - C) and grow factor mountains(Step three - D).
+        These are the values I use.</p>
+        <table class="land-tile-factors">
+            <tr><th></th><th>seed</th><th>cycle</th><th>mountain</th></tr>
+            <tr><th>REGULAR</th><td>0.008</td><td>5</td><td>0.2</td></tr>
+            <tr><th>CONTINENTS</th><td>0.004</td><td>7</td><td>0.15</td></tr>
+            <tr><th>ISLANDS</th><td>0.016</td><td>3</td><td>0.3</td></tr>
+        </table>
         <dl>
             <dt>Time:</dt>
             <dd>19h <b>(+7h)</b></dd>

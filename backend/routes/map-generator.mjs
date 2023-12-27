@@ -10,7 +10,7 @@ const GENERATION_SETTINGS = {
         mountainFactor: 0.2,
         growCycles: 5
     },
-    'LANDMASS' : {
+    'CONTINENTS' : {
         seedFactor: 0.004,
         mountainFactor: 0.15,
         growCycles: 7
