@@ -23,7 +23,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 1, detail: "grass_T3_sw"}
+            {x: 1, y: 1, detail: "grass-T3-sw"}
         ],
         pattern: [
             "SSS",
@@ -34,7 +34,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 1, detail: "grass_T3_se"}
+            {x: 1, y: 1, detail: "grass-T3-se"}
         ],
         pattern: [
             "SSS",
@@ -45,7 +45,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 1, detail: "grass_T3_nw"}
+            {x: 1, y: 1, detail: "grass-T3-nw"}
         ],
         pattern: [
             "XLS",
@@ -56,7 +56,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 1, detail: "grass_T3_ne"}
+            {x: 1, y: 1, detail: "grass-T3-ne"}
         ],
         pattern: [
             "SLX",
@@ -188,7 +188,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 0, detail: "grass_T-s-sea"}
+            {x: 1, y: 0, detail: "grass-T-s-sea"}
         ],
         pattern: [
             "XLX",
@@ -199,7 +199,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 2, detail: "grass_T-n-sea"}
+            {x: 1, y: 2, detail: "grass-T-n-sea"}
         ],
         pattern: [
             "?L?",
@@ -210,7 +210,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 0, y: 1, detail: "grass_T-e-sea"}
+            {x: 0, y: 1, detail: "grass-T-e-sea"}
         ],
         pattern: [
             "XS?",
@@ -221,7 +221,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 2, y: 1, detail: "grass_T-w-sea"}
+            {x: 2, y: 1, detail: "grass-T-w-sea"}
         ],
         pattern: [
             "?SX",
@@ -232,7 +232,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 1, detail: "grass_T2-s-sea"}
+            {x: 1, y: 1, detail: "grass-T2-s-sea"}
         ],
         pattern: [
             "SSS",
@@ -243,7 +243,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 1, detail: "grass_T2-n-sea"}
+            {x: 1, y: 1, detail: "grass-T2-n-sea"}
         ],
         pattern: [
             "SLS",
@@ -254,7 +254,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 1, detail: "grass_T2-e-sea"}
+            {x: 1, y: 1, detail: "grass-T2-e-sea"}
         ],
         pattern: [
             "SXS",
@@ -265,7 +265,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
-            {x: 1, y: 1, detail: "grass_T2-w-sea"}
+            {x: 1, y: 1, detail: "grass-T2-w-sea"}
         ],
         pattern: [
             "SXS",
@@ -275,10 +275,10 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     },
     {
         update: [
-            {x: 1, y: 1, detail: "mountain1_se"},
-            {x: 2, y: 1, detail: "mountain1_sw"},
-            {x: 1, y: 2, detail: "mountain1_ne"},
-            {x: 2, y: 2, detail: "mountain1_nw"}
+            {x: 1, y: 1, detail: "mountain1-se"},
+            {x: 2, y: 1, detail: "mountain1-sw"},
+            {x: 1, y: 2, detail: "mountain1-ne"},
+            {x: 2, y: 2, detail: "mountain1-nw"}
         ],
         pattern: [
             "?XX?",
@@ -292,8 +292,8 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
 const LAND_SCAPE_TRANSITION_PHASE2 = [
     {
         update: [
-            {x: 1, y: 1, detail: "mountain1_e"},
-            {x: 2, y: 1, detail: "mountain1_w"}
+            {x: 1, y: 1, detail: "mountain1-e"},
+            {x: 2, y: 1, detail: "mountain1-w"}
         ],
         pattern: [
             "?XX?",
@@ -303,8 +303,8 @@ const LAND_SCAPE_TRANSITION_PHASE2 = [
     },
     {
         update: [
-            {x: 1, y: 1, detail: "mountain1_n"},
-            {x: 1, y: 2, detail: "mountain1_s"}
+            {x: 1, y: 1, detail: "mountain1-n"},
+            {x: 1, y: 2, detail: "mountain1-s"}
         ],
         pattern: [
             "?X?",
@@ -374,8 +374,8 @@ const LAND_SCAPE_TRANSITION_PHASE2 = [
     {
         change: 0.3,
         update: [
-            {x: 1, y: 1, detail: "grass1_1-w-sea"},
-            {x: 1, y: 2, detail: "grass1_2-w-sea"}
+            {x: 1, y: 1, detail: "grass1-1-w-sea"},
+            {x: 1, y: 2, detail: "grass1-2-w-sea"}
         ],
         pattern: [
             "?LX",
@@ -387,8 +387,8 @@ const LAND_SCAPE_TRANSITION_PHASE2 = [
     {
         change: 0.3,
         update: [
-            {x: 1, y: 1, detail: "grass1_1-e-sea"},
-            {x: 1, y: 2, detail: "grass1_2-e-sea"}
+            {x: 1, y: 1, detail: "grass1-1-e-sea"},
+            {x: 1, y: 2, detail: "grass1-2-e-sea"}
         ],
         pattern: [
             "?LX",
@@ -400,8 +400,8 @@ const LAND_SCAPE_TRANSITION_PHASE2 = [
     {
         change: 0.3,
         update: [
-            {x: 1, y: 1, detail: "grass1_1-s-sea"},
-            {x: 2, y: 1, detail: "grass1_2-s-sea"}
+            {x: 1, y: 1, detail: "grass1-1-s-sea"},
+            {x: 2, y: 1, detail: "grass1-2-s-sea"}
         ],
         pattern: [
             "XXXX",
@@ -412,8 +412,8 @@ const LAND_SCAPE_TRANSITION_PHASE2 = [
     {
         change: 0.3,
         update: [
-            {x: 1, y: 1, detail: "grass1_1-n-sea"},
-            {x: 2, y: 1, detail: "grass1_2-n-sea"}
+            {x: 1, y: 1, detail: "grass1-1-n-sea"},
+            {x: 2, y: 1, detail: "grass1-2-n-sea"}
         ],
         pattern: [
             "?SS?",
@@ -424,10 +424,10 @@ const LAND_SCAPE_TRANSITION_PHASE2 = [
     {
         change: 0.1,
         update: [
-            {x: 1, y: 1, detail: "grass_lake1_se"},
-            {x: 2, y: 1, detail: "grass_lake1_sw"},
-            {x: 1, y: 2, detail: "grass_lake1_ne"},
-            {x: 2, y: 2, detail: "grass_lake1_nw"}
+            {x: 1, y: 1, detail: "grass-lake1-se"},
+            {x: 2, y: 1, detail: "grass-lake1-sw"},
+            {x: 1, y: 2, detail: "grass-lake1-ne"},
+            {x: 2, y: 2, detail: "grass-lake1-nw"}
         ],
         pattern: [
             "XXXX",

@@ -1,0 +1,292 @@
+.land-tile {
+    height: var(--tile-size);
+    width: var(--tile-size);
+    background-color: black;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.land-tile.land-tile-type-dry {
+    background: url('/content/css_sprites.png') -10px -10px;
+}
+
+.land-tile.land-tile-type-grass-lake1-ne {
+    background: url('/content/css_sprites.png') -75px -10px;
+}
+
+.land-tile.land-tile-type-grass-lake1-nw {
+    background: url('/content/css_sprites.png') -10px -75px;
+}
+
+.land-tile.land-tile-type-grass-lake1-se {
+    background: url('/content/css_sprites.png') -75px -75px;
+}
+
+.land-tile.land-tile-type-grass-lake1-sw {
+    background: url('/content/css_sprites.png') -140px -10px;
+}
+
+.land-tile.land-tile-type-grass-T-e-sea {
+    background: url('/content/css_sprites.png') -140px -75px;
+}
+
+.land-tile.land-tile-type-grass-T-n-sea {
+    background: url('/content/css_sprites.png') -10px -140px;
+}
+
+.land-tile.land-tile-type-grass-T-s-sea {
+    background: url('/content/css_sprites.png') -75px -140px;
+}
+
+.land-tile.land-tile-type-grass-T-w-sea {
+    background: url('/content/css_sprites.png') -140px -140px;
+}
+
+.land-tile.land-tile-type-grass-T2-e-sea {
+    background: url('/content/css_sprites.png') -205px -10px;
+}
+
+.land-tile.land-tile-type-grass-T2-n-sea {
+    background: url('/content/css_sprites.png') -205px -75px;
+}
+
+.land-tile.land-tile-type-grass-T2-s-sea {
+    background: url('/content/css_sprites.png') -205px -140px;
+}
+
+.land-tile.land-tile-type-grass-T2-w-sea {
+    background: url('/content/css_sprites.png') -10px -205px;
+}
+
+.land-tile.land-tile-type-grass-T3-ne {
+    background: url('/content/css_sprites.png') -75px -205px;
+}
+
+.land-tile.land-tile-type-grass-T3-nw {
+    background: url('/content/css_sprites.png') -140px -205px;
+}
+
+.land-tile.land-tile-type-grass-T3-se {
+    background: url('/content/css_sprites.png') -205px -205px;
+}
+
+.land-tile.land-tile-type-grass-T3-sw {
+    background: url('/content/css_sprites.png') -270px -10px;
+}
+
+.land-tile.land-tile-type-grass-e-dry {
+    background: url('/content/css_sprites.png') -270px -75px;
+}
+
+.land-tile.land-tile-type-grass-e-end {
+    background: url('/content/css_sprites.png') -270px -140px;
+}
+
+.land-tile.land-tile-type-grass-e-sea {
+    background: url('/content/css_sprites.png') -270px -205px;
+}
+
+.land-tile.land-tile-type-grass-n-dry {
+    background: url('/content/css_sprites.png') -10px -270px;
+}
+
+.land-tile.land-tile-type-grass-n-end {
+    background: url('/content/css_sprites.png') -75px -270px;
+}
+
+.land-tile.land-tile-type-grass-n-sea {
+    background: url('/content/css_sprites.png') -140px -270px;
+}
+
+.land-tile.land-tile-type-grass-ne-dry {
+    background: url('/content/css_sprites.png') -205px -270px;
+}
+
+.land-tile.land-tile-type-grass-ne-sea {
+    background: url('/content/css_sprites.png') -270px -270px;
+}
+
+.land-tile.land-tile-type-grass-ns-sea {
+    background: url('/content/css_sprites.png') -335px -10px;
+}
+
+.land-tile.land-tile-type-grass-nw-dry {
+    background: url('/content/css_sprites.png') -335px -75px;
+}
+
+.land-tile.land-tile-type-grass-nw-sea {
+    background: url('/content/css_sprites.png') -335px -140px;
+}
+
+.land-tile.land-tile-type-grass-s-dry {
+    background: url('/content/css_sprites.png') -335px -205px;
+}
+
+.land-tile.land-tile-type-grass-s-end {
+    background: url('/content/css_sprites.png') -335px -270px;
+}
+
+.land-tile.land-tile-type-grass-s-sea {
+    background: url('/content/css_sprites.png') -10px -335px;
+}
+
+.land-tile.land-tile-type-grass-se-dry {
+    background: url('/content/css_sprites.png') -75px -335px;
+}
+
+.land-tile.land-tile-type-grass-se-sea {
+    background: url('/content/css_sprites.png') -140px -335px;
+}
+
+.land-tile.land-tile-type-grass-sw-dry {
+    background: url('/content/css_sprites.png') -205px -335px;
+}
+
+.land-tile.land-tile-type-grass-sw-sea {
+    background: url('/content/css_sprites.png') -270px -335px;
+}
+
+.land-tile.land-tile-type-grass-w-dry {
+    background: url('/content/css_sprites.png') -335px -335px;
+}
+
+.land-tile.land-tile-type-grass-w-end {
+    background: url('/content/css_sprites.png') -400px -10px;
+}
+
+.land-tile.land-tile-type-grass-w-sea {
+    background: url('/content/css_sprites.png') -400px -75px;
+}
+
+.land-tile.land-tile-type-grass-we-sea {
+    background: url('/content/css_sprites.png') -400px -140px;
+}
+
+.land-tile.land-tile-type-grass1-1-e-sea {
+    background: url('/content/css_sprites.png') -400px -205px;
+}
+
+.land-tile.land-tile-type-grass1-1-n-sea {
+    background: url('/content/css_sprites.png') -400px -270px;
+}
+
+.land-tile.land-tile-type-grass1-1-s-sea {
+    background: url('/content/css_sprites.png') -400px -335px;
+}
+
+.land-tile.land-tile-type-grass1-1-w-sea {
+    background: url('/content/css_sprites.png') -10px -400px;
+}
+
+.land-tile.land-tile-type-grass1-2-e-sea {
+    background: url('/content/css_sprites.png') -75px -400px;
+}
+
+.land-tile.land-tile-type-grass1-2-n-sea {
+    background: url('/content/css_sprites.png') -140px -400px;
+}
+
+.land-tile.land-tile-type-grass1-2-s-sea {
+    background: url('/content/css_sprites.png') -205px -400px;
+}
+
+.land-tile.land-tile-type-grass1-2-w-sea {
+    background: url('/content/css_sprites.png') -270px -400px;
+}
+
+.land-tile.land-tile-type-grass, .land-tile.land-tile-type-grass1 {
+    background: url('/content/css_sprites.png') -335px -400px;
+}
+
+.land-tile.land-tile-type-grass2-e-sea {
+    background: url('/content/css_sprites.png') -400px -400px;
+}
+
+.land-tile.land-tile-type-grass2-n-sea {
+    background: url('/content/css_sprites.png') -465px -10px;
+}
+
+.land-tile.land-tile-type-grass2-s-sea {
+    background: url('/content/css_sprites.png') -465px -75px;
+}
+
+.land-tile.land-tile-type-grass2-w-sea {
+    background: url('/content/css_sprites.png') -465px -140px;
+}
+
+.land-tile.land-tile-type-grass2 {
+    background: url('/content/css_sprites.png') -465px -205px;
+}
+
+.land-tile.land-tile-type-grass3 {
+    background: url('/content/css_sprites.png') -465px -270px;
+}
+
+.land-tile.land-tile-type-mountain1-e {
+    background: url('/content/css_sprites.png') -465px -335px;
+}
+
+.land-tile.land-tile-type-mountain1-n {
+    background: url('/content/css_sprites.png') -465px -400px;
+}
+
+.land-tile.land-tile-type-mountain1-ne {
+    background: url('/content/css_sprites.png') -10px -465px;
+}
+
+.land-tile.land-tile-type-mountain1-nw {
+    background: url('/content/css_sprites.png') -75px -465px;
+}
+
+.land-tile.land-tile-type-mountain1-s {
+    background: url('/content/css_sprites.png') -140px -465px;
+}
+
+.land-tile.land-tile-type-mountain1-se {
+    background: url('/content/css_sprites.png') -205px -465px;
+}
+
+.land-tile.land-tile-type-mountain1-sw {
+    background: url('/content/css_sprites.png') -270px -465px;
+}
+
+.land-tile.land-tile-type-mountain1-w {
+    background: url('/content/css_sprites.png') -335px -465px;
+}
+
+.land-tile.land-tile-type-mountain, .land-tile.land-tile-type-mountain1 {
+    background: url('/content/css_sprites.png') -400px -465px;
+}
+
+.land-tile.land-tile-type-sea-ne-grass {
+    background: url('/content/css_sprites.png') -465px -465px;
+}
+
+.land-tile.land-tile-type-sea-nw-grass {
+    background: url('/content/css_sprites.png') -530px -10px;
+}
+
+.land-tile.land-tile-type-sea-se-grass {
+    background: url('/content/css_sprites.png') -530px -75px;
+}
+
+.land-tile.land-tile-type-sea-sw-grass {
+    background: url('/content/css_sprites.png') -530px -140px;
+}
+
+.land-tile.land-tile-type-sea {
+    background: url('/content/css_sprites.png') -530px -205px;
+}
+
+.land-tile.land-tile-type-sea2-e-grass {
+    background: url('/content/css_sprites.png') -530px -270px;
+}
+
+.land-tile.land-tile-type-sea2-w-grass {
+    background: url('/content/css_sprites.png') -530px -335px;
+}
+
+.land-tile.land-tile-type-snow {
+    background: url('/content/css_sprites.png') -530px -400px;
+}

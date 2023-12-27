@@ -356,6 +356,12 @@ const matrix = [
             <tr><th>CONTINENTS</th><td>0.004</td><td>7</td><td>0.15</td></tr>
             <tr><th>ISLANDS</th><td>0.016</td><td>3</td><td>0.3</td></tr>
         </table>
+        <p>
+            As a final tweak, I put the whole map in a sprite-map. This is one big image containing all land tiles in one.
+            This optimizes the loading time by a huge factor. Now only one image is retrieved instead of 72 images. You can
+            see the sprite map <a href="content/css_sprites.png">here</a>. You then can select the part you need with css.
+            I generated the sprite map online with <a href="https://www.toptal.com/developers/css/sprite-generator">this site </a>.
+        </p>
         <dl>
             <dt>Time:</dt>
             <dd>19h <b>(+7h)</b></dd>

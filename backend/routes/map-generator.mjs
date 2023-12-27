@@ -134,15 +134,15 @@ function generateCities(number, world, width, height) {
         if (world[y][x] !== "L") continue;
         const key = y+","+x;
         if(seen[key]) continue;
-        let t = 0.0;
+        let t = 0.1;
         for (var dy = -1; dy <= 1; dy++) {
             for (var dx = -1; dx <= 1; dx++) {
                 const uy = normalizeY(y + dy);
                 const ux = normalizeX(x + dx);
-                if (world[uy][ux] === "S") t+=0.1;
-                if (world[uy][ux] === "M") t-=0.05;
-                if (seen[uy+","+ux]) t-=0.1;
-                t+=0.5;
+                if (world[uy][ux] === "S") t+=0.15;
+                else if (world[uy][ux] === "M") t-=0.05;
+                else if (seen[uy+","+ux]) t-=0.2;
+                // else t+=0.05;
             }
         }
         if (Math.random() < t) {
