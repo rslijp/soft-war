@@ -434,7 +434,41 @@
     background-image: url("/content/maptiles/grass_T5_se.png");
 }
 
+.land-tile.land-tile-type-grass-island {
+    background-color: green;
+    background-image: url("/content/maptiles/grass-island.png");
+}
+
+.land-tile.land-tile-type-grass-ne-sw-sea {
+    background-color: green;
+    background-image: url("/content/maptiles/grass-ne-sw-sea.png");
+}
+
+.land-tile.land-tile-type-grass-se-nw-sea {
+    background-color: green;
+    background-image: url("/content/maptiles/grass-se-nw-sea.png");
+}
+
+.land-tile.land-tile-type-grass-corner-ne {
+    background-color: green;
+    background-image: url("/content/maptiles/grass-corner-ne.png");
+}
 
 
+.land-tile.land-tile-type-grass-corner-se {
+    background-color: green;
+    background-image: url("/content/maptiles/grass-corner-se.png");
+}
 
+
+.land-tile.land-tile-type-grass-corner-nw {
+    background-color: green;
+    background-image: url("/content/maptiles/grass-corner-nw.png");
+}
+
+
+.land-tile.land-tile-type-grass-corner-sw {
+    background-color: green;
+    background-image: url("/content/maptiles/grass-corner-sw.png");
+}
 

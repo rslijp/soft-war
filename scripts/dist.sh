@@ -6,8 +6,8 @@ npm install
 npm run build
 cd -
 
-#$(cd backend && rsync -arhv --exclude 'node_modules/' . ../../softwar-dist)
+#$(cd backend && rsync -arhv --exclude 'node_modules/' . ../../soft-war-dist)
 pwd
 cd backend
-rsync -arhv --exclude 'node_modules/' . ../../softwar-dist
+rsync -arhv --exclude 'node_modules/' . ../../soft-war-dist
 cd -

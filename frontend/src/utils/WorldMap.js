@@ -23,6 +23,83 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
     {
         type: '3x3',
         update: [
+            {x: 1, y: 1, detail: "grass-island"}
+        ],
+        pattern: [
+            "SSS",
+            "SLS",
+            "SSS"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-se-nw-sea"}
+        ],
+        pattern: [
+            "XXS",
+            "XXX",
+            "SXX"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-se-nw-sea"}
+        ],
+        pattern: [
+            "SXX",
+            "XXX",
+            "XXS"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-corner-ne"}
+        ],
+        pattern: [
+            "SSS",
+            "XXS",
+            "SXS"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-corner-nw"}
+        ],
+        pattern: [
+            "SSS",
+            "SXX",
+            "SXS"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-corner-se"}
+        ],
+        pattern: [
+            "SXS",
+            "XXS",
+            "SSS"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-corner-sw"}
+        ],
+        pattern: [
+            "SXS",
+            "SXX",
+            "SSS"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
             {x: 1, y: 1, detail: "grass-T3-sw"}
         ],
         pattern: [
