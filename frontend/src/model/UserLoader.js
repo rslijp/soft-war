@@ -1,6 +1,6 @@
-import {csrfToken} from "./utils/Cookies";
+import {csrfToken} from "../utils/Cookies";
 
-export function loadGameState() {
+export function loadUser() {
     // return fetch(`/api/app-state/AMAZING`, {
     //     method: "GET",
     //     headers: {
@@ -11,7 +11,7 @@ export function loadGameState() {
     //     redirect: "follow",
     //     referrerPolicy: "no-referrer"
     // }).then(r => r.json());
-    return fetch(`/api/map-generator/REGULAR/128x128`, {
+    return fetch(`/api/app-state/user`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -20,9 +20,5 @@ export function loadGameState() {
         },
         redirect: "follow",
         referrerPolicy: "no-referrer"
-    }).then(r => r.json()).then(r => {
-        return {
-            map: r
-        };
-    });
+    }).then(r => r.json());
 }

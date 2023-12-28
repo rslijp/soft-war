@@ -1,4 +1,4 @@
-import {LEGEND_SIZE, TILE_SIZE} from "./Constants";
+import {LEGEND_SIZE, TILE_SIZE} from "../Constants";
 import {number, shape} from "prop-types";
 import React from "react";
 

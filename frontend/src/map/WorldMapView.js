@@ -1,6 +1,6 @@
 import {arrayOf, number, shape, string} from "prop-types";
 import React from "react";
-import {TILE_SIZE} from "./Constants";
+import {TILE_SIZE} from "../Constants";
 
 function WorldMapView({map, range}) {
     const cities = {};

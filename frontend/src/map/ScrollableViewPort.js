@@ -1,4 +1,4 @@
-import {LEGEND_SIZE, TILE_SIZE} from "./Constants";
+import {LEGEND_SIZE, TILE_SIZE, TOP_BAR_HEIGHT} from "../Constants";
 import React, {useLayoutEffect, useState} from "react";
 import {func, node, number, shape} from "prop-types";
 
@@ -44,9 +44,9 @@ function ScrollableViewPort({dimensions, value, onUpdate, grid}) {
 
     return <div className={"map-view-port"} style={{"width": `${size[0]}px`, "height": `${size[1]}px`}} >
         <div className={"map-view-port-top"} style={{"width": `${size[0]}px`, "height": `${LEGEND_SIZE}px`}}>
-            <div className={"map-view-port-legend"} style={{"top": 0, "left": 0}}>{grid.corner}</div>
+            <div className={"map-view-port-legend"} style={{"top": TOP_BAR_HEIGHT+"px", "left": 0}}>{grid.corner}</div>
             <div className={"map-view-port-horizontal-legend"} style={{"width": `${size[0]-2*LEGEND_SIZE}px`, "marginLeft": `${marginLeft}px`}}>{grid.north}</div>
-            <div className={"map-view-port-legend"}  style={{"top": 0, "right": 0}}>{grid.corner}</div>
+            <div className={"map-view-port-legend"}  style={{"top": TOP_BAR_HEIGHT+"px", "right": 0}}>{grid.corner}</div>
         </div>
         <div className={"map-view-port-main"} style={{"height": `${size[1]-2*LEGEND_SIZE}px`}}>
             <div className={"map-view-port-vertical-legend"} style={{"marginTop": `${marginTop}px`, "height": `${size[1]-2*LEGEND_SIZE}px`}}>{grid.west}</div>

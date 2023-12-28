@@ -390,6 +390,42 @@ const matrix = [
         <h2>Step 5 - Users and gamestate</h2>
         <p> Next step we will focus on logging in with oAuth2 (gmail). And we retain states for that user, but tht is for tomorrow.
         </p>
+        <p>Using a the passport module for NodeJS. Adding oAuth becomes very easy. You can read more on this module
+            <a href="https://www.passportjs.org">here</a>. After registering the client id, client secret, and callback url.
+            We are in business. The final step is to protect the end-points of our non public pages. We do this by adding
+            express middleware in nodejs on the end-points.
+            This concept is slightly different then my typical .NET MVC or Spring-boot applications, but the concept is
+            relatively simple. In express you define routes to end points and they can be routed to either end-points or
+            or sub routes. This allows to creating simpke hierachies. For now I consider all with <code>/</code>,
+            <code>/index.html</code> and all end-points that starts with <code>/api</code> private. Private end-points
+            require a logged in user.
+        </p>
+        <p>The user-session is stored in an in-memory session on the server side.</p>
+        <dl>
+            <dt>Time:</dt>
+            <dd>21h <b>(+2h)</b></dd>
+            <dt>Cost:</dt>
+            <dd>60$ (a year)</dd><br/>
+            <dt>Stack:</dt>
+            <dd>
+                <ul>
+                    <li>NodeJS</li>
+                    <li>WebPack</li>
+                    <li>ReactJS</li>
+                    <li>Heroku</li>
+                </ul>
+            </dd>
+            <dt>Cloud:</dt>
+            <dd>
+                <ul>
+                    <li><a href="https://www.mongodb.com">https://www.mongodb.com</a></li>
+                    <li><a href="https://github.com">https://github.com</a></li>
+                    <li><a href="https://heroku.com">https://heroku.com</a></li>
+                    <li><b><a href="https://heroku.com">https://mail.google.com</a></b></li>
+
+                </ul>
+            </dd>
+        </dl>
     </div>
 </div>
 </body>

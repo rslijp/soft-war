@@ -48,6 +48,10 @@ const config = {
                     to: '[path]/[name][ext]'
                 },
                 {
+                    from: path.resolve(__dirname, 'public/auth/**/*'),
+                    to: '[path]/[name][ext]'
+                },
+                {
                     from: path.resolve(__dirname, 'src/404.html'),
                     to: '404.html'
                 },
