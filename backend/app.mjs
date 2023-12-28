@@ -42,7 +42,7 @@ app.use(function(req, res, next) {
     if(req.path==="/" || req.path==="/index.html" || req.path.startsWith("/api")) {
         if (!(req.session || {}).passport) {
             console.log("REDIRECTING TO AUTH");
-            res.redirect("/auth.html");
+            res.redirect("/public/auth/");
             return;
         }
         console.log("AUTH PASS",req.path);
