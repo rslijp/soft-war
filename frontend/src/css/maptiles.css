@@ -133,55 +133,55 @@
     background-image: url("/content/maptiles/grass-we-sea.png");
 }
 
-.land-tile.land-tile-type-grass1_1_s_sea {
+.land-tile.land-tile-type-grass1-1-s-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_1_s_sea.png");
 }
 
 
-.land-tile.land-tile-type-grass1_2_s_sea {
+.land-tile.land-tile-type-grass1-2-s-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_2_s_sea.png");
 }
 
 
-.land-tile.land-tile-type-grass1_1-w-sea {
+.land-tile.land-tile-type-grass1-1-w-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_1_w_sea.png");
 }
 
-.land-tile.land-tile-type-grass1_2-w-sea {
+.land-tile.land-tile-type-grass1-2-w-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_2_w_sea.png");
 }
 
-.land-tile.land-tile-type-grass1_1-s-sea {
+.land-tile.land-tile-type-grass1-1-s-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_1_s_sea.png");
 }
 
-.land-tile.land-tile-type-grass1_2-e-sea {
+.land-tile.land-tile-type-grass1-2-e-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_2_e_sea.png");
 }
 
-.land-tile.land-tile-type-grass1_1-e-sea {
+.land-tile.land-tile-type-grass1-1-e-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_1_e_sea.png");
 }
 
-.land-tile.land-tile-type-grass1_2-s-sea {
+.land-tile.land-tile-type-grass1-2-s-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_2_s_sea.png");
 }
 
-.land-tile.land-tile-type-grass1_1-n-sea {
+.land-tile.land-tile-type-grass1-1-n-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_1_n_sea.png");
 }
 
 
-.land-tile.land-tile-type-grass1_2-n-sea {
+.land-tile.land-tile-type-grass1-2-n-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass1_2_n_sea.png");
 }
@@ -191,116 +191,116 @@
     background-image: url("/content/maptiles/mountain1.png");
 }
 
-.land-tile.land-tile-type-mountain1_nw {
+.land-tile.land-tile-type-mountain1-nw {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_nw.png");
 }
 
-.land-tile.land-tile-type-mountain1_ne {
+.land-tile.land-tile-type-mountain1-ne {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_ne.png");
 }
 
-.land-tile.land-tile-type-mountain1_se {
+.land-tile.land-tile-type-mountain1-se {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_se.png");
 }
 
-.land-tile.land-tile-type-mountain1_sw {
+.land-tile.land-tile-type-mountain1-sw {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_sw.png");
 }
 
-.land-tile.land-tile-type-mountain1_nw {
+.land-tile.land-tile-type-mountain1-nw {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_nw.png");
 }
 
 
-.land-tile.land-tile-type-mountain1_w {
+.land-tile.land-tile-type-mountain1-w {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_w.png");
 }
 
-.land-tile.land-tile-type-mountain1_e {
+.land-tile.land-tile-type-mountain1-e {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_e.png");
 }
 
-.land-tile.land-tile-type-mountain1_n {
+.land-tile.land-tile-type-mountain1-n {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_n.png");
 }
 
-.land-tile.land-tile-type-mountain1_s {
+.land-tile.land-tile-type-mountain1-s {
     background-color: gray;
     background-image: url("/content/maptiles/mountain1_s.png");
 }
 
 
-.land-tile.land-tile-type-grass_lake1_ne {
+.land-tile.land-tile-type-grass-lake1-ne {
     background-color: green;
-    background-image: url("/content/maptiles/grass_lake1_ne.png");
+    background-image: url("/content/maptiles/grass2_lake1_ne.png");
 }
 
-.land-tile.land-tile-type-grass_lake1_nw {
+.land-tile.land-tile-type-grass-lake1-nw {
     background-color: green;
-    background-image: url("/content/maptiles/grass_lake1_nw.png");
+    background-image: url("/content/maptiles/grass2_lake1_nw.png");
 }
 
-.land-tile.land-tile-type-grass_lake1_se {
+.land-tile.land-tile-type-grass-lake1-se {
     background-color: green;
-    background-image: url("/content/maptiles/grass_lake1_se.png");
+    background-image: url("/content/maptiles/grass2_lake1_se.png");
 }
 
-.land-tile.land-tile-type-grass_lake1_sw {
+.land-tile.land-tile-type-grass-lake1-sw {
     background-color: green;
-    background-image: url("/content/maptiles/grass_lake1_sw.png");
+    background-image: url("/content/maptiles/grass2_lake1_sw.png");
 }
 
-.land-tile.land-tile-type-grass_T-s-sea {
+.land-tile.land-tile-type-grass-T-s-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass_T_s-sea.png");
 }
 
 
-.land-tile.land-tile-type-grass_T-n-sea {
+.land-tile.land-tile-type-grass-T-n-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass_T_n-sea.png");
 }
 
 
-.land-tile.land-tile-type-grass_T-e-sea {
+.land-tile.land-tile-type-grass-T-e-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass_T_e-sea.png");
 }
 
 
-.land-tile.land-tile-type-grass_T-w-sea {
+.land-tile.land-tile-type-grass-T-w-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass_T_w-sea.png");
 }
 
 
-.land-tile.land-tile-type-grass_T2-s-sea {
+.land-tile.land-tile-type-grass-T2-s-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass_T2_s-sea.png");
 }
 
 
-.land-tile.land-tile-type-grass_T2-n-sea {
+.land-tile.land-tile-type-grass-T2-n-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass_T2_n-sea.png");
 }
 
 
-.land-tile.land-tile-type-grass_T2-e-sea {
+.land-tile.land-tile-type-grass-T2-e-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass_T2_e-sea.png");
 }
 
 
-.land-tile.land-tile-type-grass_T2-w-sea {
+.land-tile.land-tile-type-grass-T2-w-sea {
     background-color: green;
     background-image: url("/content/maptiles/grass_T2_w-sea.png");
 }
@@ -379,29 +379,59 @@
     background-image: url("/content/maptiles/grass-w-end.png");
 }
 
-.land-tile.land-tile-type-grass_T3_sw {
+.land-tile.land-tile-type-grass-T3-sw {
     background-color: green;
     background-image: url("/content/maptiles/grass_T3_sw.png");
 }
 
 
-.land-tile.land-tile-type-grass_T3_se {
+.land-tile.land-tile-type-grass-T3-se {
     background-color: green;
     background-image: url("/content/maptiles/grass_T3_se.png");
 }
 
 
 
-.land-tile.land-tile-type-grass_T3_nw {
+.land-tile.land-tile-type-grass-T3-nw {
     background-color: green;
     background-image: url("/content/maptiles/grass_T3_nw.png");
 }
 
 
 
-.land-tile.land-tile-type-grass_T3_ne {
+.land-tile.land-tile-type-grass-T3-ne {
     background-color: green;
     background-image: url("/content/maptiles/grass_T3_ne.png");
+}
+
+
+.land-tile.land-tile-type-grass-T4-sw {
+    background-color: green;
+    background-image: url("/content/maptiles/grass_T4_sw.png");
+}
+
+
+.land-tile.land-tile-type-grass-T4-se {
+    background-color: green;
+    background-image: url("/content/maptiles/grass_T4_se.png");
+}
+
+
+.land-tile.land-tile-type-grass-T4-nw {
+    background-color: green;
+    background-image: url("/content/maptiles/grass_T4_nw.png");
+}
+
+
+
+.land-tile.land-tile-type-grass-T4-ne {
+    background-color: green;
+    background-image: url("/content/maptiles/grass_T4_ne.png");
+}
+
+.land-tile.land-tile-type-grass-T5-se {
+    background-color: green;
+    background-image: url("/content/maptiles/grass_T5_se.png");
 }
 
 

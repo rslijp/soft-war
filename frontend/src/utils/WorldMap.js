@@ -65,6 +65,61 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
         ]
     },
     {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-T4-sw"}
+        ],
+        pattern: [
+            "XL?",
+            "LLS",
+            "SL?"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-T4-se"}
+        ],
+        pattern: [
+            "?S?",
+            "LLL",
+            "XLS"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-T4-nw"}
+        ],
+        pattern: [
+            "SLX",
+            "LLL",
+            "?S?"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-T4-ne"}
+        ],
+        pattern: [
+            "?LS",
+            "SLL",
+            "?LX"
+        ]
+    },
+    {
+        type: '3x3',
+        update: [
+            {x: 1, y: 1, detail: "grass-T5-se"}
+        ],
+        pattern: [
+            "?LX",
+            "SLL",
+            "?LS"
+        ]
+    },
+    {
         update: [
             {x: 1, y: 1, detail: "grass-w-sea"}
         ],
@@ -193,7 +248,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
         pattern: [
             "XLX",
             "SLS",
-            "?X?"
+            "???"
         ]
     },
     {
@@ -202,7 +257,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
             {x: 1, y: 2, detail: "grass-T-n-sea"}
         ],
         pattern: [
-            "?L?",
+            "???",
             "SLS",
             "XXX"
         ]
@@ -214,7 +269,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
         ],
         pattern: [
             "XS?",
-            "XLL",
+            "XL?",
             "XS?"
         ]
     },
@@ -225,7 +280,7 @@ const LAND_SCAPE_TRANSITION_PHASE1 = [
         ],
         pattern: [
             "?SX",
-            "SLX",
+            "?LX",
             "?SX"
         ]
     },
