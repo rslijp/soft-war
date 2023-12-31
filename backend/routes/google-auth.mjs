@@ -1,8 +1,12 @@
+import connection from '../connections.mjs';
 import express from 'express';
 import passport from "passport";
-import app from "../app.mjs";
 import GoogleOAuth from "passport-google-oauth";
 const router = express.Router();
+
+async function users(){
+    return connection.collection("users");
+}
 
 passport.serializeUser(function(user, cb) {
   cb(null, user);
@@ -28,6 +32,12 @@ passport.use(new GoogleStrategy({
     }
 ));
 
+
+async function saveProfile(user){
+    let collection = await users();
+    return collection.replaceOne({email: user.email}, user, {upsert: true, hint: "user_email"});
+}
+
 router.get('/google',
     passport.authenticate('google', { scope : ['profile', 'email'] }));
 
@@ -35,17 +45,20 @@ router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/auth/error' }),
     function(req, res) {
       // Successful authentication, redirect success.
-      console.log("Callback",req.session);
       res.redirect('/auth/success');
     });
 
 
 router.get('/success', (req, res) => {
-  console.log(req.session.passport);
-  res.redirect("/index.html")
+    console.log("Success",req.session.passport);
+    saveProfile(req.session.passport.user._json).then(()=>res.redirect("/"))
 });
 router.get('/error', (req, res) => res.send("error logging in"));
 
-
+router.put('/logout', (req, res)=>{
+    console.log("Logout, redirecting to auth");
+    req.session.destroy();
+    return res.send({redirect: "/public/auth/"});
+})
 
 export default router;

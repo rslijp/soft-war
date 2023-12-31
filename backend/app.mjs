@@ -41,8 +41,9 @@ if(process.env.NODE_ENV === 'production') {
 app.use(function(req, res, next) {
     if(req.path==="/" || req.path==="/index.html" || req.path.startsWith("/api")) {
         if (!(req.session || {}).passport) {
-            console.log("REDIRECTING TO AUTH");
-            res.redirect("/public/auth/");
+            console.log("Redirecting to auth");
+            if(req.path.startsWith("/api")) res.send({redirect: "/public/auth/"});
+            else res.redirect("/public/auth/");
             return;
         }
         console.log("AUTH PASS",req.path);

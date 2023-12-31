@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/tabletron');
+
 :root {
     --logo-height: 30px;
     --logo-margin-top: 0px;
@@ -10,6 +12,7 @@
     --scroll-color: #de8928;
 
     --top-bar-height: 50px;
+    --title-banner-color: #9CA463;
 }
 
 html {
@@ -119,9 +122,9 @@ body {
     position: relative;
 }
 
-.map-view-port-horizontal-legend {
+.map-view-port-horizontal-legend, .map-view-port-vertical-legend {
     /*margin-left: var(--legend-size);*/
-    background-color: red;
+    background-color: lightgray;
 }
 .scroll-horizontal {
     background-color: darkgrey;
@@ -211,17 +214,61 @@ body {
     color: white;
     dislay: block;
     padding-left: var(--legend-size);
+    padding-left: 0;
 }
 
-.top-bar .name {
-    display: table-cell;
-    height: var(--top-bar-height);
-    vertical-align: middle;
-}
 
 .top-bar .profile-picture {
     height: calc(var(--top-bar-height) - var(--legend-size));
-    vertical-align: middle;
     margin-right: 10px;
-    border-radius: var(--legend-size);
+}
+
+.navbar.top-bar > .container {
+    align-content: start;
+    padding-left: 0;
+}
+
+.demo-blanket {
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+    background-color: grey;
+    position: fixed;
+    top: var(--top-bar-height);
+    left: 0;
+    opacity: 40%;
+}
+
+.title-center {
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: var(--top-bar-height);
+    left: 0;
+    display: table;
+}
+
+.title-center .content {
+    font-family: 'Tabletron', sans-serif;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+.title-center .content .plaque h1 {
+    font-size: 128px;
+    background-color: var(--title-banner-color);
+    margin-bottom: 0px;
+}
+
+.title-center .content .plaque p {
+    margin-top: 0px;
+    font-size: 28px;
+    background-color: var(--title-banner-color);
+}
+
+.title-center .content .plaque p a {
+    color: red;
 }

@@ -1,4 +1,5 @@
 {
+    "code": "abc",
     "turn" : 1,
     "currentPlayer" : 2,
     "players" : [

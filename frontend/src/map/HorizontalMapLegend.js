@@ -26,7 +26,6 @@ function HorizontalMapLegend({range}) {
             </tbody>
         </table>;
     }
-
     return viewport(normalizedRange(range));
 }
 
