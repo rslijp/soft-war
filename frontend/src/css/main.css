@@ -232,11 +232,12 @@ body {
     z-index: 99;
     width: 100%;
     height: 100%;
-    background-color: grey;
     position: fixed;
     top: var(--top-bar-height);
     left: 0;
-    opacity: 40%;
+    background-color: grey;
+    opacity: 50%;
+
 }
 
 .title-center {
@@ -271,4 +272,28 @@ body {
 
 .title-center .content .plaque p a {
     color: red;
+}
+
+@media screen and (max-width: 800px) {
+    .title-center .content .plaque h1 {
+        font-size: 96px;
+    }
+
+    .title-center .content .plaque p {
+        margin-top: 0px;
+        font-size: 20px;
+    }
+}
+
+
+@media screen and (max-width: 640px) {
+
+    .title-center .content .plaque h1 {
+        font-size: 64px;
+    }
+
+    .title-center .content .plaque p {
+        margin-top: 0px;
+        font-size: 16px;
+    }
 }

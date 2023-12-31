@@ -21,16 +21,11 @@ function DemoPage() {
         east: <></>,
         center: <WorldMapView map={map} range={viewPort}/>
     };
-    setTimeout(()=>{
-        const dimensions = map.dimensions;
-        setViewPort({...viewPort, startX: (viewPort.startX+0.1)%dimensions.width, startY: (viewPort.startY+0.1)%dimensions.height});
-    },100);
+    // setTimeout(()=>{
+    //     const dimensions = map.dimensions;
+    //     setViewPort({...viewPort, startX: (viewPort.startX+0.1)%dimensions.width, startY: (viewPort.startY+0.1)%dimensions.height});
+    // },1000);
     return <>
-        <ScrollableViewPort
-            dimensions={map.dimensions}
-            value={viewPort}
-            onUpdate={value=>setViewPort(value)}
-            grid={grid}/>
         <div className={"demo-blanket"}/>
         <div className={"title-center"}>
             <div className={"content"}>
@@ -40,6 +35,12 @@ function DemoPage() {
                 </div>
             </div>
         </div>
+        <ScrollableViewPort
+            dimensions={map.dimensions}
+            value={viewPort}
+            onUpdate={value=>setViewPort(value)}
+            grid={grid}/>
+
     </>;
 }
 
