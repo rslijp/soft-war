@@ -1,6 +1,6 @@
 import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import React, {useState} from "react";
-import {newGame} from "../api/GameStateLoader";
+import {newGame} from "../api/GameStateApi";
 
 const FIRST = ["Pig", "Blue", "Hawk", "Justice", "Glacier", "Doom", "Split", "Dragon"];
 const SECOND = ["Den", "Sword", "Breach", "Assault", "Claw", "Light", "Storm"];
@@ -90,7 +90,7 @@ function CreateGamePage() {
             <Button variant="secondary" onClick={()=>history.back()}>
                 Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit}>Start</Button>
+            <Button variant="success" onClick={handleSubmit}>Start</Button>
         </Modal.Footer>
     </Modal>;
 }

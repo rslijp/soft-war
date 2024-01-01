@@ -2,12 +2,16 @@ import {LEGEND_SIZE, TILE_SIZE, TOP_BAR_HEIGHT} from "../Constants";
 import React, {useLayoutEffect, useState} from "react";
 import {func, node, number, shape} from "prop-types";
 
-function ScrollableViewPort({dimensions, value, onUpdate, grid}) {
+function ScrollableViewPort({dimensions, value, onUpdate, grid, margin}) {
     const [state, setState] = useState({track: false, touch: null});
     const [size, setSize] = useState([0, 0]);
+    const effectiveMargin = {west: 0, east: 0, north: 0, south: 0, ...margin};
     useLayoutEffect(() => {
         function updateSize() {
-            setSize([window.innerWidth, window.innerHeight]);
+            setSize([
+                window.innerWidth-effectiveMargin.east-effectiveMargin.west,
+                window.innerHeight-effectiveMargin.north-effectiveMargin.south
+            ]);
             onUpdate({...value, deltaX: Math.ceil(window.innerWidth/TILE_SIZE), deltaY: Math.ceil(window.innerHeight/TILE_SIZE)});
         }
         window.addEventListener('resize', updateSize);
@@ -64,10 +68,10 @@ function ScrollableViewPort({dimensions, value, onUpdate, grid}) {
             </div>
             <div className={"map-view-port-vertical-legend"} style={{"height": `${size[1]-2*LEGEND_SIZE}px`}}>{grid.east}</div>
         </div>
-        <div className={"map-view-port-bottom"} style={{"width": `${size[0]}px`, "height": `${LEGEND_SIZE}px`, "bottom": 0, "position": "fixed"}}>
-            <div className={"map-view-port-legend"} style={{"bottom": 0, "left": 0}}>{grid.corner}</div>
+        <div className={"map-view-port-bottom"} style={{"width": `${size[0]}px`, "height": `${LEGEND_SIZE}px`, "bottom": effectiveMargin.south, "position": "fixed"}}>
+            <div className={"map-view-port-legend"} style={{"bottom": effectiveMargin.south, "left": effectiveMargin.west}}>{grid.corner}</div>
             <div className={"map-view-port-horizontal-legend"} style={{"width": `${size[0]-2*LEGEND_SIZE}px`}}>{grid.south}</div>
-            <div className={"map-view-port-legend"}  style={{"bottom": 0, "right": 0}}>{grid.corner}</div>
+            <div className={"map-view-port-legend"}  style={{"bottom": effectiveMargin.south, "right": effectiveMargin.east}}>{grid.corner}</div>
         </div>
     </div>;
 }
@@ -90,6 +94,12 @@ ScrollableViewPort.propTypes = {
         east: node,
         center: node,
         corner: node
+    }),
+    margin: shape({
+        north: number,
+        west: number,
+        south: number,
+        east: number
     }),
     onUpdate: func,
 };

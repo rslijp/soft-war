@@ -208,13 +208,13 @@ body {
     justify-content: end;
 }
 .top-bar {
-    width: 100%;
-    height: 50px;
+    /*width: 100%;*/
+    height: var(--top-bar-height);
     background-color: black;
     color: white;
-    dislay: block;
-    padding-left: var(--legend-size);
-    padding-left: 0;
+    /*dislay: block;*/
+    /*padding-left: var(--legend-size);*/
+    /*padding-left: 0;*/
 }
 
 
@@ -296,4 +296,26 @@ body {
         margin-top: 0px;
         font-size: 16px;
     }
+}
+
+.demo-footer {
+    color: white;
+    width: 100%;
+}
+
+.demo-footer a {
+    margin-left: 10px;
+}
+
+.game-footer {
+    color: white;
+    width: 100%;
+}
+
+.bottom-bar {
+    height: var(--top-bar-height);
+}
+
+.bottom-bar u {
+    color: white
 }

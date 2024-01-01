@@ -1,6 +1,6 @@
 import {Button, Container, NavDropdown, Navbar} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import {loadUser, logoutUser} from "./api/UserLoader";
+import {loadUser, logoutUser} from "./api/UserApi";
 
 function AppHeader() {
     const [state, setState] = useState('');
@@ -30,11 +30,10 @@ function AppHeader() {
     }
 
     return <Navbar bg="dark" data-bs-theme="dark" className={"top-bar"}>
-        <Container>
+        <Container fluid>
             <Navbar.Brand href="#/">{state !== "ready" ? "..." : userName(user)}</Navbar.Brand>
-            {state === "ready" ? <><Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                <NavDropdown title="Menu" id="basic-nav-dropdown" className={"justify-content-end"}
-                    drop={"down-centered"} style={{"marginRight": "5rem"}}>
+            {state === "ready" ? <><Navbar.Toggle aria-controls="basic-navbar-nav" className={"justify-content-end top-menu"}/>
+                <NavDropdown title="Menu" align={"end"}>
                     <NavDropdown.Item href={'#/new-game'}>Start a new game</NavDropdown.Item>
                     <NavDropdown.Item href={'#/your-games'}>Continue a game</NavDropdown.Item>
                     <NavDropdown.Item href="/public/about">About this game</NavDropdown.Item>

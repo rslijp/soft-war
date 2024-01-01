@@ -1,3 +1,4 @@
+import {Nav, Navbar} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import ScrollableViewPort from "../map/ScrollableViewPort";
@@ -40,7 +41,11 @@ function DemoPage() {
             value={viewPort}
             onUpdate={value=>setViewPort(value)}
             grid={grid}/>
-
+        <Navbar sticky="bottom" bg="dark" data-bs-theme="dark">
+            <Nav className="justify-content-center demo-footer">
+                Powered by <a href={"http://www.softcause.com"}>SoftCause</a>
+            </Nav>
+        </Navbar>
     </>;
 }
 

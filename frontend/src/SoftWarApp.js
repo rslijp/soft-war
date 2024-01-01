@@ -4,7 +4,7 @@ import {
     RouterProvider,
     createHashRouter,
 } from "react-router-dom";
-import {loadGameState, loadYourGames} from "./api/GameStateLoader";
+import {loadGameState, loadYourGames} from "./api/GameStateApi";
 import AppHeader from "./AppHeader";
 import ContinueGamePage from "./page/ContinueGamePage";
 import CreateGamePage from "./page/CreateGamePage";
