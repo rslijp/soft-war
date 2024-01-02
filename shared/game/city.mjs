@@ -57,7 +57,7 @@ export function city(position, name, producing, production) {
         return {y: this.position.y, x: this.position.x};
     };
     this.initTurn = () => {
-        _.each(this.nestedUnits, (unit) => {
+        this.nestedUnits.forEach((unit) => {
             unit.heal();
         });
         this.internalInit();

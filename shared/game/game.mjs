@@ -6,6 +6,7 @@ export function game (map, players) {
     this.turn = 1;
     this.players = players;
     this.currentPlayerIndex = 0;
+    this.unitsMap = new unitsMap(players, map);
     this.player = (index) => {
         return this.players[index];
     };
@@ -15,7 +16,6 @@ export function game (map, players) {
     this.position = function() {
         return this.currentPlayer().position;
     };
-    this.unitsMap = new unitsMap(players, map);
     this.statistics=[];
 
     this.setPosition = (newposition) => {
@@ -156,7 +156,18 @@ export function game (map, players) {
         currentPlayer.initTurn();
         MessageBus.send("new-turn", currentPlayer.readMessages(), currentPlayer.index);
     };
-    this.world = ()=>map.world();
+
+    this.world = ()=>{
+        const t = map.world();
+        return {
+            dimensions: t.dimensions,
+            world: t.world,
+            unitAt: this.unitsMap.unitAt
+        }
+
+    }
+    this.dimensions = () => map.dimensions;
+
     this.cityConquered = function(cityDefence, conquerer) {
         var city = cityDefence.city;
         if (city.player !== null) {

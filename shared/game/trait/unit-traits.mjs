@@ -11,11 +11,11 @@ export const unitTraits = {
         }
     },
     internalUnload: function(unit) {
-        this.nestedUnits = _.without(this.nestedUnits, unit);
+        this.nestedUnits = this.nestedUnits.filter(c=> c!==unit);
         unit.inside = null;
     },
     unload: function(unit) {
-        if (_.indexOf(this.nestedUnits, unit) == -1) {
+        if ((this.nestedUnits||[]).indexOf(unit) == -1) {
             throw "Can't unload unit";
         }
         if (!unit.canMove()) {
@@ -40,7 +40,7 @@ export const unitTraits = {
         return position.x === on.x && position.y === on.y;
     },
     internalInit: function() {
-        _.each(this.nestedUnits, function(unit) {
+        this.nestedUnits.forEach((unit) => {
             unit.initTurn();
         });
     },

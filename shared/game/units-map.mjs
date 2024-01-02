@@ -79,6 +79,15 @@ export function unitsMap(players, map) {
         }
         this.data[position.y][position.x] = unit;
     };
+
+    this.unitAt = (y,x) => {
+        var unitsRow = this.data[y];
+        if (!unitsRow) {
+            return null;
+        }
+        return unitsRow[x];
+    };
+
     this.get = (position) => {
         var unitsRow = this.data[position.y];
         if (!unitsRow) {

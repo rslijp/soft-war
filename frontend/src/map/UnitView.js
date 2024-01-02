@@ -1,10 +1,7 @@
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {shape, string} from "prop-types";
 import React from "react";
-
-const UNIT_CSS = {
-    'C': 'city'
-};
+import {PLAYER_COLORS} from "softwar-shared";
 
 function UnitView({unit}) {
     const renderTooltip = (props) => (
@@ -12,16 +9,15 @@ function UnitView({unit}) {
             {unit.name}
         </Tooltip>
     );
-
     const additionalStyle = {};
-    if (unit.color) additionalStyle['backgroundColor'] = unit.color;
+    if (unit.player!==undefined) additionalStyle['backgroundColor'] = PLAYER_COLORS[unit.player];
 
     return <OverlayTrigger
         placement="bottom"
         delay={{show: 250, hide: 400}}
         overlay={renderTooltip}
     >
-        <div className={"unit-view " + UNIT_CSS[unit.type]}
+        <div className={"unit-view " + unit.clazz}
             style={additionalStyle}
             onClick={() => alert('x')}>
 

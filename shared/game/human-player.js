@@ -194,17 +194,20 @@ export function humanPlayer(index, name, color, units) {
         return this.autoNextFlag || this.endTurnPhase;
     };
     
-    function init() {
+    this.init=() => {
         units.forEach((unit) => {
             unit.player = index;
             self.fogOfWar.add(unit);
         });
+        if(units[0]){
+            this.position=units[0].position;
+        }
     }
 
-    init();
 
     applyPlayerTraitsOn(this);
-       
+    this.init();
+
     MessageBus.register("unit-destroyed", this.destroyed, this);
     MessageBus.register("unit-destroyed", this.flashDestruction, this);
     MessageBus.register("city-defense-destroyed", this.flashCityFallen, this);

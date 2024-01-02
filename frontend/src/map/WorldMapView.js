@@ -1,5 +1,4 @@
-import {arrayOf, number, shape, string} from "prop-types";
-import {CITY_NAMES} from "softwar-shared";
+import {any, number, shape} from "prop-types";
 import React from "react";
 import {TILE_SIZE} from "../Constants";
 import UnitView from "./UnitView";
@@ -20,14 +19,11 @@ function WorldMapView({map, range}) {
     }
 
     function cell(key, x, y, entry){
-        const unit = map.unitLookUp[`${x},${y}`];
-        const freeCity = unit?null:map.cityLookUp[`${x},${y}`];
+        const unit = map.unitAt(y, x);
         const detail =(entry.detail || entry.type);
         const clazzes = ["land-tile","land-tile-type-" + detail];
-        if(unit) console.log(unit);
         return <td key={key} className={clazzes.join(" ")}>
             {unit?<UnitView unit={unit}/>:null}
-            {freeCity?<UnitView unit={{name: freeCity.name, type: 'C'}}/>:null}
         </td>;
     }
 
@@ -63,25 +59,6 @@ WorldMapView.propTypes = {
         deltaX: number,
         deltaY: number
     }),
-    map: shape({
-        dimension: shape({
-            width: number,
-            height: number
-        }),
-        cities: arrayOf(
-            shape({
-                x: number,
-                y: number
-            })
-        ),
-        world: arrayOf(
-            arrayOf(
-                shape({
-                    tile: string,
-                    type: string
-                })
-            )
-        )
-    }),
+    map: any
 };
 export default WorldMapView;

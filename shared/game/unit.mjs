@@ -21,7 +21,7 @@ export function unit(type, position) {
         return this.health>0;
     };
     this.canMoveOn = (type) => {
-        return _.contains(this.definition().allowed, type);
+        return this.definition().allowed.indexOf(type)>-1;
     };
     this.canMove = (blitz) => {
         if(this.health <= 0) {
@@ -69,7 +69,7 @@ export function unit(type, position) {
         if (!definition.canLoadUnits) {
             return false;
         }
-        if (_.indexOf(definition.canLoadUnits, unit.type) === -1) {
+        if ((definition.canLoadUnits||[]).indexOf(unit.type) === -1) {
             return false;
         }
         if (this.nestedUnits.length >= definition.capacity) {
@@ -126,7 +126,7 @@ export function unit(type, position) {
     this.modifiers = (opponent, ground) => {
         var self = this;
         var allModifiers = this.definition().modifiers || [];
-        var modifiers = _.select(allModifiers, (modifier) => {
+        var modifiers = allModifiers.filter((modifier) => {
             return modifier.applicable(self, opponent, ground);
         });
         return modifiers;

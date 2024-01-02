@@ -7,25 +7,26 @@ import WorldMapView from "../map/WorldMapView";
 import { useLoaderData} from "react-router-dom";
 
 function DemoPage() {
-    const { map } = useLoaderData();
+    const demoState = useLoaderData();
     const [viewPort, setViewPort] = useState({startX: 0, startY: 0, deltaX: 0, deltaY: 0});
     useEffect(() => {
-        const dimensions = map.dimensions;
+        const dimensions = demoState.dimensions();
         setViewPort({...viewPort, width: dimensions.width, height: dimensions.height});
     }, []);
     if(!viewPort.width || !viewPort.height) return null;
+    const map = demoState.world();
     var grid = {
         corner: <div className={"legend-junction"}></div>,
         north:<HorizontalMapLegend range={viewPort}/>,
-        west: <VerticalMapLegend map={map} range={viewPort}/>,
+        west: <VerticalMapLegend range={viewPort}/>,
         south: <></>,
         east: <></>,
         center: <WorldMapView map={map} range={viewPort}/>
     };
-    // setTimeout(()=>{
-    //     const dimensions = map.dimensions;
-    //     setViewPort({...viewPort, startX: (viewPort.startX+0.1)%dimensions.width, startY: (viewPort.startY+0.1)%dimensions.height});
-    // },1000);
+    setTimeout(()=>{
+        const dimensions = map.dimensions;
+        setViewPort({...viewPort, startX: (viewPort.startX+0.1)%dimensions.width, startY: (viewPort.startY+0.1)%dimensions.height});
+    },100);
     return <>
         <div className={"demo-blanket"}/>
         <div className={"title-center"}>
@@ -37,7 +38,7 @@ function DemoPage() {
             </div>
         </div>
         <ScrollableViewPort
-            dimensions={map.dimensions}
+            dimensions={demoState.dimensions()}
             value={viewPort}
             onUpdate={value=>setViewPort(value)}
             grid={grid}/>

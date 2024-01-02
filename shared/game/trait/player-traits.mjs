@@ -1,4 +1,5 @@
 import {applyTraitsOn} from "./traits-util.mjs";
+import {unitCarrousel} from "../unit-carrousel.mjs";
 
 export const PLAYER_COLORS = ['orange', 'cyan', 'magenta', 'darkgrey'];
 
@@ -9,10 +10,10 @@ export const playerTraits = {
     initTurn: function(stateEngine) {
         this.turn += 1;
         this.endTurnPhase = false;
-        _.each(this.units, function(unit) {
+        this.units.forEach((unit) => {
             unit.initTurn();
         });
-        this.carrousel = new Model.UnitCarrousel(this.units);
+        this.carrousel = new unitCarrousel(this.units);
         this.enemySpottedThisTurn={};
         return this;
    },
@@ -20,7 +21,7 @@ export const playerTraits = {
        if(this.isRoaming()){
            this.updateRoaming();
        }
-       _.each(this.units, function(unit) {
+       this.units.forEach((unit) => {
            unit.endTurn();
        });
    },
@@ -28,7 +29,7 @@ export const playerTraits = {
         this.contactedEnemy=true;
        if(!this.enemySpottedThisTurn[by]){this.enemySpottedThisTurn[by]=foes;}
        else {this.enemySpottedThisTurn[by]=this.enemySpottedThisTurn[by].concat(foes);}
-       _.uniq(this.enemySpottedThisTurn[by]);
+       this.enemySpottedThisTurn[by].unique();
    },
    looses: function(){
         this.state="lost";
@@ -38,7 +39,7 @@ export const playerTraits = {
         if(!this.isRoaming()){
             this.state="roaming";
             this.turnsRoaming=10;
-            Service.Bus.send("player-roaming", this);
+            MessageBus.send("player-roaming", this);
         }
    },
    wins: function(){
@@ -64,10 +65,10 @@ export const playerTraits = {
        }
    },
    hasAnyUnits: function() {
-        return _.size(this.units)>0;
+        return (this.units||[]).length>0;
    },
    hasAnyCities: function() {
-        return _.size(_.filter(this.units, function(unit){return unit.clazz=="city"}))>0;
+        return (this.units||[]).filter((unit)=>{return unit.clazz=="city"})>0;
    }        
 }
 

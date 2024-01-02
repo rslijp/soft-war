@@ -15,13 +15,20 @@ function GamePage() {
     const [dialog, setDialog] = useState('');
 
     const gameState  = useLoaderData();
-    const [viewPort, setViewPort] = useState({startX: 0, startY: 0, deltaX: 0, deltaY: 0});
+
+    const [viewPort, setViewPort] = useState({startX: gameState.position().x, startY: gameState.position().y, deltaX: 0, deltaY: 0});
     useEffect(() => {
         if(gameState==null) return;
-        const map = gameState.map;
+        const map = gameState.world();
         const dimensions = map.dimensions;
+        console.log(gameState.position());
         setViewPort({...viewPort, width: dimensions.width, height: dimensions.height});
+        console.log("REGISTER");
+        return ()=>{
+            console.log("DEREGISTER");
+        };
     }, []);
+
     if(!viewPort.width || !viewPort.height) return null;
 
     var grid = {
@@ -35,7 +42,7 @@ function GamePage() {
     return <>
         {dialog === 'surrender' ? <SurrenderDialog code={gameState.code} onClose={()=>setDialog('')}/> : null}
         <ScrollableViewPort
-            dimensions={gameState.map.dimensions}
+            dimensions={gameState.dimensions()}
             value={viewPort}
             onUpdate={value=>setViewPort(value)}
             grid={grid}

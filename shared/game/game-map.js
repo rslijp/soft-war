@@ -43,6 +43,10 @@ export function gameMap(data) {
         this.dimensions = data.dimensions;
     }
 
+    this.dimensions = () => {
+        return this.dimensions;
+    }
+
     this.world = () => {
         return {dimensions: this.dimensions, world: this.data};
     }
