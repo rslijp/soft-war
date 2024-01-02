@@ -1,5 +1,6 @@
 import {Button, Container, Navbar} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
+import GameView from "../map/GameView";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import HorizontalScrollBar from "../map/HorizontalScrollBar";
 import ScrollableViewPort from "../map/ScrollableViewPort";
@@ -7,7 +8,6 @@ import SurrenderDialog from "./dialogs/SurrenderDialog";
 import {TOP_BAR_HEIGHT} from "../Constants";
 import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
-import WorldMapView from "../map/WorldMapView";
 import {useLoaderData} from "react-router-dom";
 
 
@@ -30,7 +30,7 @@ function GamePage() {
         west: <VerticalMapLegend range={viewPort}/>,
         south: <HorizontalScrollBar range={viewPort} onUpdate={value=>setViewPort(value)}/>,
         east: <VerticalScrollBar range={viewPort} onUpdate={value=>setViewPort(value)}/>,
-        center: <WorldMapView map={gameState.map} range={viewPort}/>
+        center: <GameView state={gameState} range={viewPort}/>
     };
     return <>
         {dialog === 'surrender' ? <SurrenderDialog code={gameState.code} onClose={()=>setDialog('')}/> : null}

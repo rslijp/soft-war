@@ -1,7 +1,7 @@
+import {generateMap, generatePlayerList} from "softwar-shared/services/map-service.mjs";
 import connection from '../connections.mjs';
 import express from 'express';
-import {generateMap} from "../services/map-service.mjs"
-import {generateCode} from "../services/random-code-service.mjs"
+import {generateCode} from "softwar-shared/services/random-code-service.mjs"
 const router = express.Router();
 
 async function appStates(){
@@ -9,7 +9,7 @@ async function appStates(){
 }
 
 async function finishedGameStates(){
-    return connection.collection("finished-app-state");
+    return connection.collection("finished-app-states");
 }
 
 async function saveNewGame(state){
@@ -64,7 +64,11 @@ router.get('/user', function(req, res){
   res.send(req.session.passport.user._json).status(200);
 });
 
-router.put('/new-game/:type/:dimensions/:name', async function(req, res, next) {
+
+
+
+router.post('/new-game', async function(req, res, next) {
+  const {type, dimensions, name} = req.body;
   const user = req.session.passport.user._json;
     let collection = await appStates();
     if(await collection.count({player: { id: user.email}})>10) {
@@ -73,36 +77,32 @@ router.put('/new-game/:type/:dimensions/:name', async function(req, res, next) {
     return;
   }
 
-  if(!req.params.name ||  !req.params.type || !req.params.dimensions) {
+  if(!name ||  !type || !dimensions) {
     console.log("MISSING PARAMS");
     res.status("412");
     return;
   }
-  if(req.params.name.length>64){
+  if(name.length>64){
       res.status("412");
       return;
   }
-  const dimensions = req.params.dimensions.split('x');
-  const world = generateMap(req.params.type, dimensions[0], dimensions[1])
+  const [width, height] = dimensions.split('x');
+  const world = generateMap(type, width, height)
   if(!world) {
     console.log("MAP FAILED");
     res.status("412");
     return;
   }
+
+  const players = generatePlayerList(user,world);
+
   const state = {
       code: generateCode(12),
-      name: req.params.name,
+      name: name,
       at: Date.now(),
       turn: 1,
       currentPlayer: 1,
-      players: [{
-        id: user.email,
-        name : user.name,
-        type: "Human",
-        color: "Cyan",
-        units: [],
-        accepted: true
-      }],
+      players: players,
       map: world
   }
   saveNewGame(state).then(()=>res.send({code: state.code}).status(200));
@@ -129,7 +129,8 @@ router.delete('/game/:code', async function(req, res, next) {
     player.status="surrender";
     const result = await collection.deleteOne({code: req.params.code});
     if (result.deletedCount === 1) {
-        await saveFinishedGame(gameState)
+        gameState._id=undefined;
+        await saveFinishedGame(gameState);
     } else {
         console.log("No documents matched the query. Deleted 0 documents.");
     }

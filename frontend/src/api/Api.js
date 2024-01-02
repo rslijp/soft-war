@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import {csrfToken} from "../utils/Cookies";
 
-export function apiFetch(method, url) {
+export function apiFetch(method, url, data) {
     return fetch(url, {
         method: method,
         headers: {
@@ -10,7 +10,8 @@ export function apiFetch(method, url) {
             'Accept': 'application/json, text/javascript'
         },
         redirect: "follow",
-        referrerPolicy: "no-referrer"
+        referrerPolicy: "no-referrer",
+        body: data?JSON.stringify(data):null,
     }).
     then(r => r.json()).
     then(r => {

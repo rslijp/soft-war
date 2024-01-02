@@ -33,6 +33,7 @@
     "mongodb": "^6.3.0",
     "morgan": "~1.9.1",
     "passport": "^0.7.0",
-    "passport-google-oauth": "^2.0.0"
+    "passport-google-oauth": "^2.0.0",
+    "softwar-shared": "file:../shared"
   }
 }

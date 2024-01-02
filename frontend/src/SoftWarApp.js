@@ -1,4 +1,3 @@
-import {LEGEND_SIZE, TILE_SIZE, TOP_BAR_HEIGHT} from "./Constants";
 import React, {useEffect} from "react";
 import {
     RouterProvider,
@@ -11,13 +10,14 @@ import CreateGamePage from "./page/CreateGamePage";
 import DemoPage from "./page/DemoPage";
 import ErrorPage from "./page/ErrorPage";
 import GamePage from "./page/GamePage";
-import {demoLoader} from "./api/DemoLoader";
+import {applyCssConstants} from "./Constants";
+import {localDemoLoader} from "./api/DemoLoader";
 
 const router = createHashRouter([
     {
         path: "/",
         element: <DemoPage/>,
-        loader: demoLoader,
+        loader: localDemoLoader,
         errorElement: <ErrorPage />
     },
     {
@@ -41,10 +41,7 @@ const router = createHashRouter([
 
 function SoftWarApp() {
     useEffect(() => {
-        document.documentElement.style.setProperty(`--tile-size`, TILE_SIZE+"px");
-        document.documentElement.style.setProperty(`--legend-size`, LEGEND_SIZE+"px");
-        document.documentElement.style.setProperty(`--top-bar-height`, TOP_BAR_HEIGHT+"px");
-
+        applyCssConstants();
     }, []);
 
     return <>

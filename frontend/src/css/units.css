@@ -1,0 +1,15 @@
+.unit-view {
+    height: var(--unit-size);
+    width: var(--unit-size);
+    background-color: rgba(211, 211, 211, 0.8);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    display: block;
+    border-radius: 5px;
+}
+
+.unit-view.city {
+    background-image: url("/content/units/45x45/city.png");
+}
+

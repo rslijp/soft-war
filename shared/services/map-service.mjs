@@ -1,4 +1,8 @@
+import {unitTypes} from "../game/unit-types.mjs";
+
 const MAX_SIZE=128;
+
+const CITY_FACTOR = 1/128;
 
 const GENERATION_SETTINGS = {
     'REGULAR' : {
@@ -18,9 +22,6 @@ const GENERATION_SETTINGS = {
     }
 }
 
-async function appStates(){
-    return connection.collection("app-state");
-}
 
 function seed(f, width, height){
     const world = Array(height);
@@ -195,9 +196,42 @@ export function generateMap(type, width, height) {
     let world = seed(settings.seedFactor, width, height);
     world = grow(settings.growCycles, world, width, height);
     world = mountains(settings.mountainFactor, world, width, height);
-    const cities = generateCities(Math.min(width+height),world, width, height);
+    const expectedCities = Math.floor(CITY_FACTOR*width*height);
+    const cities = generateCities(expectedCities,world, width, height);
     const result = serialize(width, height, world, cities);
     return result;
 }
 
+function pickCity(cities, widthRange, heightRange){
+    const candidates = cities.
+        filter(c=>widthRange.start<=c[0]&&c[0]<widthRange.end).
+        filter(c=>heightRange.start<=c[0]&&c[0]<heightRange.end);
+
+    const pick = Math.floor(Math.random()*candidates.length);
+    const position = candidates[pick];
+    return {y: position[0], x: position[1], producingType: "T", production: unitTypes['T'].costs}
+}
+
+export function generatePlayerList(user, world){
+    const cities = world.cities;
+    const {width, height} = world.dimensions;
+
+    const players = [{
+        id: user.email,
+        name: user.name,
+        type: "Human",
+        units: [],
+        cities: [pickCity(cities, {start: 0, end: width/2}, {start: 0, end: height})],
+        accepted: true
+    },
+    {
+        id: "ai",
+        name: "SkyNet",
+        type: "AI",
+        units: [],
+        cities: [pickCity(cities, {start: width/2, end: width}, {start: 0, end: height})],
+        accepted: true
+    }];
+    return players;
+}
 // export default {generateMap};

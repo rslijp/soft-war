@@ -1,3 +1,6 @@
+import {CITY_NAMES} from "../game/city.mjs";
+import {PLAYER_COLORS} from "../game/trait/player-traits.mjs";
+
 const BASIC_TILES_CLASSES = {
     "S": "sea",
     "L": "grass",
@@ -654,7 +657,7 @@ function sweepForVariations(world, dimensions) {
 }
 
 
-export function inflateMap(map) {
+export function inflateMap(map, players) {
     const dimensions = map.dimensions;
     const flatWorld = map.world;
     const world = [];
@@ -663,14 +666,58 @@ export function inflateMap(map) {
         world.push(row);
         for (var x = 0; x < dimensions.width; x++) {
             const type = flatWorld[y][x];
-            row.push({"type": type, "detail": BASIC_TILES_CLASSES[type]});
+            row.push({"type": type});
         }
     }
-    const cities = map.cities.map(c => {
-        return {"x": c[1], "y": c[0]};
+    const cities = map.cities.map((c,i) => {
+        return {"x": c[1], "y": c[0], "name": CITY_NAMES[i]};
     });
+    if(players) {
+        players.forEach((player, playerIndex)=>{
+            const units = [];
+            player.units.forEach((u, i) => {
+                let name = u.name;
+                if(u.type === 'C') {
+                    const c = cities.find(c=>c.x===u.x && c.y === u.y);
+                    name = c.name;
+                }
+                units.push({
+                    name: name,
+                    x: u.x,
+                    y: u.y,
+                    type: u.type,
+                    color: PLAYER_COLORS[playerIndex]
+                });
+            });
+            player.units=units;
+        })
+    }
+    return {dimensions: map.dimensions, world: world, cities: cities, players: players}
+}
+
+export function decorateMap(map, players) {
+    const dimensions = map.dimensions;
+    const world = map.world;
+    for (var y = 0; y < dimensions.height; y++) {
+        for (var x = 0; x < dimensions.width; x++) {
+            const tile = world[y][x];
+            tile["detail"]=BASIC_TILES_CLASSES[tile.type];
+        }
+    }
     sweepForTransitions(LAND_SCAPE_TRANSITION_PHASE1, world, dimensions);
     sweepForTransitions(LAND_SCAPE_TRANSITION_PHASE2, world, dimensions);
     sweepForVariations(world, dimensions);
-    return {dimensions: dimensions, cities: cities, world: world};
+
+    //helpers
+    const cityLookUp={};
+    map.cities.forEach((c,i) => cityLookUp[`${c.x},${c.y}`] = c);
+
+    const unitLookUp={};
+    if(players) {
+        players.forEach((player, playerIndex)=>{
+            player.units.forEach((u,i) => unitLookUp[`${u.x},${u.y}`] = u);
+        })
+    }
+
+    return {...map, cityLookUp: cityLookUp, unitLookUp: unitLookUp};
 }

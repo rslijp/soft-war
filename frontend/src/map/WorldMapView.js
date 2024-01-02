@@ -1,11 +1,11 @@
 import {arrayOf, number, shape, string} from "prop-types";
+import {CITY_NAMES} from "softwar-shared";
 import React from "react";
 import {TILE_SIZE} from "../Constants";
+import UnitView from "./UnitView";
 
 function WorldMapView({map, range}) {
-    const cities = {};
     const dimensions = map.dimensions;
-    map.cities.forEach(c => cities[`${c.x},${c.y}`] = true);
 
 
     function normalizedRange(range){
@@ -20,11 +20,14 @@ function WorldMapView({map, range}) {
     }
 
     function cell(key, x, y, entry){
-        const detail = cities[`${x},${y}`] ? 'C' : (entry.detail || entry.type);
+        const unit = map.unitLookUp[`${x},${y}`];
+        const freeCity = unit?null:map.cityLookUp[`${x},${y}`];
+        const detail =(entry.detail || entry.type);
         const clazzes = ["land-tile","land-tile-type-" + detail];
-
+        if(unit) console.log(unit);
         return <td key={key} className={clazzes.join(" ")}>
-            {detail==='C'?'C':''}
+            {unit?<UnitView unit={unit}/>:null}
+            {freeCity?<UnitView unit={{name: freeCity.name, type: 'C'}}/>:null}
         </td>;
     }
 

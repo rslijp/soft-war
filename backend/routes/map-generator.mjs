@@ -1,5 +1,5 @@
 import express from 'express';
-import {generateMap} from "../services/map-service.mjs"
+import {generateMap} from "softwar-shared/services/map-service.mjs";
 const router = express.Router();
 
 
@@ -10,7 +10,6 @@ router.get('/:type/:dimensions', async function(req, res, next) {
     }
     const dimensions = req.params.dimensions.split('x');
     const result = generateMap(req.params.type, dimensions[0], dimensions[1])
-    console.log(result);
     if(!result) {
         res.status("412");
         return;

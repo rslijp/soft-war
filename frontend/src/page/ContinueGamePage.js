@@ -11,8 +11,6 @@ function ContinueGamePage() {
         document.location.hash=`/game/${code}`;
     };
 
-    console.log(games);
-
     return <Modal
         show={true}
         backdrop="static"
@@ -23,7 +21,7 @@ function ContinueGamePage() {
             <Modal.Title>Start game</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            {games?
+            {(games||[]).length > 0?
                 <>
                     <p>Select the game you want to resume</p>
                     <ListGroup>
