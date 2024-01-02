@@ -1,7 +1,7 @@
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {shape, string} from "prop-types";
-import React from "react";
 import {PLAYER_COLORS} from "softwar-shared";
+import React from "react";
 
 function UnitView({unit}) {
     const renderTooltip = (props) => (
