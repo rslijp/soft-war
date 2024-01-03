@@ -1,5 +1,5 @@
 import {any, number, shape} from "prop-types";
-import React, {useRef} from "react";
+import React from "react";
 import {TILE_SIZE} from "../Constants";
 import UnitView from "./UnitView";
 

@@ -1,4 +1,4 @@
-import {Button, Container, Navbar, Spinner} from "react-bootstrap";
+import {Button, Container, Navbar} from "react-bootstrap";
 import React, {useEffect, useRef, useState} from "react";
 import GameView from "../map/GameView";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
