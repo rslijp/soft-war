@@ -8,7 +8,7 @@ function HorizontalScrollBar({range, onUpdate}) {
         const r = {...range, startX: range.startX, startY:  range.startY};
         if(r.startX<0){
             r.startX+=r.deltaX;
-            console.log("adjusted",r.startX);
+            // console.log("adjusted",r.startX);
         }
         return r;
     }

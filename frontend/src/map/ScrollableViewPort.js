@@ -8,11 +8,11 @@ function ScrollableViewPort({dimensions, value, onUpdate, grid, margin}) {
     const effectiveMargin = {west: 0, east: 0, north: 0, south: 0, ...margin};
     useLayoutEffect(() => {
         function updateSize() {
-            setSize([
-                window.innerWidth-effectiveMargin.east-effectiveMargin.west,
-                window.innerHeight-effectiveMargin.north-effectiveMargin.south
-            ]);
-            onUpdate({...value, deltaX: Math.ceil(window.innerWidth/TILE_SIZE), deltaY: Math.ceil(window.innerHeight/TILE_SIZE)});
+            const width  = window.innerWidth-effectiveMargin.east-effectiveMargin.west;
+            const height  = window.innerHeight-effectiveMargin.north-effectiveMargin.south;
+
+            setSize([width, height]);
+            onUpdate({...value, deltaX: Math.ceil(width/TILE_SIZE), deltaY: Math.ceil(height/TILE_SIZE)}, true);
         }
         window.addEventListener('resize', updateSize);
         updateSize();

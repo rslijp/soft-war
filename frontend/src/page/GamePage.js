@@ -1,5 +1,5 @@
-import {Button, Container, Navbar} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
+import {Button, Container, Navbar, Spinner} from "react-bootstrap";
+import React, {useEffect, useRef, useState} from "react";
 import GameView from "../map/GameView";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import HorizontalScrollBar from "../map/HorizontalScrollBar";
@@ -10,26 +10,49 @@ import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
 import {useLoaderData} from "react-router-dom";
 
+let timer = null;
 
 function GamePage() {
     const [dialog, setDialog] = useState('');
+    const [state, setState] = useState('initializing');
+    const stateRef = useRef();
 
     const gameState  = useLoaderData();
+    const map = gameState.world();
+    const dimensions = map.dimensions;
+    const position = gameState.position();
+    const [viewPort, setViewPort] = useState({startX: position.x, startY: position.y, deltaX: 0, deltaY: 0, width: dimensions.width, height: dimensions.height});
 
-    const [viewPort, setViewPort] = useState({startX: gameState.position().x, startY: gameState.position().y, deltaX: 0, deltaY: 0});
+    stateRef.current = {state: state, viewPort: viewPort};
+
     useEffect(() => {
-        if(gameState==null) return;
-        const map = gameState.world();
-        const dimensions = map.dimensions;
-        console.log(gameState.position());
-        setViewPort({...viewPort, width: dimensions.width, height: dimensions.height});
         console.log("REGISTER");
         return ()=>{
             console.log("DEREGISTER");
         };
     }, []);
 
-    if(!viewPort.width || !viewPort.height) return null;
+    const focusOnTile = ({x, y}) => {
+        clearTimeout(timer);
+        timer=setTimeout(()=>{
+            const state = stateRef.current.state;
+            const viewPort = stateRef.current.viewPort;
+            if(state !== "ready") return;
+            const sx = x - Math.floor(viewPort.deltaX/2);
+            const sy = y - Math.floor(viewPort.deltaY/2)+1;
+            setViewPort({...viewPort, startX: sx, startY: sy});
+        },100);
+    };
+
+    useEffect(() => {
+        if(state !== "ready") return;
+        clearTimeout(timer);
+        timer = setTimeout(function(){
+            focusOnTile(position);
+        },0);
+    }, [state]);
+
+    if(viewPort.deltaX && viewPort.deltaY && state === 'initializing') setState("ready");
 
     var grid = {
         corner: <div className={"legend-junction"}></div>,
@@ -44,7 +67,11 @@ function GamePage() {
         <ScrollableViewPort
             dimensions={gameState.dimensions()}
             value={viewPort}
-            onUpdate={value=>setViewPort(value)}
+            onUpdate={(value, resize)=>{
+                setViewPort(value);
+                console.log(value, resize);
+                if(resize) focusOnTile(gameState.position());
+            }}
             grid={grid}
             margin={{north: TOP_BAR_HEIGHT, south: TOP_BAR_HEIGHT}}
         />

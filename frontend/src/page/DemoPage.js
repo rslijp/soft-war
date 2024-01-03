@@ -6,6 +6,8 @@ import VerticalMapLegend from "../map/VerticalMapLegend";
 import WorldMapView from "../map/WorldMapView";
 import { useLoaderData} from "react-router-dom";
 
+let timer = null;
+
 function DemoPage() {
     const demoState = useLoaderData();
     const [viewPort, setViewPort] = useState({startX: 0, startY: 0, deltaX: 0, deltaY: 0});
@@ -23,9 +25,10 @@ function DemoPage() {
         east: <></>,
         center: <WorldMapView map={map} range={viewPort}/>
     };
-    setTimeout(()=>{
+    clearTimeout(timer);
+    timer = setTimeout(()=>{
         const dimensions = map.dimensions;
-        setViewPort({...viewPort, startX: (viewPort.startX+0.1)%dimensions.width, startY: (viewPort.startY+0.1)%dimensions.height});
+        setViewPort({...viewPort, startX: (viewPort.startX+0.05)%dimensions.width, startY: (viewPort.startY+0.05)%dimensions.height});
     },100);
     return <>
         <div className={"demo-blanket"}/>

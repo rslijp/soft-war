@@ -1,11 +1,10 @@
 import {any, number, shape} from "prop-types";
-import React from "react";
+import React, {useRef} from "react";
 import {TILE_SIZE} from "../Constants";
 import UnitView from "./UnitView";
 
 function WorldMapView({map, range}) {
     const dimensions = map.dimensions;
-
 
     function normalizedRange(range){
         const r = {...range, startX: Math.floor(range.startX), startY:  Math.floor(range.startY)};
@@ -26,7 +25,6 @@ function WorldMapView({map, range}) {
             {unit?<UnitView unit={unit}/>:null}
         </td>;
     }
-
 
     function viewport(range, world) {
         const deltaX = range.deltaX;

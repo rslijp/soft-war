@@ -17,6 +17,7 @@
         <a class="menu-item" href="#step3"><span class="responsive-hide">Step</span> 3</a>
         <a class="menu-item" href="#step4"><span class="responsive-hide">Step</span> 4</a>
         <a class="menu-item" href="#step5"><span class="responsive-hide">Step</span> 5</a>
+        <a class="menu-item" href="#step6"><span class="responsive-hide">Step</span> 6</a>
     </div>
     <img class="end" src="style/decoration.png">
 </div>
@@ -25,7 +26,7 @@
     <div id="pages">
         <p>
             <i style="color: red">
-                Last updated 29th December 2023. Take me to the last <a href="#step5">Step 5</a></i>
+                Last updated 3rd of January 2024. Take me to the last <a href="#step6">Step 6</a></i>
         </p>
         <a id="challenge"></a>
         <h1>Code challenge accepted</h1>
@@ -409,7 +410,10 @@ const matrix = [
             So we also added some routing in the application now. Which allows for creating a new game or continueing
             and old game. Next step is inviting your friends and surrendering a game.
         </p>
-        <p>Fiddled  bit with game and fixed some bugs.</p>
+        <p>I'm using <a href="https://sendgrid.com">Send grid</a> to sent my mails. I use this rather than hooking it up directly to gmail.
+            Because gmail limit usage to only 300 different email addresses day. This could mean I can't mail after 300 new users
+            subscribe. For now Send grid is pending some verification phase. <span style="color: red">So I paused it for now. Until verification is passed</span>
+        </p>
         <dl>
             <dt>Time:</dt>
             <dd>26h <b>(+5h)</b></dd>
@@ -431,7 +435,156 @@ const matrix = [
                     <li><a href="https://github.com">https://github.com</a></li>
                     <li><a href="https://heroku.com">https://heroku.com</a></li>
                     <li><b><a href="https://heroku.com">https://mail.google.com</a></b></li>
-
+                    <li><b><a href="https://sendgrid.com">https://sendgrid.com</a></b></li>
+                </ul>
+            </dd>
+        </dl>
+        <a id="step6"></a>
+        <h2>Step 6 - Adding game logic</h2>
+        <p>Now we can start adding same game logic. I start directly with the AI as well. We are going to use a javascript
+            game model. Which we will also test with <a href="https://jasmine.github.io">Jasmine</a>.</p>
+        <p>For the game model we are going to use traits. Traits are mixed in. This is different than Object
+            oriented development. I decided to expirement a bit with this. It means an object can identify itself
+            with multiplpe traits. You mix them in. In this way you can compose an oject. For comparison
+            in normail OO. How would you  model a flying car? Does it extend from Car? Or Plane?<br/>
+            With traits your vehicle will mixin the Plane and the Car traits. And be happy.
+        </p>
+        <p>Another expirement is to heavily use a message bus for loosely linking all the components.
+            WIth this I hope to reduce the internal dependencies and method calls back and forth.
+            So let's say. If a according to the game-map and unit movement points a tank is allowed to
+            move. A message will be broadcasted to move the tank. All interested parties can update their state:
+            <ul>
+                <li>Movement the tank</li>
+                <li>Movement points deducted</li>
+                <li>Update the fog of war(ow yes we need to make that)</li>
+                <li>Deferred Rerender</li>
+                <li>And what not more...</li>
+            </ul>
+        </p>
+        <p>So to make it .... I like to add same graphics and I asked <a href="https://chat.openai.com">DALL-E</a> of the chat GPT
+            famliy to render my units. This set me back for 20$. It is a one time investment. I have to say...
+            it was interesting. God...AI's can be stubborn when the model is not fitting.
+        </p>
+        <img src="content/Step-6-AI_mess.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
+        <p>
+            But besides some struggle all in all..I'm happy. Let me present you all the units:
+            <table>
+                <tr>
+                    <td>
+                        <img src="content/256x256/infantry.png"/>
+                        <br/>
+                        Infantry
+                    </td>
+                    <td>
+                        <img src="content/256x256/tank.png"/>
+                        <br/>
+                        Tank
+                    </td>
+                    <td>
+                        <img src="content/256x256/truck.png"/>
+                        <br/>
+                        Truck
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="content/256x256/fighter.png"/>
+                        <br/>
+                        Fighter
+                    </td>
+                    <td>
+                        <img src="content/256x256/bomber.png"/>
+                        <br/>
+                        Bomber
+                    </td>
+                    <td>
+                        <img src="content/256x256/chinhook.png"/>
+                        <br/>
+                        Helicopter
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="content/256x256/destroyer.png"/>
+                        <br/>
+                        Destroyer
+                    </td>
+                    <td>
+                        <img src="content/256x256/cruiser.png"/>
+                        <br/>
+                        Cruiser
+                    </td>
+                    <td>
+                        <img src="content/256x256/battleship.png"/>
+                        <br/>
+                        Battleship
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="content/256x256/aircraftcarrier.png"/>
+                        <br/>
+                        Aircraft carrier
+                    </td>
+                    <td>
+                        <img src="content/256x256/transport.png"/>
+                        <br/>
+                        Transport
+                    </td>
+                    <td>
+                        <img src="content/256x256/submarine.png"/>
+                        <br/>
+                        Submarine
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="content/256x256/missile.png"/>
+                        <br/>
+                        Missile
+                    </td>
+                    <td>
+                        <img src="content/256x256/city.png"/>
+                        <br/>
+                        City
+                    </td>
+                    <td>
+                        <img src="content/256x256/explosion.png"/>
+                        <br/>
+                        Explosion
+                    </td>
+                </tr>
+            </table>
+        </p>
+        <p>
+            Currently figuring out how to include the Jasmine spec runner in the game. I hope
+            to how off some game logic in a week or so.
+        </p>
+        <dl>
+            <dt>Time:</dt>
+            <dd>32h <b>(+6h)</b></dd>
+            <dt>Cost:</dt>
+            <dd>60$ (a year) + <b>20$ (one time)</b></dd><br/>
+            <dt>Stack:</dt>
+            <dd>
+                <ul>
+                    <li>NodeJS</li>
+                    <li>WebPack</li>
+                    <li>ReactJS</li>
+                    <li>Heroku</li>
+                    <li>Jasmine</li>
+                </ul>
+            </dd>
+            <dt>Cloud:</dt>
+            <dd>
+                <ul>
+                    <li><a href="https://www.mongodb.com">https://www.mongodb.com</a></li>
+                    <li><a href="https://github.com">https://github.com</a></li>
+                    <li><a href="https://heroku.com">https://heroku.com</a></li>
+                    <li><a href="https://heroku.com">https://mail.google.com</a></li>
+                    <li><a href="https://sendgrid.com">https://sendgrid.com</a></li>
+                    <li><b><a href="https://jasmine.github.io">https://jasmine.github.io</a></b></li>
+                    <li><b><a href="https://chat.openai.com">DALL-E</a></b></li>
                 </ul>
             </dd>
         </dl>
