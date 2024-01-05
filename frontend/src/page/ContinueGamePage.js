@@ -33,7 +33,7 @@ function ContinueGamePage() {
                             className={"d-flex justify-content-between align-items-start"}
                         >{game.name} <Badge bg={game.waitingOnYou?"primary":"secondary"} pill>#{game.turn}</Badge></ListGroup.Item>)}
                     </ListGroup>
-                </>:<p>No game found</p>}
+                </>:<p>No game found.<a href={"#/new-game"}>Start a game?</a></p>}
         </Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={()=>history.back()}>

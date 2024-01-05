@@ -3,7 +3,7 @@ import {apiFetch} from "./Api";
 
 export function loadGameState(code) {
     return apiFetch("GET",`/api/app-state/game/${code}`).then(r => {
-        const gameState = deserializeGameState(r.players, r.map);
+        const gameState = deserializeGameState(r, r.players, r.map);
         decorateMap(gameState.world());
         return gameState;
     });
@@ -15,9 +15,9 @@ export function loadYourGames() {
     });
 }
 
-export function newGame(type, dimensions, name) {
+export function newGame(type, dimensions, name, players) {
     return apiFetch("POST",`/api/app-state/new-game`, {
-        type, dimensions, name
+        type, dimensions, name, players
     });
 }
 

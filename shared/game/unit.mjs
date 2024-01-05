@@ -4,6 +4,7 @@ import MessageBus from "../services/message-service.mjs";
 import {applyTraitsOn} from "./trait/traits-util.mjs";
 
 export function unit(type, position) {
+    this.id = "";
     this.position = position;
     this.type = type;
     this.definition = () => {
@@ -19,6 +20,9 @@ export function unit(type, position) {
 
     this.isAlive= () => {
         return this.health>0;
+    };
+    this.isAt= ({x, y}) => {
+        return position.x===x&position.y===y;
     };
     this.canMoveOn = (type) => {
         return this.definition().allowed.indexOf(type)>-1;
@@ -160,6 +164,9 @@ export function unit(type, position) {
         else if(id===3) { this.id="3rd army"; }
         else { this.id=id+"nd army"; }
         return this;
+    }
+    this.getName = () => {
+        return this.id;
     }
 
     applyUnitTraitsOn(this);

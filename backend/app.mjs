@@ -1,22 +1,21 @@
 import "./loadEnvironment.mjs";
-import cors from 'cors';
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import session  from 'express-session';
-import indexRouter from './routes/index.mjs';
 import apeStateRouter from './routes/app-state.mjs';
 import mapGeneratorRouter from './routes/map-generator.mjs';
 import googleAuthRouter from './routes/google-auth.mjs';
 import passport from 'passport';
-import GoogleOAuth from 'passport-google-oauth';
+import {sendTestMail} from "./mailer.mjs";
 
 var app = express();
 
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+// app.use(cors);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -55,5 +54,9 @@ app.use(express.static(path.join(".", 'public')));
 app.use('/api/app-state', apeStateRouter);
 app.use('/api/map-generator', mapGeneratorRouter);
 app.use('/auth', googleAuthRouter);
+
+if(process.env.NODE_ENV === 'production') {
+    sendTestMail();
+}
 
 export default app;

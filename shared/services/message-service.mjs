@@ -1,5 +1,5 @@
 export default {
-    verbose: false,
+    verbose: true,
     locked: false,
     registrations: {},
     register: function(name, func, context) {
@@ -11,6 +11,18 @@ export default {
         }
         this.registrations[name].push({callback: func, context: context});
     },
+    revoke: function(name, func) {
+        if (this.verbose) {
+            console.log("Revoking " + name);
+        }
+        if (!this.registrations[name]) return;
+        const old = this.registrations[name];
+        this.registrations[name]=this.registrations[name].filter(r=> r.callback !== func);
+        if(old === this.registrations[name].length && this.verbose){
+            console.log("Revoke failed of "+name+" failed");
+        }
+    }
+    ,
     lock: function() {
         if (this.locked) {
             return;
@@ -42,15 +54,18 @@ export default {
         this.send.apply(this, arguments);
     },
     send: function() {
-        var name = _.first(arguments);
-        var callArguments = _.rest(arguments);
+        var name = arguments[0];
+        var callArguments = Array.from(arguments).slice(1);
         if (this.verbose) {
             console.log("Send " + name);
         }
         if (!this.registrations[name]) {
             return;
         }
-        _.each(this.registrations[name], function(registration) {
+        this.registrations[name].forEach((registration, i) => {
+            if (this.verbose) {
+                console.log("[",i,"] Send " + name);
+            }
             registration.callback.apply(registration.context, callArguments);
         });
     }

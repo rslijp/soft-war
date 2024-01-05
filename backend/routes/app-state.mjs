@@ -2,6 +2,7 @@ import {generateMap, generatePlayerList} from "softwar-shared/services/map-servi
 import connection from '../connections.mjs';
 import express from 'express';
 import {generateCode} from "softwar-shared/services/random-code-service.mjs"
+import {winnerEmail, lostEmail, pendingMail} from "../mailer.mjs";
 const router = express.Router();
 
 async function appStates(){
@@ -35,7 +36,7 @@ router.get('/your-games', async function(req, res, next) {
           code: r.code,
           at: r.at,
           turn: r.turn,
-          waitingOnYou: r.players[r.currentPlayer-1].id === user.email,
+          waitingOnYou: r.players[r.currentPlayer].id === user.email,
           players: r.players.map(p=>{return {name: p.name, type: p.type}})
         }
       });
@@ -68,7 +69,7 @@ router.get('/user', function(req, res){
 
 
 router.post('/new-game', async function(req, res, next) {
-  const {type, dimensions, name} = req.body;
+  const {type, dimensions, name, players} = req.body;
   const user = req.session.passport.user._json;
     let collection = await appStates();
     if(await collection.count({player: { id: user.email}})>10) {
@@ -94,47 +95,73 @@ router.post('/new-game', async function(req, res, next) {
     return;
   }
 
-  const players = generatePlayerList(user,world);
+  const allPlayers = generatePlayerList(user,players, world);
 
   const state = {
       code: generateCode(12),
       name: name,
       at: Date.now(),
       turn: 1,
-      currentPlayer: 1,
-      players: players,
-      map: world
+      currentPlayer: 0,
+      players: allPlayers,
+      map: world,
+      status: allPlayers.every(p=>p.status==='accepted')?'accepted':'pending'
   }
   saveNewGame(state).then(()=>res.send({code: state.code}).status(200));
+  if(state.status==='pending'){
+      pendingMail(user.email, state.name, allPlayers.filter(p=>p.status==='pending').map(p=>p.id));
+  }
 })
 
 router.delete('/game/:code', async function(req, res, next) {
     const user = req.session.passport.user._json;
-    console.log("Retrieving game",req.params.code);
-    if(!req.params.code || req.params.code.length>16) {
+    console.log("Retrieving game", req.params.code);
+    if (!req.params.code || req.params.code.length > 16) {
         console.log("Code to long", req.params.code);
         res.status("412");
         return;
     }
     let collection = await appStates();//connection.collection("app-state");
     let gameState = await collection.findOne({code: req.params.code});
+    if (!gameState) {
+        console.log("No such game", req.params.code);
+        res.status("404");
+        return;
+    }
 
-    const player = gameState.players.find(p=>p.id===user.email);
-    if(!player){
+    const player = gameState.players.find(p => p.id === user.email);
+    if (!player) {
         console.log("Not your game");
         res.status("403");
         return;
     }
+    player.status = "surrender";
 
-    player.status="surrender";
-    const result = await collection.deleteOne({code: req.params.code});
-    if (result.deletedCount === 1) {
-        gameState._id=undefined;
-        await saveFinishedGame(gameState);
-    } else {
-        console.log("No documents matched the query. Deleted 0 documents.");
+    const activePlayers = gameState.players.filter(p=>p.status==='active');
+    const lostPlayers = gameState.players.filter(p=>p.status!=='active');
+    const status = activePlayers.length>1?'active':'finished';
+    if(activePlayers.length === 1){
+        if(activePlayers[0].type==='Human') winnerEmail(activePlayers[0].id, gameState.name);
+        const lostHumanPlayers = lostPlayers.filter(p=>p.type === 'Human');
+        if(lostHumanPlayers.length>0) lostEmail(lostHumanPlayers.map(p=>p.id), gameState.name);
     }
-    res.send(result).status(200);
+    if(activePlayers.length===0){
+        const lostHumanPlayers = lostPlayers.filter(p=>p.type === 'Human');
+        if(lostHumanPlayers.length>0) lostEmail(lostHumanPlayers.map(p=>p.id), gameState.name);
+    }
+
+    if (status==='finished') {
+        const result = await collection.deleteOne({code: req.params.code});
+        if (result.deletedCount === 1) {
+            gameState._id = undefined;
+            await saveFinishedGame(gameState);
+        } else {
+            console.log("No documents matched the query. Deleted 0 documents.");
+        }
+    } else {
+        return collection.replaceOne({code: req.params.code}, gameState, {upsert: true});
+    }
+    res.send({status: status}).status(200);
 });
 
 

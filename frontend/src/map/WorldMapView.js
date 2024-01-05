@@ -3,7 +3,7 @@ import React from "react";
 import {TILE_SIZE} from "../Constants";
 import UnitView from "./UnitView";
 
-function WorldMapView({map, range}) {
+function WorldMapView({map, range, selectedUnit}) {
     const dimensions = map.dimensions;
 
     function normalizedRange(range){
@@ -18,11 +18,13 @@ function WorldMapView({map, range}) {
     }
 
     function cell(key, x, y, entry){
-        const unit = map.unitAt(y, x);
+        const position = {x, y};
+        const selected = selectedUnit&&selectedUnit.isAt(position);
+        const unit = selected?selectedUnit:map.unitAt(position);
         const detail =(entry.detail || entry.type);
         const clazzes = ["land-tile","land-tile-type-" + detail];
         return <td key={key} className={clazzes.join(" ")}>
-            {unit?<UnitView unit={unit}/>:null}
+            {unit?<UnitView unit={unit} selected={selected}/>:null}
         </td>;
     }
 
@@ -57,6 +59,7 @@ WorldMapView.propTypes = {
         deltaX: number,
         deltaY: number
     }),
-    map: any
+    map: any,
+    selectedUnit: any
 };
 export default WorldMapView;

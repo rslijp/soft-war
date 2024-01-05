@@ -1,8 +1,10 @@
 import {Button, Container, Navbar} from "react-bootstrap";
 import React, {useEffect, useRef, useState} from "react";
+import FlashMessagesDialog from "./dialogs/FlashMessagesDialog";
 import GameView from "../map/GameView";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import HorizontalScrollBar from "../map/HorizontalScrollBar";
+import MessageBus from "softwar-shared/services/message-service.mjs";
 import ScrollableViewPort from "../map/ScrollableViewPort";
 import SurrenderDialog from "./dialogs/SurrenderDialog";
 import {TOP_BAR_HEIGHT} from "../Constants";
@@ -13,7 +15,7 @@ import {useLoaderData} from "react-router-dom";
 let timer = null;
 
 function GamePage() {
-    const [dialog, setDialog] = useState('');
+    const [dialog, setDialog] = useState(null);
     const [state, setState] = useState('initializing');
     const stateRef = useRef();
 
@@ -22,13 +24,19 @@ function GamePage() {
     const dimensions = map.dimensions;
     const position = gameState.position();
     const [viewPort, setViewPort] = useState({startX: position.x, startY: position.y, deltaX: 0, deltaY: 0, width: dimensions.width, height: dimensions.height});
-
+    console.log(gameState);
     stateRef.current = {state: state, viewPort: viewPort};
+
+    const newTurn = (messages) => {
+        setDialog({name: 'messages', messages: messages, hide: true});
+    };
 
     useEffect(() => {
         console.log("REGISTER");
+        MessageBus.register("new-turn", newTurn, this);
         return ()=>{
             console.log("DEREGISTER");
+            MessageBus.revoke("new-turn", newTurn);
         };
     }, []);
 
@@ -41,15 +49,15 @@ function GamePage() {
             const sx = x - Math.floor(viewPort.deltaX/2);
             const sy = y - Math.floor(viewPort.deltaY/2)+1;
             setViewPort({...viewPort, startX: sx, startY: sy});
-        },100);
+        },0);
     };
 
     useEffect(() => {
         if(state !== "ready") return;
-        clearTimeout(timer);
-        timer = setTimeout(function(){
-            focusOnTile(position);
-        },0);
+        console.log("ONCE");
+        MessageBus.send("new-turn", ["Welcome back. Enjoy the game!"]);
+
+        focusOnTile(position);
     }, [state]);
 
     if(viewPort.deltaX && viewPort.deltaY && state === 'initializing') setState("ready");
@@ -62,14 +70,25 @@ function GamePage() {
         east: <VerticalScrollBar range={viewPort} onUpdate={value=>setViewPort(value)}/>,
         center: <GameView state={gameState} range={viewPort}/>
     };
+
+    const renderDialog=(dialog)=>{
+        const close = ()=>setDialog(null);
+        if(dialog.name === 'surrender'){
+            return <SurrenderDialog code={dialog.code} onClose={close}/>;
+        }
+        else if(dialog.name === 'messages'){
+            return <FlashMessagesDialog messages={dialog.messages} onClose={close}/>;
+        }
+        return null;
+    };
+
     return <>
-        {dialog === 'surrender' ? <SurrenderDialog code={gameState.code} onClose={()=>setDialog('')}/> : null}
+        {dialog ? renderDialog(dialog) : null}
         <ScrollableViewPort
             dimensions={gameState.dimensions()}
             value={viewPort}
             onUpdate={(value, resize)=>{
                 setViewPort(value);
-                console.log(value, resize);
                 if(resize) focusOnTile(gameState.position());
             }}
             grid={grid}
@@ -83,7 +102,7 @@ function GamePage() {
                     </Navbar.Text>
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
-                    <Button className="d-flex" variant={"danger"} size={"xs"} onClick={()=>setDialog('surrender')}>Surrender</Button>
+                    <Button className="d-flex" variant={"danger"} size={"xs"} onClick={()=>setDialog({name: 'surrender', code: gameState.code})}>Surrender</Button>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

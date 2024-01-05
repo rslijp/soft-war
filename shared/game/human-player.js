@@ -198,8 +198,17 @@ export function humanPlayer(index, name, color, units) {
         units.forEach((unit) => {
             unit.player = index;
             self.fogOfWar.add(unit);
+            if(unit.clazz === 'unit'){
+                this.unitBuildCount++;
+                unit.tag(this.unitBuildCount);
+            }
         });
-        if(units[0]){
+        const selectable = units.find(u=>u.clazz==='unit');
+        if(selectable){
+            this.position=selectable.position;
+            this.selectedUnit=selectable;
+        }
+        else if(units[0]){
             this.position=units[0].position;
         }
     }

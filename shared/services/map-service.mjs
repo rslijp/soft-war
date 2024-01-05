@@ -22,6 +22,7 @@ const GENERATION_SETTINGS = {
     }
 }
 
+const AI_NAMES = ['SkyNet', 'Dave', 'AUTO']
 
 function seed(f, width, height){
     const world = Array(height);
@@ -204,34 +205,56 @@ export function generateMap(type, width, height) {
 
 function pickCity(cities, widthRange, heightRange){
     const candidates = cities.
-        filter(c=>widthRange.start<=c[0]&&c[0]<widthRange.end).
+        filter(c=>widthRange.start<=c[1]&&c[1]<widthRange.end).
         filter(c=>heightRange.start<=c[0]&&c[0]<heightRange.end);
 
     const pick = Math.floor(Math.random()*candidates.length);
     const position = candidates[pick];
-    return {y: position[0], x: position[1], producingType: "T", production: unitTypes['T'].costs}
+    return {y: position[0], x: position[1], producingType: "T"}
 }
 
-export function generatePlayerList(user, world){
+export function generatePlayerList(user, additionalPlayers, world){
     const cities = world.cities;
     const {width, height} = world.dimensions;
+
+    let startCities = [
+        pickCity(cities, {start: 0, end: width/2}, {start: 0, end: height/2}),
+        pickCity(cities, {start: width/2, end: width}, {start: height/2, end: height}),
+        pickCity(cities, {start: 0, end: width/2}, {start: height/2, end: height}),
+        pickCity(cities, {start: width/2, end: width}, {start: 0, end: height/2})
+    ];
+    const randomStartCity = ()=>{
+        const i = Math.floor(Math.random()*startCities.length);
+        const startCity = startCities[i];
+        startCities=startCities.filter(c=>c!==startCity);
+        return startCity;
+    }
 
     const players = [{
         id: user.email,
         name: user.name,
         type: "Human",
-        units: [],
-        cities: [pickCity(cities, {start: 0, end: width/2}, {start: 0, end: height})],
-        accepted: true
-    },
-    {
-        id: "ai",
-        name: "SkyNet",
-        type: "AI",
-        units: [],
-        cities: [pickCity(cities, {start: width/2, end: width}, {start: 0, end: height})],
+        // units: [{x: city1.x, y: city1.y, type: 'T'}],
+        cities: [randomStartCity()],
         accepted: true
     }];
+
+    console.log(additionalPlayers);
+    additionalPlayers.forEach((p,i)=> {
+        const player = {
+            id: p ? p : "ai_" + i,
+            name: p ? p.substr(0, p.indexOf('@')) : AI_NAMES[i],
+            type: p ? "Human" : "AI",
+            cities: [randomStartCity()],
+            status: p?'pending':'accepted'
+        };
+        players.push(player);
+    });
+    players.forEach(p=>{
+        const c = p.cities[0];
+        p.units=[{x: c.x, y: c.y, type: 'T'}];
+        p.position={x: c.x, y: c.y};
+    });
     return players;
 }
 // export default {generateMap};

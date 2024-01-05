@@ -5,6 +5,7 @@ export const PLAYER_COLORS = ['orange', 'cyan', 'magenta', 'darkgrey'];
 
 export const playerTraits = {
    contactedEnemy: false,
+   id:1,
    turn: 0,
    enemySpottedThisTurn: {},
     initTurn: function(stateEngine) {
@@ -69,7 +70,12 @@ export const playerTraits = {
    },
    hasAnyCities: function() {
         return (this.units||[]).filter((unit)=>{return unit.clazz=="city"})>0;
-   }        
+   },
+   nextId: function (){
+       const id = this.id;
+       this.id++;
+       return id;
+   }
 }
 
 export function applyPlayerTraitsOn(target){

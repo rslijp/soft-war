@@ -28,6 +28,7 @@ export function city(position, name, producing, production) {
     this.nestedUnits = [];
     this.player = null;
     this.clazz = "city";
+    this.type = "C";
     this.name = name;
     this.producingType = producing ? producing.type : null;
     this.producing = () => {
@@ -100,7 +101,7 @@ export function city(position, name, producing, production) {
             MessageBus.send("unit-creation-suspended", this, producing);
             return;
         }
-        var unit = new unit(this.producingType);
+        var unit = new unit(this.player.nextId(), this.producingType);
         unit.player = this.player;
         this.internalLoad(unit);
         this.production = 0;
@@ -124,4 +125,7 @@ export function city(position, name, producing, production) {
             }
         };
     };
+    this.getName = () => {
+        return this.name;
+    }
 };

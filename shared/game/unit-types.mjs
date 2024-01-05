@@ -82,7 +82,7 @@ export const unitTypes = {
 
     },
     "M": {
-        name: "MPV",
+        name: "Truck",
         health: 1,
         html: "M",
         moves: 3,
@@ -234,7 +234,7 @@ export const unitTypes = {
         costs: 12,
         groundAttackForces: false
     },
-    "C": {
+    "c": {
         name: "Cruiser",
         html: "C",
         health: 5,

@@ -2,10 +2,12 @@ import MessageBus from "../services/message-service.mjs";
 import {statistics} from "./statistics.mjs";
 import {unitsMap} from "./units-map.mjs";
 
-export function game (map, players) {
-    this.turn = 1;
+export function game ({code, name, turn, currentPlayer}, map, players) {
+    this.turn = turn||1;
+    this.name = name;
+    this.code = code;
     this.players = players;
-    this.currentPlayerIndex = 0;
+    this.currentPlayerIndex = currentPlayer||0;
     this.unitsMap = new unitsMap(players, map);
     this.player = (index) => {
         return this.players[index];

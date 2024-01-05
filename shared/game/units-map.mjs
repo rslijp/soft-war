@@ -80,7 +80,7 @@ export function unitsMap(players, map) {
         this.data[position.y][position.x] = unit;
     };
 
-    this.unitAt = (y,x) => {
+    this.unitAt = ({y,x}) => {
         var unitsRow = this.data[y];
         if (!unitsRow) {
             return null;

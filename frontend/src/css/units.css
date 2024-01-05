@@ -9,7 +9,62 @@
     border-radius: 5px;
 }
 
+.unit-view.selected-unit {
+    box-shadow: 0px 0px 5px 5px lightblue;
+}
+
 .unit-view.city {
     background-image: url("/content/units/45x45/city.png");
 }
 
+.unit-view.infantry {
+    background-image: url("/content/units/45x45/infantry.png");
+}
+
+.unit-view.tank {
+    background-image: url("/content/units/45x45/tank.png");
+}
+
+.unit-view.truck {
+    background-image: url("/content/units/45x45/truck.png");
+}
+
+.unit-view.fighter {
+    background-image: url("/content/units/45x45/fighter.png");
+}
+
+.unit-view.bomber {
+    background-image: url("/content/units/45x45/bomber.png");
+}
+
+.unit-view.helicopter {
+    background-image: url("/content/units/45x45/chinhook.png");
+}
+
+.unit-view.destroyer {
+    background-image: url("/content/units/45x45/destroyer.png");
+}
+
+.unit-view.cruiser {
+    background-image: url("/content/units/45x45/cruiser.png");
+}
+
+.unit-view.battleship {
+    background-image: url("/content/units/45x45/battleship.png");
+}
+
+.unit-view.submarine {
+    background-image: url("/content/units/45x45/submarine.png");
+}
+
+.unit-view.transport {
+    background-image: url("/content/units/45x45/transport.png");
+}
+
+.unit-view.aircraftcarrier {
+    background-image: url("/content/units/45x45/aircraftcarrier.png");
+}
+
+.unit-view.missile {
+    background-image: url("/content/units/45x45/missile.png");
+}
