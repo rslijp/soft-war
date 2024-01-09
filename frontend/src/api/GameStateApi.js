@@ -26,3 +26,15 @@ export function surrenderGame(code) {
         return r;
     });
 }
+
+export function acceptGame(code) {
+    return apiFetch("PUT",`/api/app-state/pending-game/${code}`).then(r => {
+        return r;
+    });
+}
+
+export function declineGame(code) {
+    return apiFetch("DELETE",`/api/app-state/pending-game/${code}`).then(r => {
+        return r;
+    });
+}

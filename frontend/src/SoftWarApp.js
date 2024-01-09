@@ -10,6 +10,7 @@ import CreateGamePage from "./page/CreateGamePage";
 import DemoPage from "./page/DemoPage";
 import ErrorPage from "./page/ErrorPage";
 import GamePage from "./page/GamePage";
+import PendingGamePage from "./page/PendingGamePage";
 import {applyCssConstants} from "./Constants";
 import {localDemoLoader} from "./api/DemoLoader";
 
@@ -23,6 +24,11 @@ const router = createHashRouter([
     {
         path: "new-game",
         element: <CreateGamePage/>,
+        errorElement: <ErrorPage />
+    },
+    {
+        path: "pending-game",
+        element: <PendingGamePage/>,
         errorElement: <ErrorPage />
     },
     {

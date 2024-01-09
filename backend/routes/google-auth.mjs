@@ -50,13 +50,13 @@ router.get('/google/callback',
 
 
 router.get('/success', (req, res) => {
-    console.log("Success",req.session.passport);
+    // console.log("Success",req.session.passport);
     saveProfile(req.session.passport.user._json).then(()=>res.redirect("/"))
 });
 router.get('/error', (req, res) => res.send("error logging in"));
 
 router.put('/logout', (req, res)=>{
-    console.log("Logout, redirecting to auth");
+    // console.log("Logout, redirecting to auth");
     req.session.destroy();
     return res.send({redirect: "/public/auth/"});
 })

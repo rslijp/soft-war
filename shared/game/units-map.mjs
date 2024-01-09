@@ -25,15 +25,21 @@ export function unitsMap(players, map) {
         unitsRow[position.x] = null;
         return unit;
     };
+    this.canMoveOn = (unit, to) => {
+        return unit.canMoveOn(this.map.type(to));
+    }
     this.move = (unit, to, blitz) => {
         var target = this.get(to);
         var position = unit.position;
+        console.log("units map from", position, "to", to);
         if (!unit.canMove(blitz)) {
             return false;
         }
+        console.log("Can move. Target?", !!target);
         if (target) {
             return this.collision(unit, target, to, position, blitz);
         }
+        console.log("Free move?", unit.canMoveOn(this.map.type(to)));
         if (!unit.canMoveOn(this.map.type(to))) {
             return false;
         }

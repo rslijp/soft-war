@@ -44,7 +44,7 @@ export default {
         this.send("bus-unlocked");
     },
     sendLockable: function() {
-        var name = _.first(arguments);
+        var name = arguments[0];
         if (this.locked) {
             if (this.verbose) {
                 console.log("Dropping " + name);

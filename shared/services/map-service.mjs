@@ -236,7 +236,7 @@ export function generatePlayerList(user, additionalPlayers, world){
         type: "Human",
         // units: [{x: city1.x, y: city1.y, type: 'T'}],
         cities: [randomStartCity()],
-        accepted: true
+        status: 'accepted'
     }];
 
     console.log(additionalPlayers);

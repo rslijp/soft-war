@@ -642,7 +642,9 @@ function sweepForTransitions(transitions, world, dimensions) {
     for (let y = 0; y < dimensions.height; y++) {
         for (let x = 0; x < dimensions.width; x++) {
             transitions.forEach(t => {
-                if (match(x, y, t)) apply(x, y, t);
+                if (match(x, y, t)) {
+                    apply(x, y, t);
+                }
             });
         }
     }

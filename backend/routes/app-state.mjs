@@ -2,7 +2,7 @@ import {generateMap, generatePlayerList} from "softwar-shared/services/map-servi
 import connection from '../connections.mjs';
 import express from 'express';
 import {generateCode} from "softwar-shared/services/random-code-service.mjs"
-import {winnerEmail, lostEmail, pendingMail} from "../mailer.mjs";
+import {winnerEmail, lostEmail, pendingMail, allAccepted, oneDeclined} from "../mailer.mjs";
 const router = express.Router();
 
 async function appStates(){
@@ -34,10 +34,12 @@ router.get('/your-games', async function(req, res, next) {
         return {
           name: r.name,
           code: r.code,
+          status: r.status,
           at: r.at,
           turn: r.turn,
+          currentPlayer: r.currentPlayer,
           waitingOnYou: r.players[r.currentPlayer].id === user.email,
-          players: r.players.map(p=>{return {name: p.name, type: p.type}})
+          players: r.players.map(p=>{return {name: p.name, type: p.type, status: p.status, isYou: p.id === user.email}})
         }
       });
   res.send(projection).status(200);
@@ -61,8 +63,19 @@ router.get('/game/:code', async function(req, res, next) {
   res.send(result).status(200);
 });
 
-router.get('/user', function(req, res){
-  res.send(req.session.passport.user._json).status(200);
+router.get('/user', async function(req, res){
+    const user = {...req.session.passport.user._json};
+    let collection = await appStates();
+    let results = await collection.find({ "players" : { $elemMatch : { "id" : user.email } } })
+        .limit(10)
+        .toArray();
+    let pendingActions = 0;
+    results.forEach(r=>{
+        if(r.status==='active' && r.players[r.currentPlayer].id === user.email) pendingActions++;
+        else if(r.players.some(p=>p.status==='pending'&&p.id === user.email)) pendingActions++;
+    });
+    user.pendingActions=pendingActions;
+    res.send(user).status(200);
 });
 
 
@@ -105,13 +118,73 @@ router.post('/new-game', async function(req, res, next) {
       currentPlayer: 0,
       players: allPlayers,
       map: world,
-      status: allPlayers.every(p=>p.status==='accepted')?'accepted':'pending'
+      status: allPlayers.every(p=>p.status==='accepted')?'active':'pending'
   }
-  saveNewGame(state).then(()=>res.send({code: state.code}).status(200));
+  saveNewGame(state).then(()=>res.send({code: state.code, status: state.status}).status(200));
   if(state.status==='pending'){
       pendingMail(user.email, state.name, allPlayers.filter(p=>p.status==='pending').map(p=>p.id));
   }
 })
+
+async function retrieve(req, res, onLoad){
+    const user = req.session.passport.user._json;
+    console.log("Retrieving game", req.params.code);
+    if (!req.params.code || req.params.code.length > 16) {
+        console.log("Code to long", req.params.code);
+        res.status("412");
+        return;
+    }
+    let collection = await appStates();//connection.collection("app-state");
+    let gameState = await collection.findOne({code: req.params.code});
+    const player = gameState.players.find(p => p.id === user.email);
+    if (!player) {
+        console.log("Not your game");
+        res.status("403");
+        return;
+    }
+    onLoad(gameState, player);
+}
+
+router.delete('/pending-game/:code', async function(req, res, next) {
+    await retrieve(req, res, async (state, player)=>{
+        if(player.status !== 'pending'){
+            console.log("Already accepted");
+            res.status("412");
+            return;
+        }
+        player.status='declined';
+        state.status = 'declined';
+        let collection = await appStates();
+        const result = await collection.deleteOne({code: req.params.code});
+        if (result.deletedCount === 1) {
+            state._id = undefined;
+            await saveFinishedGame(state);
+        } else {
+            console.log("No documents matched the query. Deleted 0 documents.");
+        }
+        res.send({status: state.status}).status(200);
+        oneDeclined(state.name, state.players.filter(p=>p.type==='Human').map(p=>p.id));
+    });
+});
+
+
+router.put('/pending-game/:code', async function(req, res, next) {
+    await retrieve(req, res, async (state, player)=>{
+        if(player.status !== 'pending'){
+            console.log("Already accepted");
+            res.status("412");
+            return;
+        }
+        player.status='accepted';
+        state.status = state.players.every(p=>p.status==='accepted')?'active':'pending';
+        let collection = await appStates();
+        collection.replaceOne({code: req.params.code}, state, {upsert: false});
+        res.send({status: state.status}).status(200);
+        if(state.status === 'active'){
+            allAccepted(state.name, state.players.filter(p=>p.type==='Human').map(p=>p.id));
+        }
+    });
+});
 
 router.delete('/game/:code', async function(req, res, next) {
     const user = req.session.passport.user._json;

@@ -412,11 +412,12 @@ const matrix = [
         </p>
         <p>I'm using <a href="https://sendgrid.com">Send grid</a> to sent my mails. I use this rather than hooking it up directly to gmail.
             Because gmail limit usage to only 300 different email addresses day. This could mean I can't mail after 300 new users
-            subscribe. For now Send grid is pending some verification phase. <span style="color: red">So I paused it for now. Until verification is passed</span>
+            subscribe. For now Send grid has a verification phase. I got that sorted and their API's work pretty straight forward. So we have mail.
+            To be honest all the mail traffic is time consuming. So I park the fancy layout for later.
         </p>
         <dl>
             <dt>Time:</dt>
-            <dd>26h <b>(+5h)</b></dd>
+            <dd>29h <b>(+8h)</b></dd>
             <dt>Cost:</dt>
             <dd>60$ (a year)</dd><br/>
             <dt>Stack:</dt>
@@ -557,12 +558,54 @@ const matrix = [
             </table>
         </p>
         <p>
+            To get a skeleton in place for the game logic. I added a simple tank and some basic logic. You can try it.
+            You can use the arrow on screen, the arrow keys or the regular keys (QWEADZXC) to move the tank.
+        </p>
+        <table>
+            <tr>
+                <td><strong>Q</strong><br/><i>left-up</i></td>
+                <td><strong>W</strong><br/><i>up</i></td>
+                <td><strong>E</strong><br/><i>right-up</i></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>A</strong><br/><i>left</i></td>
+                <td></td>
+                <td><strong>D</strong><br/><i>right</i></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>Z</strong><br/><i>left-down</i></td>
+                <td><strong>X</strong><br/><i>down</i></td>
+                <td><strong>C</strong><br/><i>right-down</i></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="5"><strong>space</strong><br/><i>next unit</i></td>
+            </tr>
+        </table>
+        <p>
             Currently figuring out how to include the Jasmine spec runner in the game. I hope
-            to how off some game logic in a week or so.
+            to how off some more game logic in a week or so.
         </p>
         <dl>
             <dt>Time:</dt>
-            <dd>32h <b>(+6h)</b></dd>
+            <dd>37h <b>(+8h)</b></dd>
             <dt>Cost:</dt>
             <dd>60$ (a year) + <b>20$ (one time)</b></dd><br/>
             <dt>Stack:</dt>

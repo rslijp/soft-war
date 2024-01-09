@@ -25,7 +25,10 @@ function CreateGamePage() {
         }
 
         newGame(form.type, form.size, form.name, form.players).then(
-            data => document.location.hash = `/game/${data.code}`
+            data => {
+                if(data.status==='active') document.location.hash = `/game/${data.code}`;
+                else if(data.status==='pending')  document.location.hash = 'pending-game';
+            }
         );
     };
 

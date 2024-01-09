@@ -42,6 +42,7 @@ export function city(position, name, producing, production) {
     this.canMove = () => {
         return false;
     };
+
     this.canLoad = function(unit, ignoreMoves) {
         if (this.nestedUnits.length >= this.capacity) {
             return false;

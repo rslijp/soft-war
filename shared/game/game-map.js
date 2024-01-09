@@ -124,9 +124,7 @@ export function gameMap(data) {
     };
     this.move = (direction, position) => {
         var clone = {x: position.x, y:position.y};
-        var offset = _.detect(NAVIGATIONS_OFFSETS, function(item) {
-            return item.direction === direction;
-        });
+        var offset = NAVIGATIONS_OFFSETS.find(item=>item.direction === direction);
         clone.x += offset.x;
         clone.y += offset.y;
         clone.x = Math.max(clone.x, 0);

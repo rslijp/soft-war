@@ -38,23 +38,17 @@ export function unitCarrousel(units) {
             queue.push(target);
             _current = undefined;
         } else {
-            queue = _.without(queue, target);
+            queue = queue.filter(c=>c!==target);
             queue.push(target);
         }
     };
     this.allOrdersFinished = function() {
-        queue = _.select(queue, function(unit) {
-            return keeper(unit);
-        });
-        var anyOrders = _.all(queue, function(unit) {
-            return !unit.order;//unit.order === null || unit.order===undefined;
-        });
+        queue = queue.filter(unit => keeper(unit));
+        var anyOrders = queue.every(unit=> !unit.order);
         return anyOrders;
     };
     this.dropNonOrderUnits = function() {
-        queue = _.select(queue, function(unit) {
-            return unit.order !== null;
-        });
+        queue = queue.filter(unit=>unit.order !== null);
     };
     skip();
 };

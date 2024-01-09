@@ -2,6 +2,7 @@ import {applyUnitTraitsOn} from "./trait/unit-traits.mjs"
 import {unitTypes} from "./unit-types.mjs"
 import MessageBus from "../services/message-service.mjs";
 import {applyTraitsOn} from "./trait/traits-util.mjs";
+import {distance} from "../services/navigation-service.mjs";
 
 export function unit(type, position) {
     this.id = "";
@@ -21,9 +22,7 @@ export function unit(type, position) {
     this.isAlive= () => {
         return this.health>0;
     };
-    this.isAt= ({x, y}) => {
-        return position.x===x&position.y===y;
-    };
+
     this.canMoveOn = (type) => {
         return this.definition().allowed.indexOf(type)>-1;
     };
@@ -52,6 +51,7 @@ export function unit(type, position) {
 
     };
     this.move = (to) => {
+        console.log("> move", this.position, distance(this.position, to));
         if (distance(this.position, to) !== 1) {
             return;
         }
@@ -60,6 +60,7 @@ export function unit(type, position) {
         }
         this.position = to;
         this.movesLeft-=1;
+        console.log("< move", this.position);
         if (this.definition().fuel) {
             this.fuel -= 1;
             if (this.fuel <= 0) {
@@ -92,6 +93,7 @@ export function unit(type, position) {
         if (transport) {
             transport.unload(this);
             this.position = transport.position;
+            console.log("disembark", to)
             this.move(to);
         }
     };

@@ -108,6 +108,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     };
 
     this.moveInDirection = (direction) => {
+        console.log("moveInDirection", direction, this.position());
         this.setPosition(map.move(direction, this.position()));
     };
 

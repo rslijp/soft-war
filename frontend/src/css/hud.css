@@ -1,0 +1,48 @@
+.hud-action {
+    height: var(--unit-size);
+    width: var(--unit-size);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.hud-action.with-unit {
+    margin-top: calc(0px - var(--unit-size));
+    position: relative;
+    z-index: 999;
+}
+
+.hud-action:hover {
+    box-shadow: 0px 0px 5px 5px #ffc107;
+}
+
+.hud-action.hud-move-top-left {
+    background-image: url("/content/hud/arrow-up-left.png");
+}
+
+.hud-action.hud-move-top {
+    background-image: url("/content/hud/arrow-up.png");
+}
+
+.hud-action.hud-move-top-right {
+    background-image: url("/content/hud/arrow-up-right.png");
+}
+
+.hud-action.hud-move-left {
+    background-image: url("/content/hud/arrow-left.png");
+}
+
+.hud-action.hud-move-right {
+    background-image: url("/content/hud/arrow-right.png");
+}
+
+.hud-action.hud-move-down-left {
+    background-image: url("/content/hud/arrow-down-left.png");
+}
+
+.hud-action.hud-move-down {
+    background-image: url("/content/hud/arrow-down.png");
+}
+
+.hud-action.hud-move-down-right {
+    background-image: url("/content/hud/arrow-down-right.png");
+}
