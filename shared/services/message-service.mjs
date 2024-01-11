@@ -1,7 +1,15 @@
+let REGISTER_HANDLE = 0;
+
 export default {
-    verbose: true,
+    verbose: false,
     locked: false,
     registrations: {},
+    clear: function(){
+        if (this.verbose) {
+            console.log("Clearing registrations");
+        }
+        this.registrations={};
+    },
     register: function(name, func, context) {
         if (this.verbose) {
             console.log("Register " + name);
@@ -9,7 +17,9 @@ export default {
         if (!this.registrations[name]) {
             this.registrations[name] = [];
         }
-        this.registrations[name].push({callback: func, context: context});
+        REGISTER_HANDLE++;
+        this.registrations[name].push({callback: func, context: context, handle: ""+REGISTER_HANDLE});
+        return name+":"+REGISTER_HANDLE;
     },
     revoke: function(name, func) {
         if (this.verbose) {
@@ -21,8 +31,23 @@ export default {
         if(old === this.registrations[name].length && this.verbose){
             console.log("Revoke failed of "+name+" failed");
         }
-    }
-    ,
+    },
+    revokeByHandles: function(handles) {
+        handles.forEach(handleKey => this.revokeByHandle(handleKey));
+    },
+    revokeByHandle: function(handleKey) {
+        const [name, handle ] = handleKey.split(':');
+        if(!name || !handle) throw 'Wrong format of key '+handleKey;
+        if (this.verbose) {
+            console.log("Revoking " + name);
+        }
+        if (!this.registrations[name]) return;
+        const old = this.registrations[name];
+        this.registrations[name]=this.registrations[name].filter(r=> r.handle !== handle);
+        if(old === this.registrations[name].length && this.verbose){
+            console.log("Revoke  by handle failed of "+name+" failed");
+        }
+    },
     lock: function() {
         if (this.locked) {
             return;
@@ -64,7 +89,7 @@ export default {
         }
         this.registrations[name].forEach((registration, i) => {
             if (this.verbose) {
-                console.log("[",i,"] Send " + name);
+                console.log("[",i,"] Send " + name,"handle "+registration.handle);
             }
             registration.callback.apply(registration.context, callArguments);
         });

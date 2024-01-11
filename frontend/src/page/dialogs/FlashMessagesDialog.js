@@ -1,9 +1,20 @@
 import {Button, ListGroup, Modal} from "react-bootstrap";
+import {React, useEffect, useRef} from "react";
 import {any, func} from "prop-types";
-import {React} from "react";
 
 function FlashMessageDialog({messages, onClose}) {
-    return <Modal show={true}>
+    const dialogView = useRef();
+
+    const focusView = () => {
+        if(dialogView.current) dialogView.current.blur();
+        setTimeout(()=>dialogView.current.focus(),0);
+    };
+
+    useEffect(() => {
+        setTimeout(()=>focusView(), 0);
+    }, []);
+
+    return <Modal  show={true} >
         <Modal.Header closeButton>
             <Modal.Title>Flash messaged</Modal.Title>
         </Modal.Header>
@@ -22,7 +33,7 @@ function FlashMessageDialog({messages, onClose}) {
             </ListGroup>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose} ref={dialogView} >
                 Close
             </Button>
         </Modal.Footer>

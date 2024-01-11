@@ -51,7 +51,6 @@ export function unit(type, position) {
 
     };
     this.move = (to) => {
-        console.log("> move", this.position, distance(this.position, to));
         if (distance(this.position, to) !== 1) {
             return;
         }
@@ -60,7 +59,6 @@ export function unit(type, position) {
         }
         this.position = to;
         this.movesLeft-=1;
-        console.log("< move", this.position);
         if (this.definition().fuel) {
             this.fuel -= 1;
             if (this.fuel <= 0) {
@@ -93,7 +91,6 @@ export function unit(type, position) {
         if (transport) {
             transport.unload(this);
             this.position = transport.position;
-            console.log("disembark", to)
             this.move(to);
         }
     };

@@ -74,12 +74,18 @@ export function gameMap(data) {
     this.position = (pos) => {
         return this.at(pos.y, pos.x);
     };
+    this.normalize = (pos) => {
+        const r = {y: pos.y % data.dimensions.height, x: pos.x % data.dimensions.width};
+        if(r.y<0) r.y+=data.dimensions.height;
+        if(r.x<0) r.x+=data.dimensions.width;
+        return r;
+    };
 
     this.type = (position) => {
         return this.data[position.y][position.x].type;
     };
     this.at = (y, x) => {
-        switch (data[y][x].type) {
+        switch (this.data[y][x].type) {
             case "L": return "land";
             case "S": return "sea";
             case "M": return "mountain";
@@ -125,13 +131,7 @@ export function gameMap(data) {
     this.move = (direction, position) => {
         var clone = {x: position.x, y:position.y};
         var offset = NAVIGATIONS_OFFSETS.find(item=>item.direction === direction);
-        clone.x += offset.x;
-        clone.y += offset.y;
-        clone.x = Math.max(clone.x, 0);
-        clone.x = Math.min(clone.x, this.width - 1);
-        clone.y = Math.max(clone.y, 0);
-        clone.y = Math.min(clone.y, this.height - 1);
-        return clone;
+        return this.normalize({y: position.y+offset.y, x: position.x+offset.x});
     };
 
     this.init();

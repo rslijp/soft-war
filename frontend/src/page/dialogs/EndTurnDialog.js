@@ -1,14 +1,23 @@
 import {Button, Modal} from "react-bootstrap";
-import {func, string} from "prop-types";
-import {React} from "react";
-// import {surrenderGame} from "../../api/GameStateApi";
+import {React, useEffect, useRef} from "react";
+import {MessageBus} from "softwar-shared";
+import {func} from "prop-types";
 
-function EndTurnDialog({code, onClose}) {
+function EndTurnDialog({onClose}) {
+    const dialogView = useRef();
+
+    const focusView = () => {
+        if(dialogView.current) dialogView.current.blur();
+        setTimeout(()=>dialogView.current.focus(),0);
+    };
+
+    useEffect(() => {
+        setTimeout(()=>focusView(), 0);
+    }, []);
+
     function endTurn() {
-        console.log(code);
-        // surrenderGame(code).then(() => {
-        //     document.location.hash = "/#";
-        // });
+        MessageBus.send("next-turn");
+        onClose();
     }
 
     return <Modal show={true}>
@@ -20,7 +29,7 @@ function EndTurnDialog({code, onClose}) {
             <Button variant="secondary" onClick={onClose}>
                 Cancel
             </Button>
-            <Button variant="warning" onClick={endTurn}>
+            <Button variant="warning" onClick={endTurn} ref={dialogView} >
                 Yes, End turn
             </Button>
         </Modal.Footer>
@@ -28,7 +37,6 @@ function EndTurnDialog({code, onClose}) {
 }
 
 EndTurnDialog.propTypes = {
-    code: string,
     onClose: func
 };
 

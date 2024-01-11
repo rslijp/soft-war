@@ -1,6 +1,6 @@
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {bool, shape, string} from "prop-types";
-import {PLAYER_COLORS} from "softwar-shared";
+import {MessageBus, PLAYER_COLORS} from "softwar-shared";
 import React from "react";
 
 const TYPE_TILE_MAP = {
@@ -37,7 +37,7 @@ function UnitView({unit, selected}) {
     >
         <div className={cssClasses.join(" ")}
             style={additionalStyle}
-            onClick={() => alert('x')}>
+            onClick={() => MessageBus.send("cursor-select", unit.derivedPosition())}>
 
         </div>
     </OverlayTrigger>;

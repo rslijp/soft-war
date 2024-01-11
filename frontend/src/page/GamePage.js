@@ -33,6 +33,7 @@ function GamePage() {
 
     const newTurn = (messages) => {
         setDialog({name: 'messages', messages: messages, hide: true});
+        focusOnTile(gameState.position());
     };
 
     const render = ()=>{
@@ -42,6 +43,7 @@ function GamePage() {
     const focusOnTile = ({x, y}) => {
         clearTimeout(timer);
         timer=setTimeout(()=>{
+            // console.log({y,x}, currentPlayer.selectedUnit.id);
             const state = stateRef.current.state;
             const viewPort = stateRef.current.viewPort;
             if(state !== "ready") return;
@@ -56,24 +58,24 @@ function GamePage() {
     };
 
     useEffect(() => {
-        console.log("REGISTER");
-        MessageBus.register("new-turn", newTurn, this);
-        MessageBus.register("screen-update", render, this);
-        MessageBus.register("cursor-select", focusOnTile, this);
-        MessageBus.register("end-turn", endTurn, this);
+        const handles = [
+            MessageBus.register("new-turn", newTurn, this),
+            MessageBus.register("screen-update", render, this),
+            MessageBus.register("cursor-select", focusOnTile, this),
+            MessageBus.register("propose-end-turn", endTurn, this)
+        ];
         return ()=>{
-            console.log("DEREGISTER");
-            MessageBus.revoke("new-turn", newTurn);
-            MessageBus.revoke("screen-update", render);
-            MessageBus.revoke("cursor-select", focusOnTile);
-            MessageBus.revoke("end-turn", focusOnTile);
+            MessageBus.revokeByHandles(handles);
         };
     }, []);
 
 
     useEffect(() => {
         if(state !== "ready") return;
-        MessageBus.send("new-turn", ["Welcome back. Enjoy the game!", "But be aware IT IS UNDER CONSTRUCTION"]);
+        const messages =  [{variant: "danger", text: "But be aware IT IS UNDER CONSTRUCTION"}];
+        messages.push("Welcome back. Enjoy the game!");
+        gameState.players.forEach((p,i) => messages.push(`Player ${i+1} ${p.name} (${p.type})`));
+        MessageBus.send("new-turn", messages);
         focusOnTile(position);
     }, [state]);
 
@@ -97,7 +99,7 @@ function GamePage() {
             return <SurrenderDialog code={dialog.code} onClose={close}/>;
         }
         if(dialog.name === 'end-turn'){
-            return <EndTurnDialog code={dialog.code} onClose={close}/>;
+            return <EndTurnDialog onClose={close}/>;
         }
         else if(dialog.name === 'messages'){
             return <FlashMessagesDialog messages={dialog.messages} onClose={close}/>;
@@ -132,7 +134,7 @@ function GamePage() {
                     <Navbar.Text className="bottom-bar-space">
                         Turn{" "}<u>{ gameState.turn}</u>
                     </Navbar.Text>
-                    <Button className="d-flex bottom-bar-space" variant={"warning"} size={"xs"} onClick={()=>MessageBus.send("end-turn")}><FontAwesomeIcon icon={faForwardStep} /></Button>
+                    <Button className="d-flex bottom-bar-space" variant={"warning"} size={"xs"} onClick={()=>MessageBus.send("propose-end-turn")}><FontAwesomeIcon icon={faForwardStep} /></Button>
                     <Button className="d-flex bottom-bar-space" variant={"danger"} size={"xs"} onClick={()=>setDialog({name: 'surrender', code: gameState.code})}><FontAwesomeIcon icon={faFlag} /></Button>
                 </Navbar.Collapse>
             </Container>

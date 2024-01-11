@@ -3,8 +3,8 @@ import {fogOfWar} from "./fog-of-war.mjs";
 import MessageBus from "../services/message-service.mjs";
 import {unitCarrousel} from "./unit-carrousel.mjs";
 
-export function humanPlayer(index, name, color, units) {
-    this.fogOfWar = new fogOfWar([]);
+export function humanPlayer(index, name, color, units, map) {
+    this.fogOfWar = new fogOfWar([], map);
     this.position = {x: 0, y: 0};
     this.messages = [];
     this.carrousel = new unitCarrousel([]);
@@ -18,6 +18,7 @@ export function humanPlayer(index, name, color, units) {
     this.selectedUnit = null;
     this.unitBuildCount=0;
     this.state="playing";
+    this.type="Human";
     
     var self = this;
 
@@ -29,41 +30,42 @@ export function humanPlayer(index, name, color, units) {
         this.messages = [];
         return messages.length === 0 ? ["No messages"] : messages;
     };
-    this.cursorUpdate = function(to) {
-        var unit = this.selectedUnit;
-        if (!unit) {
-            this.position = to;
-            return true;
-        }
-        if(unit.clazz==='city'){
-            return false;
-        }
-        if (unit.order) {
-            MessageBus.send("confirm-order", unit);
-            return false;
-        }
-        this.fogOfWar.remove(unit);
-        var succes = this.unitsMap.move(unit, to);
-        if(unit.isAlive()){
-            this.fogOfWar.add(unit);
-            this.position = unit.derivedPosition();
-        }
-        if (succes) {
-            this.jumpToNextUnit(unit);
-        }
-        return true;
-    };
-    this.jumpToNextUnit = function(unit) {
-        function innerAutoNext() {
-            if (self.selectedUnit === unit) {
-                MessageBus.send("next-unit");
-            }
-        }
-
-        if (unit && !unit.canMove() && this.autoNext()) {
-            setTimeout(innerAutoNext, 1500);
-        }
-    };
+    // this.cursorUpdate = function(to) {
+    //     to = map.normalize(to);
+    //     var unit = this.selectedUnit;
+    //     if (!unit) {
+    //         this.position = to;
+    //         return true;
+    //     }
+    //     if(unit.clazz==='city'){
+    //         return false;
+    //     }
+    //     if (unit.order) {
+    //         MessageBus.send("confirm-order", unit);
+    //         return false;
+    //     }
+    //     this.fogOfWar.remove(unit);
+    //     var succes = this.unitsMap.move(unit, to);
+    //     if(unit.isAlive()){
+    //         this.fogOfWar.add(unit);
+    //         this.position = unit.derivedPosition();
+    //     }
+    //     if (succes) {
+    //         this.jumpToNextUnit(unit);
+    //     }
+    //     return true;
+    // };
+    // this.jumpToNextUnit = function(unit) {
+    //     function innerAutoNext() {
+    //         if (self.selectedUnit === unit) {
+    //             MessageBus.send("next-unit");
+    //         }
+    //     }
+    //
+    //     if (unit && !unit.canMove() && this.autoNext()) {
+    //         setTimeout(innerAutoNext, 1500);
+    //     }
+    // };
     this.specialAction = function(action) {
         var unit = this.selectedUnit;
         if (!unit) {
@@ -103,7 +105,7 @@ export function humanPlayer(index, name, color, units) {
         }
     };
     this.unregisterUnit = function(unit) {
-        var index = _.indexOf(self.units, unit);
+        var index = self.units.indexOf(unit);
         if (index >= 0) {
             self.units.splice(index, 1);
         }
@@ -193,26 +195,6 @@ export function humanPlayer(index, name, color, units) {
     this.autoNext = function() {
         return this.autoNextFlag || this.endTurnPhase;
     };
-    
-    this.init=() => {
-        units.forEach((unit) => {
-            unit.player = index;
-            self.fogOfWar.add(unit);
-            if(unit.clazz === 'unit'){
-                this.unitBuildCount++;
-                unit.tag(this.unitBuildCount);
-            }
-        });
-        const selectable = units.find(u=>u.clazz==='unit');
-        if(selectable){
-            this.position=selectable.position;
-            this.selectedUnit=selectable;
-        }
-        else if(units[0]){
-            this.position=units[0].position;
-        }
-    }
-
 
     applyPlayerTraitsOn(this);
     this.init();

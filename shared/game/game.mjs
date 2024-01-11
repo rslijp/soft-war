@@ -1,6 +1,8 @@
 import MessageBus from "../services/message-service.mjs";
 import {statistics} from "./statistics.mjs";
 import {unitsMap} from "./units-map.mjs";
+import {orders} from "./orders.mjs";
+import {battle} from "./battle.mjs";
 
 export function game ({code, name, turn, currentPlayer}, map, players) {
     this.turn = turn||1;
@@ -44,18 +46,17 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         var currentPlayer = this.currentPlayer();
         var unit = currentPlayer.carrousel.next();
         this.selectUnit(unit);
-        MessageBus.send("next-unit-updated", unit);
         this.executeOrders(unit);
         if (currentPlayer.autoNext() && unit === null) {
-            MessageBus.send("end-turn");
+            MessageBus.send("propose-end-turn");
         }
     };
 
     this.executeOrders = (unit) => {
         if (unit && unit.order) {
             var currentPlayer = this.player(unit.player);
-            var orders = new Model.Orders(unit, this.unitsMap, currentPlayer);
-            orders.executeOrders();
+            var r = new orders(unit, this.unitsMap, currentPlayer);
+            r.executeOrders();
         }
     };
 
@@ -108,7 +109,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     };
 
     this.moveInDirection = (direction) => {
-        console.log("moveInDirection", direction, this.position());
+        if(this.currentPlayer().type==='AI') return;
         this.setPosition(map.move(direction, this.position()));
     };
 
@@ -117,13 +118,13 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         var attackerPosition = attacker.derivedPosition();
         var attackerGround = map.position(attackerPosition);
         var defenderGround = map.position(defenderPosition);
-        var battle = new Model.Battle(
+        var battleVar = new battle(
             attacker,
             defender,
             attacker.modifiers(defender, attackerGround),
             defender.modifiers(attacker, defenderGround)
         );
-        var result = battle.fight();
+        var result = battleVar.fight();
         MessageBus.send("battle-results", attacker, defender, result);
         if (attacker.health === 0) {
             MessageBus.send("unit-attacked", defender, result.defenderDamage);
@@ -157,15 +158,18 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         }
         var currentPlayer = this.currentPlayer();
         currentPlayer.initTurn();
-        MessageBus.send("new-turn", currentPlayer.readMessages(), currentPlayer.index);
+        MessageBus.send("new-turn", currentPlayer.readMessages?currentPlayer.readMessages():[], currentPlayer.index);
     };
 
     this.world = ()=>{
         const t = map.world();
+        const p = this.currentPlayer();
         return {
             dimensions: t.dimensions,
             world: t.world,
-            unitAt: this.unitsMap.unitAt
+            unitAt: this.unitsMap.unitAt,
+            normalize: map.normalize,
+            intelligence: p?p.intelligence:null
         }
 
     }
@@ -229,6 +233,11 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         }
     };
 
+    this.onUnitUpdated = ()=>{
+        const player = this.currentPlayer();
+        if(player.onUnitUpdated) player.onUnitUpdated();
+    }
+
     this.init= () => {
         players.forEach((player) => {
             player.unitsMap = this.unitsMap;
@@ -250,4 +259,5 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     MessageBus.register("execute-orders", this.executeOrders, this);
     MessageBus.register("propose-end-turn", this.endTurn, this);
     MessageBus.register("game-state-changed", this.winOrLoose, this);
+
 };

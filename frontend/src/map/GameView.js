@@ -9,15 +9,17 @@ function GameView({state, range}) {
     const gameView = useRef();
 
     const focusView = () => {
-        console.log("Focus");
-        gameView.current.blur();
+        if(gameView.current) gameView.current.blur();
         setTimeout(()=>gameView.current.focus(),0);
     };
 
     useEffect(() => {
-        MessageBus.register("game-view-focus", focusView, this);
+        const handles = [
+            MessageBus.register("game-view-focus", focusView, this),
+            // MessageBus.register("unit-select", focusOnTile, this),
+        ];
         return ()=>{
-            MessageBus.revoke("game-view-focus", focusView);
+            MessageBus.revokeByHandles(handles);
         };
     }, []);
 
@@ -35,7 +37,7 @@ function GameView({state, range}) {
 
     const onKeyPress = (e) => {
         var key = e.charCode === 0 ? e.keyCode : e.charCode;
-        console.log("onKeyPress", key);
+        // console.log("onKeyPress", key);
         if (key > 48 && key < 58) {
             return onNumericKeyPressed(key);
         }

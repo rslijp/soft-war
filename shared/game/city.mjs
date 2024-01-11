@@ -29,6 +29,7 @@ export function city(position, name, producing, production) {
     this.player = null;
     this.clazz = "city";
     this.type = "C";
+    this.id = name;
     this.name = name;
     this.producingType = producing ? producing.type : null;
     this.producing = () => {

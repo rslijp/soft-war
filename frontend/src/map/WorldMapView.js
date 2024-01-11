@@ -7,6 +7,8 @@ import UnitView from "./UnitView";
 function WorldMapView({map, range, selectedUnit, fogOfWar}) {
     const dimensions = map.dimensions;
 
+
+
     function normalizedRange(range){
         const r = {...range, startX: Math.floor(range.startX), startY:  Math.floor(range.startY)};
         if(r.startX-range.startX!==0){
@@ -18,35 +20,67 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         return r;
     }
 
-    const hudMap = {};
-    if(selectedUnit && selectedUnit.canMove()){
+    function unitHud(hudMap){
         const world = map.world;
         const pos = selectedUnit.derivedPosition();
-        const allowed = (y,x) => selectedUnit.canMoveOn(world[y][x].type);
-        if(allowed(pos.y-1,pos.x-1)) hudMap[`${pos.y-1}_${pos.x-1}`] = {className: "hud-move-top-left", action: ()=>MessageBus.sendLockable("cursor-direction", "NW")};
-        if(allowed(pos.y-1,pos.x)) hudMap[`${pos.y-1}_${pos.x}`]= {className: "hud-move-top", action: ()=>MessageBus.sendLockable("cursor-direction", "N")};
-        if(allowed(pos.y-1,pos.x+1)) hudMap[`${pos.y-1}_${pos.x+1}`]= {className: "hud-move-top-right", action: ()=>MessageBus.sendLockable("cursor-direction", "NE")};
-        if(allowed(pos.y,pos.x-1)) hudMap[`${pos.y}_${pos.x-1}`]= {className: "hud-move-left", action: ()=>MessageBus.sendLockable("cursor-direction", "W")};
-        if(allowed(pos.y,pos.x+1)) hudMap[`${pos.y}_${pos.x+1}`]= {className: "hud-move-right", action: ()=>MessageBus.sendLockable("cursor-direction", "E")};
-        if(allowed(pos.y+1,pos.x-1)) hudMap[`${pos.y+1}_${pos.x-1}`]= {className: "hud-move-down-left", action: ()=>MessageBus.sendLockable("cursor-direction", "SW")};
-        if(allowed(pos.y+1,pos.x)) hudMap[`${pos.y+1}_${pos.x}`]= {className: "hud-move-down", action: ()=>MessageBus.sendLockable("cursor-direction", "S")};
-        if(allowed(pos.y+1,pos.x+1)) hudMap[`${pos.y+1}_${pos.x+1}`]={className: "hud-move-down-right", action: ()=>MessageBus.sendLockable("cursor-direction", "SE")};
+        const allowed = (pos) => {
+            pos=map.normalize(pos);
+            return selectedUnit.canMoveOn(world[pos.y][pos.x].type);
+        };
+        if(allowed({y: pos.y-1,x: pos.x-1})) hudMap[`${pos.y-1}_${pos.x-1}`] = {className: "hud-move-top-left", action: ()=>MessageBus.sendLockable("cursor-direction", "NW")};
+        if(allowed({y: pos.y-1,x: pos.x})) hudMap[`${pos.y-1}_${pos.x}`]= {className: "hud-move-top", action: ()=>MessageBus.sendLockable("cursor-direction", "N")};
+        if(allowed({y: pos.y-1,x: pos.x+1})) hudMap[`${pos.y-1}_${pos.x+1}`]= {className: "hud-move-top-right", action: ()=>MessageBus.sendLockable("cursor-direction", "NE")};
+        if(allowed({y: pos.y,x:   pos.x-1})) hudMap[`${pos.y}_${pos.x-1}`]= {className: "hud-move-left", action: ()=>MessageBus.sendLockable("cursor-direction", "W")};
+        if(allowed({y: pos.y,x:   pos.x+1})) hudMap[`${pos.y}_${pos.x+1}`]= {className: "hud-move-right", action: ()=>MessageBus.sendLockable("cursor-direction", "E")};
+        if(allowed({y: pos.y+1,x: pos.x-1})) hudMap[`${pos.y+1}_${pos.x-1}`]= {className: "hud-move-down-left", action: ()=>MessageBus.sendLockable("cursor-direction", "SW")};
+        if(allowed({y: pos.y+1,x: pos.x})) hudMap[`${pos.y+1}_${pos.x}`]= {className: "hud-move-down", action: ()=>MessageBus.sendLockable("cursor-direction", "S")};
+        if(allowed({y: pos.y+1,x: pos.x+1})) hudMap[`${pos.y+1}_${pos.x+1}`]={className: "hud-move-down-right", action: ()=>MessageBus.sendLockable("cursor-direction", "SE")};
     }
+
+    function intelligenceHud(hudMap){
+        const decorate = (map, clazz) => {
+            if(!map) return;
+            Object.keys(map).forEach(key=>{
+                hudMap[key]=hudMap[key]?hudMap[key]:{className: clazz};
+            });
+        };
+
+        map.intelligence.forEach(cluster=>{
+            decorate(cluster.enemyCities, "hud-intelligence-enemy-city");
+            decorate(cluster.enemyUnits, "hud-intelligence-enemy-unit");
+            decorate(cluster.friendlyCities, "hud-intelligence-friendly-city");
+            decorate(cluster.friendlyUnits, "hud-intelligence-friendly-unit");
+            decorate(cluster.landmass, "hud-intelligence-same-island");
+            decorate(cluster.undiscovered, "hud-intelligence-to-discover");
+        });
+    }
+
+    const hudMap = {};
+    if(map.intelligence){
+        intelligenceHud(hudMap);
+    } else if(selectedUnit && selectedUnit.canMove()){
+        unitHud(hudMap);
+    }
+
+
+    // console.log(fogOfWar.prettyPrint());
 
     function cell(key, x, y, entry){
         const position = {x, y};
         const positionKey = `${y}_${x}`;
         const selected = selectedUnit&&selectedUnit.isOn(position);
         let unit = selected?selectedUnit:map.unitAt(position);
-        if(fogOfWar && !fogOfWar.visible(position)){
-            unit=null;
-        }
+
         const hud =hudMap[positionKey];
         let  detail =(entry.detail || entry.type);
-        if (fogOfWar && !fogOfWar.discovered(position)) {
-            detail="fog";
+        const clazzes = ["land-tile"];
+        if (!fogOfWar || fogOfWar.discovered(position)) {
+            clazzes.push("land-tile-type-" + detail);
         }
-        const clazzes = ["land-tile","land-tile-type-" + detail];
+        if(fogOfWar && !fogOfWar.visible(position)){
+            unit=null;
+            clazzes.push("land-fog-of-war");
+        }
         return <td key={key} className={clazzes.join(" ")}>
             {unit?<UnitView unit={unit} selected={selected}/>:null}
             {hud?<div className={(unit?"hud-action with-unit ":"hud-action ")+hud.className} onClick={hud.action}></div>:null}
@@ -56,7 +90,7 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
     function viewport(range, world) {
         const deltaX = range.deltaX;
         const deltaY = range.deltaY;
-        return <table style={{width: `${deltaX*TILE_SIZE}px`, height: `${deltaY*TILE_SIZE}px`}}>
+        return <table  className={"world-map"} style={{width: `${deltaX*TILE_SIZE}px`, height: `${deltaY*TILE_SIZE}px`}}>
             <tbody>
                 {[...Array(deltaY)].map((_, y) => {
                     let ly = (range.startY + y) % dimensions.height;

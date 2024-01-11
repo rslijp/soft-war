@@ -5,6 +5,37 @@
     background-position: center center;
 }
 
+.hud-intelligence-enemy-city {
+    border: 2px solid #aa393e;
+    background-color: rgba(170, 57, 62, 0.5);
+}
+
+.hud-intelligence-enemy-unit {
+    border: 2px solid #e47618;
+    background-color: rgba(228, 118, 24, 0.5);
+}
+
+
+.hud-intelligence-friendly-city {
+    border: 2px solid #56AF69;
+    background-color: rgba(86, 175, 105, 0.5);
+}
+
+.hud-intelligence-friendly-unit {
+    border: 2px solid #5687af;
+    background-color: rgba(86, 135, 175, 0.5);
+}
+
+.hud-intelligence-same-island {
+    border: 2px solid #ffde07;
+    background-color: rgba(255, 222, 7, 0.5);
+}
+
+.hud-intelligence-to-discover {
+    border: 2px solid #ffffff;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 .hud-action.with-unit {
     margin-top: calc(0px - var(--unit-size));
     position: relative;
