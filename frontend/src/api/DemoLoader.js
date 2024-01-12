@@ -1,4 +1,4 @@
-import {decorateMap, deserializeGameState, generateMap, MessageBus} from "softwar-shared";
+import {MessageBus, decorateMap, deserializeGameState, generateMap} from "softwar-shared";
 
 export function localDemoLoader() {
     MessageBus.clear();

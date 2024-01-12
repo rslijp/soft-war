@@ -1,6 +1,6 @@
+import {MessageBus, PLAYER_COLORS} from "softwar-shared";
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {bool, shape, string} from "prop-types";
-import {MessageBus, PLAYER_COLORS} from "softwar-shared";
 import React from "react";
 
 const TYPE_TILE_MAP = {

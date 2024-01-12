@@ -1,4 +1,4 @@
-import {decorateMap, deserializeGameState, MessageBus} from "softwar-shared";
+import {MessageBus, decorateMap, deserializeGameState} from "softwar-shared";
 import {apiFetch} from "./Api";
 
 export function loadGameState(code) {
