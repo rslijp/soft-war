@@ -105,13 +105,13 @@ export const unitTypes = {
         moves: 5,
         sight: 4,
         allowed: ["L","M","S"],
-        capacity: 2,
+        capacity: 1,
         canLoadUnits: ["I", "T"],
         costs: 6,
         groundAttackForces: false,
         modifiers: [
-            {reason: "Slow transport", percentage: -25, applicable:() => {
-                    return true;
+            {reason: "Slow transport", percentage: -25, applicable:(self) => {
+                    return self.nestedUnits.length>0;
             }}
         ]
     },
@@ -175,7 +175,7 @@ export const unitTypes = {
         groundAttackForces: false,
         modifiers: [
             {reason: "Submerged", percentage: 66, applicable: function(self, opponent) {
-                    return ["D","S","t","C","A","b"].indexOf(opponent.type) >= 0 && self.submerged;
+                    return ["D","S","t","c","A","b"].indexOf(opponent.type) >= 0 && self.submerged;
                 }}
         ],
         mixin: {

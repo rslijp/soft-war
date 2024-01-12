@@ -24,6 +24,10 @@ export function unit(type, position) {
     };
 
     this.canMoveOn = (type) => {
+        let isString = value => typeof value === 'string' || value instanceof String;
+        if(!isString(type)){
+            type = type.type;
+        }
         return this.definition().allowed.indexOf(type)>-1;
     };
     this.canMove = (blitz) => {
@@ -50,18 +54,19 @@ export function unit(type, position) {
         }
 
     };
-    this.move = (to) => {
+    this.move = (to, blitz) => {
         if (distance(this.position, to) !== 1) {
             return;
         }
-        if (!this.canMove(false)) {
+        if (!this.canMove(blitz||false)) {
             throw "Unit can't move in this turn";
         }
         this.position = to;
-        this.movesLeft-=1;
+        if(!blitz) this.movesLeft-=1;
         if (this.definition().fuel) {
             this.fuel -= 1;
-            if (this.fuel <= 0) {
+            this.fuel = Math.max(this.fuel, 0);
+            if (!blitz && this.fuel <= 0) {
                 this.health = 0;
                 MessageBus.send("unit-out-of-fuel", this);
             }
@@ -170,6 +175,6 @@ export function unit(type, position) {
 
     applyUnitTraitsOn(this);
     if (this.definition().mixin) {
-        applyTraitsOn(this.definition().mixin, this);
+        applyTraitsOn(this.definition().mixin, this, ["remark"]);
     }
 };

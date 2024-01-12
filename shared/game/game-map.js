@@ -58,7 +58,9 @@ export function gameMap(data) {
                 if (!cityName) {
                     throw "No more cities available. This map contains to many cities(>" + CITY_LIST.length + ")";
                 }
-                this.cities.push(new city({y: coordinate[0], x: coordinate[1]}, cityName));
+                const y = coordinate[0]===undefined?coordinate.y:coordinate[0];
+                const x = coordinate[1]===undefined?coordinate.x:coordinate[1];
+                this.cities.push(new city({y: y, x: x}, cityName));
         });
         this.cities.forEach((c) => {
             this.cityLookUp[`${c.position.x},${c.position.y}`] = c
