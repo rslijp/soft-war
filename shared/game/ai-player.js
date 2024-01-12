@@ -14,32 +14,34 @@ export function aiPlayer(index, name, color, units, map) {
     this.unitsMap = null;
     this.name = name;
     this.color = color;
-    this.hostileCities={};
     this.type="AI";
     this.position={y:0, x:0};
     this.intelligence=[];
     this.unitBuildCount=0;
 
-    var self = this;
-
-    this.enemyCitySpotted=function(foes, by){
-        foes.forEach((unit) => {
-           if(unit.clazz=='city'){
-               this.hostileCities[unit.name]=unit;
-           }
-       });
-    }
-    this.enemyCityConquered = function(cityDefense, player) {
-        var city = cityDefense.city;
-        if (player.index===self.index) {
-            self.hostileCities[city.name]=undefined;
+    const toKey = (pos) => `${pos.y}_${pos.x}`;
+    const addUnit = (u, sweep)=>{
+        if(!u) return;
+        const p = u.derivedPosition();
+        const k = toKey(p);
+        sweep.ids[u.id]=p;
+        if(u.player===this.index){
+            if(u.clazz==='city') {
+                sweep.friendlyCities[k]=u;
+            } else {
+                sweep.friendlyUnits[k]=u;
+            }
         } else {
-            self.hostileCities[city.name]=city;
+            sweep.enemies[k]=u;
+            if(u.clazz==='city') {
+                sweep.enemyCities[k]=u;
+            } else {
+                sweep.enemyUnits[k]=u;
+            }
         }
-    };
+    }
 
     this.intelligenceSweep = (mainUnit)=> {
-        const toKey = (pos) => `${pos.y}_${pos.x}`;
         const unitPos = mainUnit.derivedPosition();
         const unitKey = toKey(unitPos);
 
@@ -48,33 +50,13 @@ export function aiPlayer(index, name, color, units, map) {
             sweep = this.intelligence.find(c=>c.ids[mainUnit.inside.id]);
         }
         if(!sweep){
-            sweep={ids: {}, landmass: {}, undiscovered: {}, friendlyCities:{}, friendlyUnits:{}, enemyCities:{}, enemyUnits:{}};
+            sweep={ids: {}, landmass: {}, undiscovered: {}, friendlyCities:{}, friendlyUnits:{}, enemies:{}, enemyCities:{}, enemyUnits:{}};
             this.intelligence.push(sweep);
         }
-        const addUnit = (u)=>{
-            if(!u) return;
-            const p = u.derivedPosition();
-            const k = toKey(p);
-            sweep.ids[u.id]=p;
-            if(u.player===this.index){
-                if(u.clazz==='city') {
-                    sweep.friendlyCities[k]=u;
-                } else {
-                    sweep.friendlyUnits[k]=u;
-                }
-            } else {
-                if(u.clazz==='city') {
-                    sweep.enemyCities[k]=u;
-                } else {
-                    sweep.enemyUnits[k]=u;
-                }
-            }
-        }
 
-        addUnit(mainUnit);
-        if(mainUnit.inside){
-            console.lo
-        }
+
+        addUnit(mainUnit, sweep);
+
         if(INTEREST.has(map.position(unitPos))){
             const seen = new Set([unitKey]);
             sweep.landmass[toKey(unitPos)]=unitPos;
@@ -104,7 +86,7 @@ export function aiPlayer(index, name, color, units, map) {
                     seen.add(k);
                     if(this.fogOfWar.visible(c)){
                         const u = this.unitsMap.get(c)
-                        addUnit(u);
+                        addUnit(u, sweep);
                     }
                     if(INTEREST.has(map.position(c))) {
                         r.push(c);
@@ -143,6 +125,8 @@ export function aiPlayer(index, name, color, units, map) {
             viewRange.forEach(p=>{
                 const k = toKey(p);
                 delete sweep.undiscovered[k];
+                const u = this.unitsMap.get(c)
+                addUnit(u, sweep);
                 if(INTEREST.has(map.position(p))) sweep.landmass[k]=p;
             });
         } else {
@@ -155,18 +139,25 @@ export function aiPlayer(index, name, color, units, map) {
     this.makeOrderBasedOnIntelligence = (mainUnit)=> {
         let sweep = this.intelligence.find(c => c.ids[mainUnit.id]);
         const aStar = new navigationAStar(map, mainUnit, this.fogOfWar);
-        let path = null;
-        Object.keys(sweep.undiscovered).forEach(d=>{
-            const to = sweep.undiscovered[d];
-            const result = aStar.route(to);
-            if(!result || !result.route){
-                return
-            }
-            if( path === null ||
-                result.route.length<path.length) {
-                path=result.route;
-            }
-        });
+
+        const plan = (targets)=> {
+            let path = null;
+            Object.keys(targets).forEach(d => {
+                const to = targets[d];
+                const result = aStar.route(to);
+                if (!result || !result.route) {
+                    return
+                }
+                if (path === null ||
+                    result.route.length < path.length) {
+                    path = result.route;
+                }
+            });
+            return path;
+        }
+
+        const path = plan(sweep.enemies) ||
+                     plan(sweep.undiscovered);
 
         return path ? {
             action: "move",
@@ -185,9 +176,6 @@ export function aiPlayer(index, name, color, units, map) {
     };
 
     this.conquerTheWorld=()=>{
-        if(this.selectedUnit){
-            this.intelligenceSweep(this.selectedUnit);
-        }
         if(this.selectedUnit && this.selectedUnit.clazz==='city'){
             MessageBus.send("next-unit");
         }
@@ -234,15 +222,11 @@ export function aiPlayer(index, name, color, units, map) {
             if(u.inside) this.intelligenceSweep(u.inside);
             this.intelligenceSweep(u);
         });
-        console.log(this.intelligence);
+        console.log("INTEL", this.intelligence);
     }
     this.init();
 
-    // MessageBus.register("next-unit-updated", this.scheduleConquerTheWorld, this);
-    //
-    MessageBus.register("unit-order-step", this.unitOrderStep, this);
-
+    MessageBus.register("unit-order-step", this.unitOrderStep, this)
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
-    MessageBus.register("enemy-spotted", this.enemyCitySpotted, this);
     MessageBus.register("city-defense-destroyed", this.enemyCityConquered, this);
 }
