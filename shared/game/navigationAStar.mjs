@@ -1,10 +1,10 @@
 import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
 
-const sortedIndexOf = (arr, value, func) => [...arr].sort(func).indexOf(value)
+const sortedIndexOf = (arr, value, func) => [...arr].map(func).sort().findIndex(func)
 
-export function navigationAStar(map, unit, fogofwar) {
+export function navigationAStar(map, unit, fogofwar, flatEarth) {
     var origin = unit.derivedPosition();
-    this.route = function(to) {
+    this.route = function(to, verbose) {
         var iterations = 0;
         var calculations = 0;
 
@@ -14,15 +14,21 @@ export function navigationAStar(map, unit, fogofwar) {
         var headXY = [];
 
         function make(position, parent, costs, direction, moved) {
+            if(costs === null || costs === undefined) throw "Panic";
             calculations += 1;
             return {position: position, parent: parent, costs: costs, direction: direction, moved: moved};
         }
 
         function open(node) {
-            var i = sortedIndexOf(head, node, (item) => item.costs);
-            head.splice(i, 0, node);
+            // var i = sortedIndexOf(head, node, (item) => item.costs);
+            // if(verbose && iterations===1){
+            //     console.log("node?",node,i);
+            // }
+            // head.splice(i, 0, node);
+            head.push(node);
+            head.sort((item) => item.costs);
             var position = node.position;
-            headXY[position.y][node.position.x] = node;
+            headXY[position.y][position.x] = node;
         }
 
         function removeFromOpen(node) {
@@ -41,7 +47,7 @@ export function navigationAStar(map, unit, fogofwar) {
                 }
             }
             var position = node.position;
-            headXY[position.y][node.position.x] = null;
+            headXY[position.y][position.x] = null;
             return node;
         }
 
@@ -74,14 +80,19 @@ export function navigationAStar(map, unit, fogofwar) {
             var position = step.position;
             var next_y = position.y + offset.y;
             var next_x = position.x + offset.x;
-            //Map limitations
-            if (next_y < 0 || next_y >= map.height) {
-                return;
-            }
-            if (next_x < 0 || next_x >= map.width) {
-                return;
-            }
             var next = {y: next_y, x: next_x};
+            //Map limitations
+            if(flatEarth) {
+                if (next_y < 0 || next_y >= map.height) {
+                    return;
+                }
+                if (next_x < 0 || next_x >= map.width) {
+                    return;
+                }
+            }
+            else {
+                 next = map.normalize(next);
+            }
             //unit limitations
 
             if (!unit.canMoveOn(map.type(next)) || !fogofwar.discovered(next)) {
@@ -108,7 +119,7 @@ export function navigationAStar(map, unit, fogofwar) {
                     }
                 }
             }
-            open(make(next, step, currentCosts, offset.direction, step.moved + 1));
+            open(make(next, step, currentCosts, offset.direction, moved));
         }
 
         function checkNeighbours(step) {
