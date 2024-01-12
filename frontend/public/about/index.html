@@ -600,12 +600,35 @@ const matrix = [
             </tr>
         </table>
         <p>
-            Currently figuring out how to include the Jasmine spec runner in the game. I hope
-            to how off some more game logic in a week or so.
+            Currently figuring out how to include the Jasmine spec runner in the game. It is quite easy to install
+            and get running. It also comes with support for most IDEs so working with it from IntelliJ is quite fast
+        </p>
+        <img src="content/jasmine-test.png" style="display: inline-block; max-width: 600px; width: calc(100% - 20px)"/>
+        <p>Testing is fast. And test are written pretty easy:
+            <pre><code>
+            it("should allow movement on land for a Infantry", function(){
+                //Given
+                var unitInstance =  new unit("I", {x: 4, y:8});
+
+                //When
+                var result = unitInstance.canMoveOn({type:"L"});
+
+                expect(result).toEqual(true);
+            });</code></pre>
+            This setup lets me write unit test fast. Already at 223 tests. Whoohaa. It also allows for TDD
+            (Test Driven Development) but it is a
+            bit clumpsy in that regards. Syntax errors make it hard to figure out where it breaks. So
+            mostly using TAD (Test After Development).
+        </p>
+        <p>
+            I gave it some thoughts how to proceed and I decided to do the next hard thing. Besides developing the game
+            logic and front-end. Which would be adding more dialogs and so. I'm going to work on the AI
+            this would mean the multiplayer part wouldn't work until it is finished. But it is quickest.
+            For fun I will allow to see how the AI thinks on screen. More on that in step 7.
         </p>
         <dl>
             <dt>Time:</dt>
-            <dd>37h <b>(+8h)</b></dd>
+            <dd>43h <b>(+14h)</b></dd>
             <dt>Cost:</dt>
             <dd>60$ (a year) + <b>20$ (one time)</b></dd><br/>
             <dt>Stack:</dt>
