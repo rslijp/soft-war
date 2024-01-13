@@ -114,6 +114,7 @@ export function orders (unit, unitsmap, player) {
         if (changeDirection) {
             order.direction = NAVIGATIONS_OFFSETS[Math.floor(Math.random() * NAVIGATIONS_OFFSETS.length)].direction;
         }
+        console.log("ROAM", order.direction);
         return this.goDirection(order.direction);
     };
     this.executeDirection = (order) => {

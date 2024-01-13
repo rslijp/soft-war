@@ -4,7 +4,7 @@ const sortedIndexOf = (arr, value, func) => [...arr].map(func).sort().findIndex(
 
 export function navigationAStar(map, unit, fogofwar, flatEarth) {
     var origin = unit.derivedPosition();
-    this.route = function(to, verbose) {
+    this.route = function(to, ignoreFogOfWar) {
         var iterations = 0;
         var calculations = 0;
 
@@ -20,11 +20,6 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
         }
 
         function open(node) {
-            // var i = sortedIndexOf(head, node, (item) => item.costs);
-            // if(verbose && iterations===1){
-            //     console.log("node?",node,i);
-            // }
-            // head.splice(i, 0, node);
             head.push(node);
             head.sort((item) => item.costs);
             var position = node.position;
@@ -94,10 +89,10 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
                  next = map.normalize(next);
             }
             //unit limitations
-
-            if (!unit.canMoveOn(map.type(next)) || !fogofwar.discovered(next)) {
+            if (!unit.canMoveOn(map.type(next)) || !ignoreFogOfWar && !fogofwar.discovered(next)) {
                 return;
             }
+
             var moved = step.moved + 1;
             var currentCosts = costs(next, to, offset.penalty, moved);
             var existing = onOpen(next);

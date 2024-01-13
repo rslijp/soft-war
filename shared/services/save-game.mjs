@@ -52,12 +52,12 @@ export function deserializeGameState(raw, rawPlayers, rawMap){
             map
         );
         if(player.type==='Human'){
-            const human = new humanPlayer(i,player.name, PLAYER_COLORS[i], units);
+            const human = new humanPlayer(i,player.name, PLAYER_COLORS[i], units, map);
             human.autoNextFlag = true
             return human;
         } else
         if(player.type==='AI'){
-            return new aiPlayer(i,player.name, PLAYER_COLORS[i], units);
+            return new aiPlayer(i,player.name, PLAYER_COLORS[i], units, map);
         }
     });
     const r = new game(raw, map, players);

@@ -140,11 +140,11 @@ export function aiPlayer(index, name, color, units, map) {
         let sweep = this.intelligence.find(c => c.ids[mainUnit.id]);
         const aStar = new navigationAStar(map, mainUnit, this.fogOfWar);
 
-        const plan = (targets)=> {
+        const plan = (targets, ignoreFogOfWar)=> {
             let path = null;
             Object.keys(targets).forEach(d => {
                 const to = targets[d];
-                const result = aStar.route(to);
+                const result = aStar.route(to, ignoreFogOfWar);
                 if (!result || !result.route) {
                     return
                 }
@@ -156,8 +156,11 @@ export function aiPlayer(index, name, color, units, map) {
             return path;
         }
 
-        const path = plan(sweep.enemies) ||
-                     plan(sweep.undiscovered);
+        const path = plan(sweep.enemies, false) ||
+                     plan(sweep.undiscovered ,true);
+
+        if(path) console.log("move", path)
+        else console.log("roam");
 
         return path ? {
             action: "move",
@@ -222,11 +225,10 @@ export function aiPlayer(index, name, color, units, map) {
             if(u.inside) this.intelligenceSweep(u.inside);
             this.intelligenceSweep(u);
         });
-        console.log("INTEL", this.intelligence);
     }
     this.init();
 
     MessageBus.register("unit-order-step", this.unitOrderStep, this)
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
-    MessageBus.register("city-defense-destroyed", this.enemyCityConquered, this);
+    // MessageBus.register("city-defense-destroyed", this.enemyCityConquered, this);
 }

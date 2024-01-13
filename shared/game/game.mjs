@@ -119,8 +119,8 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         return new battle(
             attacker,
             defender,
-            attacker.modifiers(defender, attackerGround),
-            defender.modifiers(attacker, defenderGround)
+            attackerBonus,
+            defenderBonus
         );
     }
 
