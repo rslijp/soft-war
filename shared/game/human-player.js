@@ -30,42 +30,7 @@ export function humanPlayer(index, name, color, units, map) {
         this.messages = [];
         return messages.length === 0 ? ["No messages"] : messages;
     };
-    // this.cursorUpdate = function(to) {
-    //     to = map.normalize(to);
-    //     var unit = this.selectedUnit;
-    //     if (!unit) {
-    //         this.position = to;
-    //         return true;
-    //     }
-    //     if(unit.clazz==='city'){
-    //         return false;
-    //     }
-    //     if (unit.order) {
-    //         MessageBus.send("confirm-order", unit);
-    //         return false;
-    //     }
-    //     this.fogOfWar.remove(unit);
-    //     var succes = this.unitsMap.move(unit, to);
-    //     if(unit.isAlive()){
-    //         this.fogOfWar.add(unit);
-    //         this.position = unit.derivedPosition();
-    //     }
-    //     if (succes) {
-    //         this.jumpToNextUnit(unit);
-    //     }
-    //     return true;
-    // };
-    // this.jumpToNextUnit = function(unit) {
-    //     function innerAutoNext() {
-    //         if (self.selectedUnit === unit) {
-    //             MessageBus.send("next-unit");
-    //         }
-    //     }
-    //
-    //     if (unit && !unit.canMove() && this.autoNext()) {
-    //         setTimeout(innerAutoNext, 1500);
-    //     }
-    // };
+
     this.specialAction = function(action) {
         var unit = this.selectedUnit;
         if (!unit) {
@@ -124,7 +89,7 @@ export function humanPlayer(index, name, color, units, map) {
         }
         this.unregisterChilds(unit);
         this.unregisterUnit(unit);
-        if(self.index != aggressor.index) {
+        if(aggressor && self.index != aggressor.index) {
             this.fogOfWar.remove(unit, true);
         }
         if (self.selectedUnit == unit) {
@@ -134,7 +99,7 @@ export function humanPlayer(index, name, color, units, map) {
 
     };
     this.flashDestruction = function(unit, aggressor) {
-        if (unit.player != self.index || aggressor.index == self.index) {
+        if (unit.player != self.index || (aggressor && aggressor.index == self.index)) {
             return;
         }
         var position = unit.derivedPosition();

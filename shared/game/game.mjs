@@ -10,6 +10,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     this.code = code;
     this.players = players;
     this.currentPlayerIndex = currentPlayer||0;
+    this.map = map;
     this.unitsMap = new unitsMap(players, map);
     this.player = (index) => {
         return this.players[index];
@@ -47,6 +48,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         var unit = currentPlayer.carrousel.next();
         this.selectUnit(unit);
         this.executeOrders(unit);
+        if(unit) MessageBus.send("next-unit-updated", unit);
         if (currentPlayer.autoNext() && unit === null) {
             MessageBus.send("propose-end-turn");
         }
@@ -113,12 +115,21 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         this.setPosition(map.move(direction, this.position()));
     };
 
+    this._createBattle=(attacker, defender, attackerBonus, defenderBonus)=>{
+        return new battle(
+            attacker,
+            defender,
+            attacker.modifiers(defender, attackerGround),
+            defender.modifiers(attacker, defenderGround)
+        );
+    }
+
     this.battle = function(attacker, defender, at, blitz) {
         var defenderPosition = defender.derivedPosition();
         var attackerPosition = attacker.derivedPosition();
         var attackerGround = map.position(attackerPosition);
         var defenderGround = map.position(defenderPosition);
-        var battleVar = new battle(
+        var battleVar = this._createBattle(
             attacker,
             defender,
             attacker.modifiers(defender, attackerGround),

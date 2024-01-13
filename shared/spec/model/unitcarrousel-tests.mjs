@@ -1,9 +1,19 @@
-describe("Model.UnitCarrousel clazz", function(){
-    var tank = new Model.Unit("T", {y: 1, x: 1}).initTurn();
-    var fighter = new Model.Unit("F", {y: 2, x: 2}).initTurn();
-    var bomber = new Model.Unit("B", {y: 3, x: 3}).initTurn();
-    var infantry = new Model.Unit("I", {y: 4, x: 4}).initTurn();
-    var joker = new Model.Unit("b", {y: 5, x: 5}).initTurn();
+import {unitCarrousel} from "../../game/unit-carrousel.mjs";
+import {unit} from "../../game/unit.mjs";
+import {city} from "../../game/city.mjs";
+
+function times(n, func){
+    for(var i=0; i<n; i++){
+        func.apply(this);
+    }
+}
+
+describe("unitCarrousel clazz", function(){
+    var tank = new unit("T", {y: 1, x: 1}).initTurn();
+    var fighter = new unit("F", {y: 2, x: 2}).initTurn();
+    var bomber = new unit("B", {y: 3, x: 3}).initTurn();
+    var infantry = new unit("I", {y: 4, x: 4}).initTurn();
+    var joker = new unit("b", {y: 5, x: 5}).initTurn();
 
     var units = [];
     beforeEach(function(){
@@ -17,7 +27,7 @@ describe("Model.UnitCarrousel clazz", function(){
     describe("next method", function(){
         it("should start with the first unit from the original list", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
 
             //When
             var unit = carrousel.next();
@@ -28,7 +38,7 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should return the second unit from the original list on the second call", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
 
             //When
@@ -40,7 +50,7 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should return the third unit from the original list on the third call", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
             carrousel.next();
 
@@ -53,7 +63,7 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should return the last unit from the original list on the fourth call", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
             carrousel.next();
             carrousel.next();
@@ -67,7 +77,7 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should return null from the original list on the fifth call", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
             carrousel.next();
             carrousel.next();
@@ -82,7 +92,7 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should work on a copy of the orignal list", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             units[0]=joker
             //When
             var unit = carrousel.next();
@@ -94,7 +104,7 @@ describe("Model.UnitCarrousel clazz", function(){
         it("should skip unmovable units", function(){
             //Given
             fighter.movesLeft=0;
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
 
             //When
@@ -106,7 +116,7 @@ describe("Model.UnitCarrousel clazz", function(){
         it("should skip loaded units in a unit", function(){
             //Given
             fighter.inside=joker;
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
 
             //When
@@ -118,7 +128,7 @@ describe("Model.UnitCarrousel clazz", function(){
         it("should skip fortified units", function(){
             //Given
             fighter.fortified=true;
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
 
             //When
@@ -130,7 +140,7 @@ describe("Model.UnitCarrousel clazz", function(){
         it("should skip fortified units", function(){
             //Given
             fighter.health=0;
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
 
             //When
@@ -141,8 +151,8 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should not skip loaded units in a city", function(){
             //Given
-            fighter.inside=new Model.City("Tiel", {y: 3, x: 2});
-            var carrousel = new Model.UnitCarrousel(units);
+            fighter.inside=new city("Tiel", {y: 3, x: 2});
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
 
             //When
@@ -155,20 +165,20 @@ describe("Model.UnitCarrousel clazz", function(){
     describe("reschedule method", function(){
         it("should reschedule to end of queue", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             var unit = carrousel.next();
             expect(carrousel.current()).toEqual(unit)
 
             //When
             carrousel.reschedule(unit);
-            _.times(4, carrousel.next);
+            times(4, carrousel.next);
 
             //Then
             expect(carrousel.current()).toEqual(unit);
         });
         it("should clear the current when the current is being rescheduled", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             var unit = carrousel.next();
             expect(carrousel.current()).toEqual(unit)
 
@@ -180,11 +190,11 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should reschdule units on queue", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
 
             //When
             carrousel.reschedule(fighter);
-            _.times(4, function(){
+            times(4, function(){
                 carrousel.next();
             });
 
@@ -195,7 +205,7 @@ describe("Model.UnitCarrousel clazz", function(){
     describe("hasMore method", function(){
         it("should return true on after init when there are moveable untis", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
 
             //When
             var hasMore = carrousel.hasMore();
@@ -205,7 +215,7 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should return true when there are more moveable units", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             carrousel.next();
 
             //When
@@ -216,7 +226,7 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should return true when down the queue there are more moveable units", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             fighter.movesLeft=0;
             bomber.movesLeft=0;
             tank.movesLeft=1;
@@ -230,7 +240,7 @@ describe("Model.UnitCarrousel clazz", function(){
         });
         it("should return false when down the queue doesn't contain moveable units", function(){
             //Given
-            var carrousel = new Model.UnitCarrousel(units);
+            var carrousel = new unitCarrousel(units);
             fighter.movesLeft=0;
             bomber.movesLeft=0;
             tank.movesLeft=0;

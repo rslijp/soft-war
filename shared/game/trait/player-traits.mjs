@@ -38,7 +38,7 @@ export const playerTraits = {
    },
    looses: function(){
         this.state="lost";
-        Service.Bus.send("player-looses", this);
+        MessageBus.send("player-looses", this);
    },
    roaming: function(){
         if(!this.isRoaming()){
@@ -49,7 +49,7 @@ export const playerTraits = {
    },
    wins: function(){
         this.state="won";
-        Service.Bus.send("player-wins", this);
+        MessageBus.send("player-wins", this);
    },
    hasLost: function(){
         return this.state=="lost";
@@ -73,7 +73,7 @@ export const playerTraits = {
         return (this.units||[]).length>0;
    },
    hasAnyCities: function() {
-        return (this.units||[]).filter((unit)=>{return unit.clazz=="city"})>0;
+        return (this.units||[]).filter((unit)=>{return unit.clazz=="city"}).length>0;
    },
    nextId: function (){
        const id = this.id;

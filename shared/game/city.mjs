@@ -103,11 +103,12 @@ export function city(position, name, producing, production) {
             MessageBus.send("unit-creation-suspended", this, producing);
             return;
         }
-        var unit = new unit(this.player.nextId(), this.producingType);
-        unit.player = this.player;
-        this.internalLoad(unit);
+        var unitInstance = new unit(this.producingType, this.position);
+        unitInstance.id= this.player.nextId();
+        unitInstance.player = this.player;
+        this.internalLoad(unitInstance);
         this.production = 0;
-        MessageBus.send("unit-created", this, unit);
+        MessageBus.send("unit-created", this, unitInstance);
     };
     this.hasSight=function(){
         return true;

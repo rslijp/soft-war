@@ -1,5 +1,57 @@
 import {gameMap} from "../../game/game-map.js";
 
+export function testAllLandGameMap(){
+    return new gameMap({
+        "dimensions": {
+            "width": 12,
+            "height": 12
+        },
+        "world" : [
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL",
+            "LLLLLLLLLLLL"
+        ],
+        "cities" : [
+            [1,5],
+            [1,12],
+            [1,21],
+            [1,28],
+            [2,7],
+            [2,23],
+            [9,9],
+            [9,25],
+            [10,9],
+            [10,25],
+            [12,5],
+            [12,21],
+            [13,12],
+            [13,28],
+            [17,5],
+            [17,12],
+            [17,21],
+            [17,28],
+            [18,7],
+            [18,23],
+            [25,9],
+            [25,25],
+            [26,9],
+            [26,25],
+            [28,5],
+            [28,21],
+            [29,12],
+            [29,28]
+        ]
+    });
+}
 export function testGameMap(){
     return new gameMap({
         "dimensions": {
