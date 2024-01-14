@@ -686,7 +686,7 @@ const matrix = [
             <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
         </table>
         <p>So we need to find a path from S to E. In a regular back track algorithm. You would start and follow a random path and hope for the best. If you hit a dead end. You go back. But you do leave crumbs</p>
-        <h3>Depth first/back tracking naive. We use a random direction</h3>
+        <h3>1st Solution - Depth first/back tracking naive. We use a random direction</h3>
         <div style="display: inline-block">
             <table>
                 <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
@@ -765,11 +765,25 @@ const matrix = [
                 <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
             </table>
         </div>
-        <div style="display: inline-block">...This will continue until we reached our end point. Or not.</div>
+        <p style="display: inline-block">...This will continue until we reached our end point. Or not.</p>
         <p>As you can see choosing a random path. Will not automatically get the shortest route. Also calculcation in the form of permutations will increase a lot. We are just trying something.
-            One of the fixes is to when you have a route. Try to optmize it. But then the damage is already done. A better way is to keep track of the "cost" of a path
+            One of the fixes is to when you have a route. Try to optmize it. But then the damage is already done. You can see the not optimal tracks highlighted below. Both orange locations can also be reachted in 2 steps.
+            A better way is to keep track of the "cost" of a path
         </p>
-        <h3>Broad first/GPS without optimization</h3>
+        <div style="display: inline-block">
+            <table>
+                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile">-</td><td class="land-tile">-</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
+                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
+                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
+                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile low-priority">3</td><td class="land-tile low-priority">4</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
+                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
+                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
+                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
+                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
+            </table>
+        </div>
+        <h3>2nd solution - Broad first/GPS without optimization</h3>
         <div style="display: inline-block">
             <table>
                 <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
@@ -862,167 +876,7 @@ const matrix = [
             </table>
         </div>
         <p>Notice that we now have a away of detecting that we have a better path. To our disposal. The only questions is when do we do this check. This is a good moment to look at the GPS approach. This version doesn't do any optimization</p>
-        <h3>Depth first/back tracking with early pruning</h3>
-        <p>We use the direction that closest dx, dy to our goal.</p>
-        <div style="display: inline-block">
-        <table>
-            <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-            <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-            <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-            <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-            <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-            <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-            <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-            <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-            <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-        </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">4</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">4</td><td class="land-tile">-</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">-</td><td class="land-tile">-</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">-</td><td class="land-tile">-</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">4</td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">-</td><td class="land-tile">-</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">4</td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">5</td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">-</td><td class="land-tile">-</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">4</td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">5</td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">-</td><td class="land-tile">-</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">4</td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">5</td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">-</td><td class="land-tile">-</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">4</td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">5</td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">7</td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">-</td><td class="land-tile">-</td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">4</td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">5</td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">6</td><td class="land-tile">7</td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <p>As you can see it took us 6 cycles to reach or goal. Not bad. However we still did do a lot of additional not required calculation. A way of judging if a calculation is
-        required is called pruning. Let's go back to the depth first algorith with pruning.</p>
-        <h3>Depth first/back tracking with early pruning</h3>
+        <h3>3rd Solution - Depth first/back tracking with early pruning</h3>
         <p>We use the direction that closest dx, dy to our goal.</p>
         <div style="display: inline-block">
             <table>
@@ -1199,90 +1053,7 @@ const matrix = [
         </div>
         <p>The final step is to combine them together. That is basically A*. The cost algorithm described in A* I will(/can) not
             explain. </p>
-        <h3>Depth first/back tracking naive. We use a random direction</h3>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile">1</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile">2</td><td class="land-tile">1</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile">-</td><td class="land-tile">-</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile">-</td><td class="land-tile">-</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile">-</td><td class="land-tile">-</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile"></td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">
-            <table>
-                <tr><th> </th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
-                <tr><th>1</th><td class="sea-tile"></td><td class="land-tile">-</td><td class="land-tile">-</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>2</th><td class="sea-tile"></td><td class="sea-tile"></td><td class="land-tile change">S</td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>3</th><td class="land-tile"></td><td class="sea-tile"></td><td class="land-tile">1</td><td class="land-tile">2</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="sea-tile"></td><td class="sea-tile"></td></tr>
-                <tr><th>4</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile">3</td><td class="land-tile">4</td><td class="land-mountain"></td><td class="sea-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>5</th><td class="sea-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>6</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-mountain"></td><td class="land-tile"></td></tr>
-                <tr><th>7</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-mountain"></td><td class="land-tile"></td><td class="land-tile change">E</td><td class=land-tile></td></tr>
-                <tr><th>8</th><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="land-tile"></td><td class="sea-tile"></td></tr>
-            </table>
-        </div>
-        <div style="display: inline-block">...This will continue until we reached our end point. Or not.</div>
-        <p>As you can see choosing a random path. Will not automatically get the shortest route. Also calculcation in the form of permutations will increase a lot. We are just trying something.
-            One of the fixes is to when you have a route. Try to optmize it. But then the damage is already done. A better way is to keep track of the "cost" of a path
-        </p>
-        <h3>Broad first and depth first combined. </h3>
+        <h3>Final solution - Broad first and depth first combined. </h3>
         <p>We make the combination by adding a priority to our head in broad first. If a candidate ranks lower.
             In priority we will not calculate it in this turn and just keep it open as an option (orange).<br>
             I hope it is clear that the heads we continue with are the heads with the lowest distance to the target with the minimal amount of moves.
