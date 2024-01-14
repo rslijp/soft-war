@@ -237,6 +237,23 @@ table.pattern td.grass-w-sea {
     border: 1px solid red;
 }
 
+.land-tile.head, .land-mountain.head {
+    border: 1px solid blue;
+}
+
+.land-tile.low-priority, .land-mountain.low-priority {
+    border: 1px solid orange;
+}
+
+.land-tile.better, .land-mountain.better {
+    border: 1px solid green;
+}
+
+.land-tile.crumb {
+    color: gray;
+    font-style: italic;
+}
+
 .land-tile-factors th {
     text-align: left;
 }
