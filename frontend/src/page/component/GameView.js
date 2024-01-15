@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import {any, number, shape} from "prop-types";
 import {MessageBus} from "softwar-shared";
-import WorldMapView from "./WorldMapView";
+import WorldMapView from "../../map/WorldMapView";
 
 function GameView({state, range}) {
     const currentPlayer = state.currentPlayer();

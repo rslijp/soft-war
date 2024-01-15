@@ -1,13 +1,13 @@
-import {Button, Container, Navbar} from "react-bootstrap";
 import React, {useEffect, useRef, useState} from "react";
-import { faCrosshairs, faFlag, faForwardStep } from '@fortawesome/free-solid-svg-icons';
+import ChangeCityProductionDialog from "./dialogs/ChangeCityProductionDialog";
 import EndTurnDialog from "./dialogs/EndTurnDialog";
 import FlashMessagesDialog from "./dialogs/FlashMessagesDialog";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import GameView from "../map/GameView";
+import GameUnitBar from "./component/GameUnitBar";
+import GameView from "./component/GameView";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import HorizontalScrollBar from "../map/HorizontalScrollBar";
 import MessageBus from "softwar-shared/services/message-service.mjs";
+import OutOfFuelDialog from "./dialogs/OutOfFuelDialog";
 import ScrollableViewPort from "../map/ScrollableViewPort";
 import SurrenderDialog from "./dialogs/SurrenderDialog";
 import {TOP_BAR_HEIGHT} from "../Constants";
@@ -43,7 +43,6 @@ function GamePage() {
     const focusOnTile = ({x, y}) => {
         clearTimeout(timer);
         timer=setTimeout(()=>{
-            // console.log({y,x}, currentPlayer.selectedUnit.id);
             const state = stateRef.current.state;
             const viewPort = stateRef.current.viewPort;
             if(state !== "ready") return;
@@ -57,12 +56,20 @@ function GamePage() {
         setDialog({name: 'end-turn', code: gameState.code});
     };
 
+    const outOfFuel = (unit) => {
+        if (unit.player != gameState.currentPlayer()) {
+            return;
+        }
+        setDialog({name: 'unit-out-of-fuel', unit: unit});
+    };
+
     useEffect(() => {
         const handles = [
             MessageBus.register("new-turn", newTurn, this),
             MessageBus.register("screen-update", render, this),
             MessageBus.register("cursor-select", focusOnTile, this),
-            MessageBus.register("propose-end-turn", endTurn, this)
+            MessageBus.register("propose-end-turn", endTurn, this),
+            MessageBus.register("unit-out-of-fuel", outOfFuel, this),
         ];
         return ()=>{
             MessageBus.revokeByHandles(handles);
@@ -95,21 +102,17 @@ function GamePage() {
             setDialog(null);
             MessageBus.send("game-view-focus");
         };
-        if(dialog.name === 'surrender'){
-            return <SurrenderDialog code={dialog.code} onClose={close}/>;
-        }
-        if(dialog.name === 'end-turn'){
-            return <EndTurnDialog onClose={close}/>;
-        }
-        else if(dialog.name === 'messages'){
-            return <FlashMessagesDialog messages={dialog.messages} onClose={close}/>;
-        }
-        return null;
+        const dialogs = {
+            'surrender': () => <SurrenderDialog code={dialog.code} onClose={close}/>,
+            'end-turn': () => <EndTurnDialog onClose={close}/>,
+            'messages': () => <FlashMessagesDialog messages={dialog.messages} onClose={close}/>,
+            'unit-out-of-fuel': () => <OutOfFuelDialog unit={dialog.unit} onClose={close}/>,
+            'change-city-production': () => <ChangeCityProductionDialog city={dialog.city} onClose={close}/>
+        };
+        const builder = dialogs[dialog.name];
+        return builder?builder(dialog):null;
     };
 
-    const currentPlayer = gameState.currentPlayer();
-    const selectedUnit = currentPlayer.selectedUnit;
-    // console.log(selectedUnit);
 
     return <>
         {dialog ? renderDialog(dialog) : null}
@@ -123,22 +126,7 @@ function GamePage() {
             grid={grid}
             margin={{north: TOP_BAR_HEIGHT, south: TOP_BAR_HEIGHT}}
         />
-        <Navbar sticky="bottom" bg="dark" data-bs-theme="dark" className={"bottom-bar"}>
-            <Container fluid>
-                <Navbar.Collapse className="justify-content-start">
-                    {selectedUnit?<Navbar.Text>
-                        <Button variant={"outline-secondary"} size={"xs"} onClick={()=>focusOnTile(selectedUnit.derivedPosition())}><FontAwesomeIcon icon={faCrosshairs}/></Button> {selectedUnit.getName()}, moves left <u>{selectedUnit.movesLeft}</u>
-                    </Navbar.Text>:null}
-                </Navbar.Collapse>
-                <Navbar.Collapse className="justify-content-end">
-                    <Navbar.Text className="bottom-bar-space">
-                        Turn{" "}<u>{ gameState.turn}</u>
-                    </Navbar.Text>
-                    <Button className="d-flex bottom-bar-space" variant={"warning"} size={"xs"} onClick={()=>MessageBus.send("propose-end-turn")}><FontAwesomeIcon icon={faForwardStep} /></Button>
-                    <Button className="d-flex bottom-bar-space" variant={"danger"} size={"xs"} onClick={()=>setDialog({name: 'surrender', code: gameState.code})}><FontAwesomeIcon icon={faFlag} /></Button>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+        <GameUnitBar gameState={gameState} openDialog={setDialog}/>
     </>;
 }
 

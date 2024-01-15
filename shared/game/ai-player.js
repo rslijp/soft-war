@@ -17,7 +17,6 @@ export function aiPlayer(index, name, color, units, map) {
     this.type="AI";
     this.position={y:0, x:0};
     this.intelligence=[];
-    this.unitBuildCount=0;
 
     const toKey = (pos) => `${pos.y}_${pos.x}`;
     const addUnit = (u, sweep)=>{
@@ -109,6 +108,7 @@ export function aiPlayer(index, name, color, units, map) {
 
     this.updateIntelligence = (mainUnit)=> {
         const toKey = (pos) => `${pos.y}_${pos.x}`;
+        console.log(mainUnit);
         const newPos = mainUnit.derivedPosition();
 
         let sweep = this.intelligence.find(c => c.ids[mainUnit.id]);
@@ -120,7 +120,12 @@ export function aiPlayer(index, name, color, units, map) {
             if(oldPos) {
                 delete sweep.friendlyUnits[toKey(oldPos)];
             }
-            sweep.friendlyUnits[toKey(newPos)]=mainUnit;
+            const newPosKey = toKey(newPos);
+            sweep.friendlyUnits[newPosKey]=mainUnit;
+            delete sweep.enemies[newPosKey];
+            delete sweep.enemyCities[newPosKey];
+            delete sweep.enemyUnits[newPosKey];
+
             const viewRange = this.fogOfWar.range(newPos);
             viewRange.forEach(p=>{
                 const k = toKey(p);
@@ -139,12 +144,11 @@ export function aiPlayer(index, name, color, units, map) {
     this.makeOrderBasedOnIntelligence = (mainUnit)=> {
         let sweep = this.intelligence.find(c => c.ids[mainUnit.id]);
         const aStar = new navigationAStar(map, mainUnit, this.fogOfWar);
-
-        const plan = (targets, ignoreFogOfWar)=> {
+        const plan = (name, targets, toPos, ignoreFogOfWar)=> {
             let path = null;
             Object.keys(targets).forEach(d => {
                 const to = targets[d];
-                const result = aStar.route(to, ignoreFogOfWar);
+                const result = aStar.route(toPos(to), ignoreFogOfWar);
                 if (!result || !result.route) {
                     return
                 }
@@ -156,8 +160,8 @@ export function aiPlayer(index, name, color, units, map) {
             return path;
         }
 
-        const path = plan(sweep.enemies, false) ||
-                     plan(sweep.undiscovered ,true);
+        const path = plan("enemy",sweep.enemies, n=>n.derivedPosition(), false) ||
+                     plan("discover", sweep.undiscovered , n=>n, true);
 
         if(path) console.log("move", path)
         else console.log("roam");
@@ -230,5 +234,6 @@ export function aiPlayer(index, name, color, units, map) {
 
     MessageBus.register("unit-order-step", this.unitOrderStep, this)
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
+    MessageBus.register("unit-created", this.registerUnit, this);
     // MessageBus.register("city-defense-destroyed", this.enemyCityConquered, this);
 }

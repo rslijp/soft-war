@@ -71,6 +71,7 @@ export function orders (unit, unitsmap, player) {
         player.fogOfWar.remove(unit);
         var succes = step && unitsmap.move(unit, step);
         player.fogOfWar.add(unit);
+        console.log(step, succes, unit.getName());
         if (succes) {
             player.position = step;
             MessageBus.send("unit-order-step", unit, order);
@@ -114,7 +115,6 @@ export function orders (unit, unitsmap, player) {
         if (changeDirection) {
             order.direction = NAVIGATIONS_OFFSETS[Math.floor(Math.random() * NAVIGATIONS_OFFSETS.length)].direction;
         }
-        console.log("ROAM", order.direction);
         return this.goDirection(order.direction);
     };
     this.executeDirection = (order) => {

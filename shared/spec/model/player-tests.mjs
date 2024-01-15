@@ -564,7 +564,7 @@ describe("humanPlayer class", function(){
       });
     describe("enemySpotted", function(){
         it("should mark enemy contacted on first spot", function(){
-          var friend = new unit("T", {y: 3, x:3}).tag(1);
+          var friend = new unit("T", {y: 3, x:3});
           var foe = new unit("T", {y: 3, x:4});
           var units = [friend];
           var player = new humanPlayer(0,"Name", "Color",units, map);
@@ -576,7 +576,7 @@ describe("humanPlayer class", function(){
           expect(player.contactedEnemy).toBeTruthy();
         });
         it("should register the enemy spotted by that unit", function(){
-          var friend = new unit("T", {y: 3, x:3}).tag(1);
+          var friend = new unit("T", {y: 3, x:3});
           var foe = new unit("T", {y: 3, x:4});
           var units = [friend];
           var player = new humanPlayer(0,"Name", "Color",units, map);
@@ -587,7 +587,7 @@ describe("humanPlayer class", function(){
           expect(player.enemySpottedThisTurn[friend][0]).toEqual(foe);
         });
         it("should add spotted enemies", function(){
-          var friend = new unit("T", {y: 3, x:3}).tag(1);
+          var friend = new unit("T", {y: 3, x:3});
           var foe1 = new unit("T", {y: 3, x:4});
           var foe2 = new unit("F", {y: 4, x:4});
           var units = [friend];

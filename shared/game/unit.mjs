@@ -162,15 +162,11 @@ export function unit(type, position) {
         return this.definition().groundForce;    
     };
 
-    this.tag = (id) => {
-        if(id===1) { this.id="1st army"; }
-        else if(id===2) { this.id="2nd army"; }
-        else if(id===3) { this.id="3rd army"; }
-        else { this.id=id+"nd army"; }
-        return this;
-    }
     this.getName = () => {
-        return this.id;
+        if(this.id===1) { return "1st army"; }
+        else if(this.id===2) { return "2nd army"; }
+        else if(this.id===3) { return "3rd army"; }
+        else { return this.id+"nd army"; }
     }
 
     applyUnitTraitsOn(this);

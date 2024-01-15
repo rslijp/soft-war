@@ -16,7 +16,6 @@ export function humanPlayer(index, name, color, units, map) {
     this.name = name;
     this.color = color;
     this.selectedUnit = null;
-    this.unitBuildCount=0;
     this.state="playing";
     this.type="Human";
     
@@ -134,16 +133,6 @@ export function humanPlayer(index, name, color, units, map) {
         }
         var position = city.position;
         this.flash("The city of " + city.name + "(" + position.y + ", " + position.x + ") isn't producing any units.");
-    };
-    this.registerUnit = function(city, unit) {
-        if (unit.player != self.index) {
-            return;
-        }
-        if(unit.clazz=="unit"){
-            this.unitBuildCount+=1;
-            unit.tag(this.unitBuildCount+=1);
-        }
-        this.units.push(unit);
     };
     this.flashUnitCreated = function(city, unit) {
         if (unit.player != self.index) {

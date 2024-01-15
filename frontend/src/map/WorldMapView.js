@@ -44,7 +44,15 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
                 hudMap[key]=hudMap[key]?hudMap[key]:{className: clazz};
             });
         };
-
+        const showPath = (unit,clazz) => {
+            if(unit.order){
+                const order = unit.order;
+                const key = (pos) => `${pos.y}_${pos.x}`;
+                hudMap[key(order.from)]={className: clazz};
+                hudMap[key(order.to)]={className: clazz};
+                order.queue.forEach(p=>hudMap[key(p)]={className: clazz});
+            }
+        };
         map.intelligence.forEach(cluster=>{
             decorate(cluster.enemyCities, "hud-intelligence-enemy-city");
             decorate(cluster.enemyUnits, "hud-intelligence-enemy-unit");
@@ -52,6 +60,7 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
             decorate(cluster.friendlyUnits, "hud-intelligence-friendly-unit");
             decorate(cluster.landmass, "hud-intelligence-same-island");
             decorate(cluster.undiscovered, "hud-intelligence-to-discover");
+            if(selectedUnit) showPath(selectedUnit, "hud-intelligence-route");
         });
     }
 

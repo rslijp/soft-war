@@ -322,11 +322,11 @@ body {
     /*margin-right: 5px;*/
 }
 
-.bottom-bar .btn-outline-secondary {
+.bottom-bar .btn-outline-secondary, .unit-dialog .btn-outline-secondary {
     color: white;
 }
 
-.bottom-bar .bottom-bar-space {
+.bottom-bar .bottom-bar-space, .unit-dialog .dialog-space {
     margin-left: 5px;
     margin-right: 5px;
 }

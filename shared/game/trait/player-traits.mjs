@@ -115,13 +115,21 @@ export const playerTraits = {
             setTimeout(innerAutoNext, 1500);
         }
     },
-   init: function (){
+    registerUnit: function(city, unit) {
+        if (unit.player != this.index) {
+            return;
+        }
+        if(unit.clazz=="unit"){
+            unit.id= this.nextId();
+        }
+        this.units.push(unit);
+    },
+    init: function (){
         this.units.forEach((unit) => {
             unit.player = this.index;
             this.fogOfWar.add(unit);
             if(unit.clazz === 'unit'){
-                this.unitBuildCount++;
-                unit.tag(this.unitBuildCount);
+                unit.id=this.nextId();
             }
         });
        if(this.autoNextFlag) {

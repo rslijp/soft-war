@@ -98,23 +98,6 @@ export const unitTypes = {
                 }}
         ]
     },
-    "H": {
-        name: "Helicopter",
-        health: 2,
-        html: "H",
-        moves: 5,
-        sight: 4,
-        allowed: ["L","M","S"],
-        capacity: 1,
-        canLoadUnits: ["I", "T"],
-        costs: 6,
-        groundAttackForces: false,
-        modifiers: [
-            {reason: "Slow transport", percentage: -25, applicable:(self) => {
-                    return self.nestedUnits.length>0;
-            }}
-        ]
-    },
     "F": {
         name: "Fighter",
         html: "F",
@@ -131,6 +114,23 @@ export const unitTypes = {
                 }},
             {reason: "Submerged target", percentage: 66, applicable: function(self, opponent) {
                     return opponent.submerged;
+                }}
+        ]
+    },
+    "H": {
+        name: "Helicopter",
+        health: 2,
+        html: "H",
+        moves: 5,
+        sight: 4,
+        allowed: ["L","M","S"],
+        capacity: 1,
+        canLoadUnits: ["I", "T"],
+        costs: 10,
+        groundAttackForces: false,
+        modifiers: [
+            {reason: "Slow transport", percentage: -25, applicable:(self) => {
+                    return self.nestedUnits.length>0;
                 }}
         ]
     },

@@ -104,7 +104,6 @@ export function city(position, name, producing, production) {
             return;
         }
         var unitInstance = new unit(this.producingType, this.position);
-        unitInstance.id= this.player.nextId();
         unitInstance.player = this.player;
         this.internalLoad(unitInstance);
         this.production = 0;

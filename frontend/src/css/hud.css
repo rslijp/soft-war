@@ -15,6 +15,11 @@
     background-color: rgba(228, 118, 24, 0.5);
 }
 
+.hud-intelligence-route {
+    border: 2px solid #7b18e4;
+    background-color: rgba(123, 24, 228, 0.5);
+}
+
 
 .hud-intelligence-friendly-city {
     border: 2px solid #56AF69;

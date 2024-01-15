@@ -8,15 +8,16 @@ const TYPE_TILE_MAP = {
     'I' : 'infantry',
     'T' : 'tank',
     'M' : 'truck',
-    'F' : 'figher',
+    'F' : 'fighter',
+    'B' : 'bomber',
     'H' : 'helicopter',
     'D' : 'destroyer',
     'c' : 'cruiser',
-    'B' : 'battleship',
     'A' : 'aircraftcarrier',
     'S' : 'submarine',
     'm' : 'missile',
-    't' : 'transport'
+    't' : 'transport',
+    'b' : 'battleship'
 };
 
 function UnitView({unit, selected}) {

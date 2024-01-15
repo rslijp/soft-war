@@ -30,9 +30,9 @@ const saveGame = {
         var cities = [];
         rawcities.forEach((rawcity) => {
             var city = map.cityAt(rawcity.y, rawcity.x);
-            if (rawcity.producingType && rawcity.production) {
+            if (rawcity.producingType) {
                 city.producingType = rawcity.producingType;
-                city.production = rawcity.production;
+                city.production = rawcity.production || 0;
             }
             cities.push(city);
         });

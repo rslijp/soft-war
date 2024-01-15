@@ -100,7 +100,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
 
     this.selectUnit = (unit) => {
         var currentPlayer = this.currentPlayer();
-        if (!unit || unit.player === this.currentPlayerIndex) {
+        if (!unit || unit.player === currentPlayer.index) {
             unit = currentPlayer.cursorSelect(unit);
             if (unit) {
                 currentPlayer.position = unit.derivedPosition();
@@ -268,7 +268,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     MessageBus.register("next-unit", this.nextUnit, this);
     MessageBus.register("auto-next", this.toggleAutoNext, this);
     MessageBus.register("execute-orders", this.executeOrders, this);
-    MessageBus.register("propose-end-turn", this.endTurn, this);
+    MessageBus.register("end-turn", this.endTurn, this);
     MessageBus.register("game-state-changed", this.winOrLoose, this);
 
 };
