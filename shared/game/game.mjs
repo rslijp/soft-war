@@ -178,7 +178,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         return {
             dimensions: t.dimensions,
             world: t.world,
-            unitAt: this.unitsMap.unitAt,
+            unitAt: this.unitsMap.get,
             normalize: map.normalize,
             intelligence: p?p.intelligence:null
         }
@@ -270,5 +270,6 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     MessageBus.register("execute-orders", this.executeOrders, this);
     MessageBus.register("end-turn", this.endTurn, this);
     MessageBus.register("game-state-changed", this.winOrLoose, this);
+    MessageBus.register("select-unit", this.selectUnit, this);
 
 };

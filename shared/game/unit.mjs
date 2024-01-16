@@ -2,7 +2,6 @@ import {applyUnitTraitsOn} from "./trait/unit-traits.mjs"
 import {unitTypes} from "./unit-types.mjs"
 import MessageBus from "../services/message-service.mjs";
 import {applyTraitsOn} from "./trait/traits-util.mjs";
-import {distance} from "../services/navigation-service.mjs";
 
 export function unit(type, position) {
     this.id = "";
@@ -18,6 +17,7 @@ export function unit(type, position) {
     this.inside = null;
     this.clazz = "unit";
     this.blitzed = false;
+    this.capacity = this.definition().capacity;
 
     this.isAlive= () => {
         return this.health>0;
@@ -55,9 +55,6 @@ export function unit(type, position) {
 
     };
     this.move = (to, blitz) => {
-        if (distance(this.position, to) !== 1) {
-            return;
-        }
         if (!this.canMove(blitz||false)) {
             throw "Unit can't move in this turn";
         }

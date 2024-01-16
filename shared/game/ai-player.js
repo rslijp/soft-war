@@ -108,11 +108,10 @@ export function aiPlayer(index, name, color, units, map) {
 
     this.updateIntelligence = (mainUnit)=> {
         const toKey = (pos) => `${pos.y}_${pos.x}`;
-        console.log(mainUnit);
-        const newPos = mainUnit.derivedPosition();
 
         let sweep = this.intelligence.find(c => c.ids[mainUnit.id]);
         if(mainUnit.isAlive()){
+            const newPos = mainUnit.derivedPosition();
             const oldPos = sweep.ids[mainUnit.id];
             // console.log(oldPos,"==>",newPos);
             if(toKey(newPos) === toKey(oldPos)) return;
@@ -163,7 +162,7 @@ export function aiPlayer(index, name, color, units, map) {
         const path = plan("enemy",sweep.enemies, n=>n.derivedPosition(), false) ||
                      plan("discover", sweep.undiscovered , n=>n, true);
 
-        if(path) console.log("move", path)
+        if(path) console.log("move", mainUnit.derivedPosition(), JSON.stringify(path))
         else console.log("roam");
 
         return path ? {
@@ -177,8 +176,9 @@ export function aiPlayer(index, name, color, units, map) {
     }
 
     this.unitOrderStep=()=>{
-        if(this.selectedUnit) {
-            this.updateIntelligence(this.selectedUnit);
+        const unit = this.selectedUnit;
+        if(unit) {
+            this.updateIntelligence(unit);
         }
     };
 
@@ -193,7 +193,7 @@ export function aiPlayer(index, name, color, units, map) {
                 unit.order = order;
             }
             const r = new orders(unit, this.unitsMap, this).lockedExecuteOrders();
-            if(unit.isAlive()){
+             if(unit.isAlive()){
                 // this.fogOfWar.add(unit);
                 this.position = unit.derivedPosition();
             }

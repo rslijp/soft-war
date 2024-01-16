@@ -77,7 +77,9 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
     function cell(key, x, y, entry){
         const position = {x, y};
         const positionKey = `${y}_${x}`;
-        const selected = selectedUnit&&selectedUnit.isOn(position);
+        const selected = selectedUnit&&
+                        (!selectedUnit.isAlive||selectedUnit.isAlive())&&
+                         selectedUnit.isOn(position);
         let unit = selected?selectedUnit:map.unitAt(position);
 
         const hud =hudMap[positionKey];

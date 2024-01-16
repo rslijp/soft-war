@@ -13,16 +13,18 @@ export function unitsMap(players, map) {
             var city = unit.inside;
             city.destroyed(unit);
         } else {
-            this.remove(unit.position);
+            this.remove(unit.position, unit);
         }
     };
-    this.remove = (position) => {
+    this.remove = (position, safetyCheckUnit) => {
         var unitsRow = this.data[position.y];
         if (!unitsRow) {
             return null;
         }
         var unit = unitsRow[position.x];
-        unitsRow[position.x] = null;
+        if(!safetyCheckUnit || unit === safetyCheckUnit) {//not remove the city or transport it was unloaded from
+            unitsRow[position.x] = null;
+        }
         return unit;
     };
     this.canMoveOn = (unit, to) => {
@@ -32,7 +34,7 @@ export function unitsMap(players, map) {
     this.move = (unit, to, blitz) => {
         to = this.map.normalize(to);
         var target = this.get(to);
-        var position = unit.position;
+        var position = unit.derivedPosition();
         if (!unit.canMove(blitz)) {
             return false;
         }
@@ -43,6 +45,7 @@ export function unitsMap(players, map) {
             return false;
         }
         if (!unit.inside) {
+            if (map.distance(position, to) !== 1)  return false;
             unit = this.remove(position);
             unit.move(to);
         } else {
@@ -61,6 +64,7 @@ export function unitsMap(players, map) {
                 if (unit.inside) {
                     var transport = unit.inside;
                     transport.unload(unit);
+
                 } else {
                     this.remove(unit.position);
                 }
@@ -85,7 +89,7 @@ export function unitsMap(players, map) {
         this.data[position.y][position.x] = unit;
     };
 
-    this.unitAt = ({y,x}) => {
+    this.unitAt = (y,x) => {
         var unitsRow = this.data[y];
         if (!unitsRow) {
             return null;

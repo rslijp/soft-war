@@ -170,7 +170,7 @@ describe("unitsMap", function(){
             expect(map.data[3][3]).toBeDefined();
 
             //When
-            map.remove({y: 3, x:3});
+            map.remove({y: 3, x:3}, map.data[3][3]);
 
             //Then
             expect(map.data[3][3]).toBeNull();
@@ -212,6 +212,22 @@ describe("unitsMap", function(){
             //Then
             expect(map.collision).not.toHaveBeenCalled();
             expect(map.data[4][4]).toEqual(player.units[0]);
+        });
+        it("should not move the unit over a distance greater than 1", function(){
+            //Given
+            var tank = new unit("T", {y: 3, x:3});
+            tank.movesLeft=1;
+            var player = {units: [tank]};
+            var map = new unitsMap([player], dummyMap);
+            spyOn(map, "collision");
+
+            //When
+            var result  = map.move(player.units[0], {y: 5, x:5});
+
+            //Then
+            expect(result).toBeFalsy();
+            expect(map.collision).not.toHaveBeenCalled();
+            expect(map.data[3][3]).toEqual(player.units[0]);
         });
         it("should not move the unit when unit can't move on specific land type", function(){
             //Given
@@ -384,6 +400,82 @@ describe("unitsMap", function(){
             //Then
             expect(result).toBeFalsy();
             expect(MessageBus.send).toHaveBeenCalledWith("city-under-siege", friend, cityInstance, {x:4, y:4});
+        });
+        it("should move the unit between cities", function(){
+            //Given
+            var city1 = new city( {y: 3, x:3}, "Tiel");
+            var city2 = new city( {y: 4, x:4}, "Zoelen");
+            var tank = new unit("T", {y: 3, x:3});
+            tank.inside=city1;
+            city1.nestedUnits=[tank];
+
+            tank.movesLeft=1;
+            var player = {units: [tank, city1, city2]};
+            var map = new unitsMap([player], dummyMap);
+            // spyOn(map, "collision");
+
+            //When
+            var result  = map.move(player.units[0], {y: 4, x:4});
+
+            //Then
+            // expect(map.collision).not.toHaveBeenCalled();
+            expect(city1.nestedUnits.length).toEqual(0);
+            expect(city2.nestedUnits.length).toEqual(1);
+            expect(city2.nestedUnits[0]).toEqual(tank);
+            expect(map.data[4][4]).toEqual(city2);
+        });
+
+        it("should move the unit out of the city and not remove from city from unit map", function(){
+            //Given
+            var city1 = new city( {y: 3, x:3}, "Tiel");
+            var tank = new unit("T", {y: 3, x:3});
+            tank.id=1;
+            tank.inside=city1;
+            city1.nestedUnits=[tank];
+
+            tank.movesLeft=1;
+            var player = {units: [tank, city1]};
+            var map = new unitsMap([player], dummyMap);
+            // spyOn(map, "collision");
+
+            //When
+            expect(map.unitAt(3,3)).toEqual(city1);
+
+            var result  = map.move(player.units[0], {y: 4, x:4});
+
+            //Then
+            // expect(map.collision).not.toHaveBeenCalled();
+            // expect(city1.nestedUnits.length).toEqual(0);
+            // expect(city2.nestedUnits.length).toEqual(1);
+            // expect(city2.nestedUnits[0]).toEqual(tank);
+            expect(map.data[3][3]).toEqual(city1);
+        });
+
+        it("should move the unit between cities and not remove from city from unit map", function(){
+            //Given
+            var city1 = new city( {y: 3, x:3}, "Tiel");
+            var city2 = new city( {y: 4, x:4}, "Zoelen");
+            var tank = new unit("T", {y: 3, x:3});
+            tank.id=1;
+            tank.inside=city1;
+            city1.nestedUnits=[tank];
+
+            tank.movesLeft=1;
+            var player = {units: [tank, city1, city2]};
+            var map = new unitsMap([player], dummyMap);
+            // spyOn(map, "collision");
+
+            //When
+            expect(map.unitAt(3,3)).toEqual(city1);
+
+            var result  = map.move(player.units[0], {y: 4, x:4});
+
+            //Then
+            // expect(map.collision).not.toHaveBeenCalled();
+            // expect(city1.nestedUnits.length).toEqual(0);
+            // expect(city2.nestedUnits.length).toEqual(1);
+            // expect(city2.nestedUnits[0]).toEqual(tank);
+            expect(map.data[3][3]).toEqual(city1);
         });
     });
     describe("add method", function(){

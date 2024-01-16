@@ -106,16 +106,6 @@ describe("unit class", function(){
 
             expect(unitInstance.position).toEqual({x:5, y:8});
         });
-        it("should not move the unitInstance to a new position when distance is greater than one", function(){
-            //Given
-            var unitInstance =  new unit("I", {x: 4, y:8});
-            unitInstance.movesLeft=1;
-
-            //When
-            unitInstance.move({x:6, y:8});
-
-            expect(unitInstance.position).toEqual({x:4, y:8});
-        });
         it("should reduce movement points when moving", function(){
             //Given
             var unitInstance =  new unit("I", {x: 4, y:8});

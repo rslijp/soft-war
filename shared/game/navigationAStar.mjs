@@ -1,7 +1,5 @@
 import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
 
-const sortedIndexOf = (arr, value, func) => [...arr].map(func).sort().findIndex(func)
-
 export function navigationAStar(map, unit, fogofwar, flatEarth) {
     var origin = unit.derivedPosition();
     this.route = function(to, ignoreFogOfWar) {
@@ -68,7 +66,7 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
         }
 
         function ChebyshevDistance(from, to) {
-            return /*D **/ 1.5 * Math.max(Math.abs(from.y - to.y), Math.abs(from.x - to.x));
+            return /*D **/ 1.5 * map.distance(from, to);
         }
 
         function checkNeighbour(step, offset) {

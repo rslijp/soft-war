@@ -334,6 +334,51 @@ describe("game", function(){
             expect(MessageBus.send.calls.argsFor(2)).toEqual(["unit-destroyed", attacker, gameInstance.currentPlayer()]);
                         
         });
+        it("should destroy the attacker when defender wins", function(){
+            //Given
+            var player = new humanPlayer(0,"Name", "Color", []);
+            var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){},position: function(){}}, [player]);
+            var attacker = new unit("T", {y:1, x: 2});
+            attacker.health=0;
+            var defender = new unit("T", {y:2, x: 2});
+            defender.health=1;
+
+            var at = {y: 1, x:1};
+            var battle = {fight: function(){}};
+            spyOn(gameInstance,"_createBattle").and.returnValue(battle);
+            spyOn(battle, "fight").and.returnValue({rounds: "battleresults", defenderDamage: 3});
+            spyOn(MessageBus, "send");
+            //When
+            gameInstance.battle(attacker, defender, at);
+
+            //Then
+            expect(MessageBus.send.calls.argsFor(0)).toEqual(["battle-results", attacker, defender, {rounds: "battleresults", defenderDamage: 3}]);
+            expect(MessageBus.send.calls.argsFor(1)).toEqual(["unit-attacked", defender, 3]);
+            expect(MessageBus.send.calls.argsFor(2)).toEqual(["unit-destroyed", attacker, gameInstance.currentPlayer()]);
+
+        });
+        it("should conquer the city and move the attacker to the new position when attacker wins", function(){
+            //Given
+            var player = new humanPlayer(0,"Name", "Color", []);
+            var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){},position: function(){}}, [player]);
+            var attacker = new unit("T", {y:1, x: 2});
+            attacker.health=1;
+            var defender = new city({y:2, x: 2}, "Tiel");
+            const siege = defender.siege()
+            siege.health=0;
+            var at = {y: 1, x:1};
+            var battle = {fight: function(){}};
+            spyOn(gameInstance,"_createBattle").and.returnValue(battle);
+            spyOn(battle, "fight").and.returnValue({rounds: "battleresults"});
+            spyOn(MessageBus, "send");
+            //When
+            gameInstance.battle(attacker, siege, at,true);
+
+            //Then
+            expect(MessageBus.send.calls.argsFor(0)).toEqual(["battle-results", attacker, siege, {rounds: "battleresults"}]);
+            expect(MessageBus.send.calls.argsFor(1)).toEqual(["city-defense-destroyed", siege, gameInstance.currentPlayer()]);
+            expect(MessageBus.send.calls.argsFor(2)).toEqual(["move-unit", attacker, at, true]);
+        });
     });
     describe("nextUnit method", function(){
         var units = [

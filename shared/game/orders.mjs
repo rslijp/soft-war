@@ -71,7 +71,6 @@ export function orders (unit, unitsmap, player) {
         player.fogOfWar.remove(unit);
         var succes = step && unitsmap.move(unit, step);
         player.fogOfWar.add(unit);
-        console.log(step, succes, unit.getName());
         if (succes) {
             player.position = step;
             MessageBus.send("unit-order-step", unit, order);

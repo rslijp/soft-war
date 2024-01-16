@@ -27,6 +27,14 @@ export function gameMap(data) {
         }
     }
 
+    this.distance = (from, to) =>{
+        let dx = Math.abs(from.x - to.x);
+        if(dx > (this.width/2)) dx=Math.abs(this.width-dx);
+        let dy = Math.abs(from.y - to.y);
+        if(dy > (this.height/2)) dy=Math.abs(this.height-dy);
+        return Math.max(dx, dy);
+    };
+
     this.inflateMap = () => {
         const dimensions = data.dimensions;
         const flatWorld = data.world;
