@@ -213,6 +213,21 @@ describe("unitsMap", function(){
             expect(map.collision).not.toHaveBeenCalled();
             expect(map.data[4][4]).toEqual(player.units[0]);
         });
+        it("should move the unit in a circular world", function(){
+            //Given
+            var tank = new unit("T", {y: 0, x:0});
+            tank.movesLeft=1;
+            var player = {units: [tank]};
+            var map = new unitsMap([player], dummyMap);
+            spyOn(map, "collision");
+
+            //When
+            var result  = map.move(player.units[0], {y: 4, x:4});
+
+            //Then
+            expect(map.collision).not.toHaveBeenCalled();
+            expect(map.data[4][4]).toEqual(player.units[0]);
+        });
         it("should not move the unit over a distance greater than 1", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
