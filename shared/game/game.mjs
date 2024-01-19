@@ -50,7 +50,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         this.executeOrders(unit);
         if(unit) MessageBus.send("next-unit-updated", unit);
         if (currentPlayer.autoNext() && unit === null) {
-            MessageBus.send("propose-end-turn");
+            MessageBus.send("end-turn");
         }
     };
 
@@ -203,7 +203,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         var currentPlayer = this.currentPlayer();
         var carrousel = currentPlayer.carrousel;
         if (carrousel.allOrdersFinished()) {
-            MessageBus.send("end-turn");
+            MessageBus.send("propose-end-turn");
             currentPlayer.endTurn();
         } else {
             currentPlayer.endTurnPhase = true;

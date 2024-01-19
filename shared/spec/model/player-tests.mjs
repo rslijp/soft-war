@@ -13,7 +13,7 @@ describe("humanPlayer class", function(){
         it("should set the selected unit on the given position", function(){
             //Given
             var units = [new unit("T", {y: 3, x:3})];
-            var player = new humanPlayer(0, "Name", "Color",units, map);
+            var player = new humanPlayer(0, "0",  "Name", "Color",units, map);
             player.selectedUnit=null;
 
             //When
@@ -25,7 +25,7 @@ describe("humanPlayer class", function(){
         it("should clear the selected unit when the same unit is selected ", function(){
             //Given
             var units = [new unit("T", {y: 3, x:3})];
-            var player = new humanPlayer(0, "Name", "Color",units, map);
+            var player = new humanPlayer(0, "0",  "Name", "Color",units, map);
             player.selectedUnit=units[0];
 
             //When
@@ -37,7 +37,7 @@ describe("humanPlayer class", function(){
         it("should update the selected unit when a other unit is selected ", function(){
             //Given
             var units = [new unit("T", {y: 3, x:3})];
-            var player = new humanPlayer(0, "Name", "Color",units, map);
+            var player = new humanPlayer(0, "0",  "Name", "Color",units, map);
             player.selectedUnit=new unit("T", {y:13, x:12});
 
             //When
@@ -50,7 +50,7 @@ describe("humanPlayer class", function(){
     describe("updateSelectedUnit", function(){
         it("should reschedule old unit when unit is updated", function(){
             var tank = new unit("T", {y: 3, x:3}).initTurn();
-            var player = new humanPlayer(0, "Name", "Color", [tank], map);
+            var player = new humanPlayer(0, "0",  "Name", "Color", [tank], map);
             player.selectedUnit=tank;
             spyOn(player.carrousel, "reschedule");
 
@@ -61,7 +61,7 @@ describe("humanPlayer class", function(){
         it("should not reschedule old unit when old unit is out of move", function(){
             var tank = new unit("T", {y: 3, x:3}).initTurn();
             tank.movesLeft=0;
-            var player = new humanPlayer(0, "Name", "Color", [tank], map);
+            var player = new humanPlayer(0, "0",  "Name", "Color", [tank], map);
             player.selectedUnit=tank;
             spyOn(player.carrousel, "reschedule");
 
@@ -70,7 +70,7 @@ describe("humanPlayer class", function(){
             expect(player.carrousel.reschedule).not.toHaveBeenCalledWith(tank);
         });
         it("should hanlde no old unit scenario", function(){
-            var player = new humanPlayer(0, "Name", "Color", [], map);
+            var player = new humanPlayer(0, "0",  "Name", "Color", [], map);
             player.selectedUnit=null;
             spyOn(player.carrousel, "reschedule");
 
@@ -83,7 +83,7 @@ describe("humanPlayer class", function(){
         it("should not change anything when no unit is selected", function(){
             //Given
             var units = [new unit("T", {y: 3, x:3})];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             player.selectedUnit=null;
             spyOn(MessageBus, "send")
             //When
@@ -98,7 +98,7 @@ describe("humanPlayer class", function(){
         it("should update the position of the selected unit", function(){
             //Given
             var units = [new unit("T", {y: 3, x:3})];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             player.selectedUnit=units[0];
             player.unitsMap = new unitsMap([player], map);
             spyOn(player.unitsMap, "move")
@@ -115,7 +115,7 @@ describe("humanPlayer class", function(){
         it("should update the fog of war on movement of unit", function(){
             //Given
             var units = [new unit("T", {y: 3, x:3})];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             player.selectedUnit=units[0];
             player.unitsMap = new unitsMap([player], map);
             spyOn(player.unitsMap, "move")
@@ -133,7 +133,7 @@ describe("humanPlayer class", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
             var units = [tank];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             player.unitsMap = new unitsMap([player], map);
             player.selectedUnit=units[0];
             spyOn(player.unitsMap, "move").and.returnValue(true)
@@ -149,7 +149,7 @@ describe("humanPlayer class", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
             var units = [tank];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             player.unitsMap = new unitsMap([player], map);
             player.selectedUnit=units[0];
             spyOn(player.unitsMap, "move").and.returnValue(false)
@@ -165,7 +165,7 @@ describe("humanPlayer class", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
             var units = [tank];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             player.selectedUnit=tank;
             player.position = {y: 3, x: 3};
             tank.order="some order"
@@ -186,7 +186,7 @@ describe("humanPlayer class", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
             var units = [tank];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             expect(tank.player).toEqual(player.index);
 
             //When
@@ -204,7 +204,7 @@ describe("humanPlayer class", function(){
             transport.load(infantry);
 
             var units = [transport, tank, infantry];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
 
             //When
             player.destroyed(transport)
@@ -217,7 +217,7 @@ describe("humanPlayer class", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
             var units = [unit];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             tank.player="other";
 
             //When
@@ -230,7 +230,7 @@ describe("humanPlayer class", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
             var units = [tank];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             expect(tank.player).toEqual(player.index);
             player.selectedUnit=tank;
 
@@ -245,7 +245,7 @@ describe("humanPlayer class", function(){
             var tank = new unit("T", {y: 3, x:3});
             var other = new unit("T", {y: 4, x:4});
             var units = [tank];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             expect(tank.player).toEqual(player.index);
             player.selectedUnit=other;
 
@@ -261,7 +261,7 @@ describe("humanPlayer class", function(){
             var tank = new unit("T", {y: 3, x:3}).initTurn();
 
             var units = [tank];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
 
             //When
             player.destroyed(tank);
@@ -272,7 +272,7 @@ describe("humanPlayer class", function(){
     describe("flash method", function(){
         it("should add a message to the player flash messages", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.messages=["existing"];
 
             //When
@@ -285,7 +285,7 @@ describe("humanPlayer class", function(){
     describe("readMessages method", function(){
         it("should return the messages", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.messages=["a", "b"];
 
             //When
@@ -296,7 +296,7 @@ describe("humanPlayer class", function(){
         });
         it("should clear messages", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.messages=["a", "b"];
 
             //When
@@ -307,7 +307,7 @@ describe("humanPlayer class", function(){
         });
         it("should return 'No messages' when there are no message", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.messages=[];
 
             //When
@@ -320,7 +320,7 @@ describe("humanPlayer class", function(){
     describe("flashDestruction method", function(){
         it("should report destruction if unit is of player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var tank = new unit("T", {y: 3, x: 2});
             tank.player=0;
             player.messages=[];
@@ -333,7 +333,7 @@ describe("humanPlayer class", function(){
         });
         it("should not report destruction if player is the aggressor", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var tank = new unit("T", {y: 3, x: 2});
             tank.player=0;
             player.messages=[];
@@ -346,7 +346,7 @@ describe("humanPlayer class", function(){
         });
         it("should not report destruction if unit is of other players", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var tank = new unit("T", {y: 3, x: 2});
             tank.player=1;
             player.messages=[];
@@ -361,7 +361,7 @@ describe("humanPlayer class", function(){
     describe("flashCityFallen method", function(){
         it("should report destruction if unit is of player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2}, "Tiel");
             cityInstance.player=0;
             player.messages=[];
@@ -374,7 +374,7 @@ describe("humanPlayer class", function(){
         });
         it("should not report destruction if unit is of other players", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city("Tiel", {y: 3, x: 2});
             cityInstance.player=1;
             player.messages=[];
@@ -389,7 +389,7 @@ describe("humanPlayer class", function(){
     describe("flashAttack method", function(){
         it("should report attack if unit is of player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var tank = new unit("T", {y: 3, x: 2});
             tank.player=0;
             player.messages=[];
@@ -402,7 +402,7 @@ describe("humanPlayer class", function(){
         });
         it("should not report attack if unit is of other players", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var tank = new unit("T", {y: 3, x: 2});
             tank.player=1;
             player.messages=[];
@@ -416,7 +416,7 @@ describe("humanPlayer class", function(){
     });
     describe("unitLoaded method", function(){
         it("should deselect the unit", function(){
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var tank  = new unit("T", {y: 1, x: 1});
             tank.player=0;
             tank.inside=new unit("t", {y: 1, x: 1});
@@ -427,7 +427,7 @@ describe("humanPlayer class", function(){
             expect(player.cursorSelect).toHaveBeenCalledWith(tank);
         });
          it("should not deselect the unit when loaded inside a city", function(){
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var tank  = new unit("T", {y: 1, x: 1});
              tank.player=0;
              tank.inside=new city({y: 1, x: 1}, "Tiel");
@@ -438,7 +438,7 @@ describe("humanPlayer class", function(){
             expect(player.cursorSelect).not.toHaveBeenCalledWith(tank);
         });
         it("should not select the unit if the unit is of an different player", function(){
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var tank = new unit("T", {y: 1, x: 1});
             tank.player=1;
             spyOn(player, 'cursorSelect');
@@ -451,7 +451,7 @@ describe("humanPlayer class", function(){
      describe("flashUnitCreationSuspended method", function(){
         it("should report creation suspended if city is of player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2}, "Tiel");
             cityInstance.player=0;
             player.messages=[];
@@ -464,7 +464,7 @@ describe("humanPlayer class", function(){
         });
         it("should not report creation suspended if city is of other player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2}, "Tiel");
             cityInstance.player=1;
             player.messages=[];
@@ -479,7 +479,7 @@ describe("humanPlayer class", function(){
      describe("flashUnitCreated method", function(){
         it("should report creation suspended if city is of player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2}, "Tiel");
             var tank = new unit("T");
             tank.player=0;
@@ -493,7 +493,7 @@ describe("humanPlayer class", function(){
         });
         it("should not report creation suspended if city is of other player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2}, "Tiel");
             var tank = new unit("T");
             tank.player=1;
@@ -509,7 +509,7 @@ describe("humanPlayer class", function(){
     describe("registerUnit method", function(){
         it("should add unit to player units", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2}, "Tiel");
             var tank = new unit("T");
             tank.player=0;
@@ -523,7 +523,7 @@ describe("humanPlayer class", function(){
         });
         it("should not report creation suspended if city is of other player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2}, "Tiel");
             var tank = new unit("T");
             tank.player=1;
@@ -541,7 +541,7 @@ describe("humanPlayer class", function(){
               var a = new unit("T", {y: 3, x:3});
               var b = new unit("T", {y: 3, x:4});
               var units = [a,b];
-              var player = new humanPlayer(0,"Name", "Color",units, map);
+              var player = new humanPlayer(0, "0", "Name", "Color",units, map);
               spyOn(a,"initTurn");
               spyOn(b,"initTurn");
 
@@ -554,7 +554,7 @@ describe("humanPlayer class", function(){
               var friend = new unit("T", {y: 3, x:3});
               var foe = new unit("T", {y: 3, x:4});
               var units = [friend];
-              var player = new humanPlayer(0,"Name", "Color",units, map);
+              var player = new humanPlayer(0, "0", "Name", "Color",units, map);
               player.enemySpottedThisTurn={friend: [foe]};
 
               player.initTurn();
@@ -567,7 +567,7 @@ describe("humanPlayer class", function(){
           var friend = new unit("T", {y: 3, x:3});
           var foe = new unit("T", {y: 3, x:4});
           var units = [friend];
-          var player = new humanPlayer(0,"Name", "Color",units, map);
+          var player = new humanPlayer(0, "0", "Name", "Color",units, map);
           player.enemySpottedThisTurn={};
           player.contactedEnemy=false;
 
@@ -579,7 +579,7 @@ describe("humanPlayer class", function(){
           var friend = new unit("T", {y: 3, x:3});
           var foe = new unit("T", {y: 3, x:4});
           var units = [friend];
-          var player = new humanPlayer(0,"Name", "Color",units, map);
+          var player = new humanPlayer(0, "0", "Name", "Color",units, map);
           player.enemySpottedThisTurn={};
 
           player.enemySpotted([foe], friend);
@@ -591,7 +591,7 @@ describe("humanPlayer class", function(){
           var foe1 = new unit("T", {y: 3, x:4});
           var foe2 = new unit("F", {y: 4, x:4});
           var units = [friend];
-          var player = new humanPlayer(0,"Name", "Color",units, map);
+          var player = new humanPlayer(0, "0", "Name", "Color",units, map);
           player.enemySpottedThisTurn={};
           player.enemySpottedThisTurn[friend]=[foe1];
           player.enemySpotted([foe2], friend);
@@ -604,7 +604,7 @@ describe("humanPlayer class", function(){
         it("should call endTurn on all methods", function(){
             //Given
             var units = [new unit("T", {y: 3, x:3}),new city({y: 3, x:3})];
-            var player = new humanPlayer(0, "Name", "Color",units, map);
+            var player = new humanPlayer(0, "0",  "Name", "Color",units, map);
             spyOn(units[0], "endTurn");
             spyOn(units[1], "endTurn");
             //When
@@ -618,7 +618,7 @@ describe("humanPlayer class", function(){
     describe("flashAttack method", function(){
         it("should report non production when city is of player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2},"Tiel");
             cityInstance.player=0;
             player.messages=[];
@@ -631,7 +631,7 @@ describe("humanPlayer class", function(){
         });
         it("should not report non production if city is of other players", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             var cityInstance = new city({y: 3, x: 2},"Tiel");
             cityInstance.player=1;
             player.messages=[];
@@ -652,7 +652,7 @@ describe("humanPlayer class", function(){
                 infantry,
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.selectedUnit=infantry;
             spyOn(infantry, "fortify");
 
@@ -669,7 +669,7 @@ describe("humanPlayer class", function(){
                              infantry,
                              new unit("T", {x: 13, y:12}),
                              new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.selectedUnit=infantry;
             spyOn(player.fogOfWar, "remove");
             spyOn(player.fogOfWar, "add");
@@ -685,7 +685,7 @@ describe("humanPlayer class", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
             var units = [tank];
-            var player = new humanPlayer(0,"Name", "Color",units, map);
+            var player = new humanPlayer(0, "0", "Name", "Color",units, map);
             player.selectedUnit=tank;
             tank.order="some order"
             spyOn(MessageBus, "send")
@@ -704,7 +704,7 @@ describe("humanPlayer class", function(){
                              infantry,
                              new unit("T", {x: 13, y:12}),
                              new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", [], map);
+            var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.selectedUnit=infantry;
             spyOn(player, "jumpToNextUnit");
 
@@ -723,7 +723,7 @@ describe("humanPlayer class", function(){
             var units = [a,b];
 
             //When
-            var player = new humanPlayer(42,"Name", "Color",units, map);
+            var player = new humanPlayer(42, "42","Name", "Color",units, map);
 
             //Then
             expect(a.player).toEqual(42);
@@ -736,7 +736,7 @@ describe("humanPlayer class", function(){
             var units = [a,b];
 
             //When
-            var player = new humanPlayer(42,"Name", "Color",units, map);
+            var player = new humanPlayer(42, "42","Name", "Color",units, map);
 
             //Then
             expect(player.fogOfWar.visible({y: 3, x: 3})).toBeTruthy();
@@ -745,7 +745,7 @@ describe("humanPlayer class", function(){
     });
     describe("autoNext method", function(){
         it("should return false when flag is false and turn is not in end phase", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             player.autoNextFlag=false;
             player.endTurnPhase=false;
 
@@ -754,7 +754,7 @@ describe("humanPlayer class", function(){
             expect(result).toBeFalsy();
         });
         it("should return true when flag is true and turn is not in end phase", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             player.autoNextFlag=true;
             player.endTurnPhase=false;
 
@@ -763,7 +763,7 @@ describe("humanPlayer class", function(){
             expect(result).toBeTruthy();
         });
         it("should return true when flag is false and turn is in end phase", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             player.autoNextFlag=false;
             player.endTurnPhase=true;
 
@@ -780,7 +780,7 @@ describe("humanPlayer class", function(){
             var units = [a,b,cityInstance];
 
             //When
-            var player = new humanPlayer(42,"Name", "Color",units, map);
+            var player = new humanPlayer(42, "42","Name", "Color",units, map);
 
             expect(player.hasAnyUnits()).toBeTruthy();
         });
@@ -790,7 +790,7 @@ describe("humanPlayer class", function(){
             var units = [a,b];
 
             //When
-            var player = new humanPlayer(42,"Name", "Color",units, map);
+            var player = new humanPlayer(42, "42","Name", "Color",units, map);
 
             expect(player.hasAnyUnits()).toBeTruthy();
         });
@@ -798,7 +798,7 @@ describe("humanPlayer class", function(){
             var units = [];
 
             //When
-            var player = new humanPlayer(42,"Name", "Color",units, map);
+            var player = new humanPlayer(42, "42","Name", "Color",units, map);
 
             expect(player.hasAnyUnits()).toBeFalsy();
         });
@@ -811,7 +811,7 @@ describe("humanPlayer class", function(){
             var units = [a,b,cityInstance];
 
             //When
-            var player = new humanPlayer(42,"Name", "Color",units, map);
+            var player = new humanPlayer(42, "42","Name", "Color",units, map);
 
             expect(player.hasAnyCities()).toBeTruthy();
         });
@@ -821,14 +821,14 @@ describe("humanPlayer class", function(){
             var units = [a,b];
 
             //When
-            var player = new humanPlayer(42,"Name", "Color",units, map);
+            var player = new humanPlayer(42, "42","Name", "Color",units, map);
 
             expect(player.hasAnyCities()).toBeFalsy();
         });
     });
     describe("state methods", function(){
         it("should make player loose when called", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             spyOn(MessageBus, "send");
             expect(player.hasLost()).toBeFalsy();
 
@@ -838,7 +838,7 @@ describe("humanPlayer class", function(){
             expect(MessageBus.send).toHaveBeenCalledWith("player-looses", player);
         });
         it("should make player win when called", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             spyOn(MessageBus, "send");
             expect(player.hasWon()).toBeFalsy();
 
@@ -848,7 +848,7 @@ describe("humanPlayer class", function(){
             expect(MessageBus.send).toHaveBeenCalledWith("player-wins", player);
         });
         it("should make player roam when called", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             spyOn(MessageBus, "send");
             expect(player.isRoaming()).toBeFalsy();
 
@@ -859,7 +859,7 @@ describe("humanPlayer class", function(){
             expect(MessageBus.send).toHaveBeenCalledWith("player-roaming", player);
         });
         it("should not reinitialize roaming", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             spyOn(MessageBus, "send");
             expect(player.isRoaming()).toBeFalsy();
             player.roaming();
@@ -870,7 +870,7 @@ describe("humanPlayer class", function(){
             expect(player.turnsRoaming).toEqual(2);
         });
         it("should restore the player to normal playing mode when conquered a city", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             spyOn(MessageBus, "send");
             player.roaming();
 
@@ -882,7 +882,7 @@ describe("humanPlayer class", function(){
             expect(player.turnsRoaming).toBeUndefined();
         });
         it("should deduct roaming turns", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             spyOn(MessageBus, "send");
             player.roaming();
 
@@ -892,7 +892,7 @@ describe("humanPlayer class", function(){
             expect(player.turnsRoaming).toEqual(9);
         });
         it("should make player loose when out of roaming turns", function(){
-            var player = new humanPlayer(42,"Name", "Color", [], map);
+            var player = new humanPlayer(42, "42","Name", "Color", [], map);
             spyOn(player, "looses");
             player.roaming();
             player.turnsRoaming=1;

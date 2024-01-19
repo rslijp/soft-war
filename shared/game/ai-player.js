@@ -6,12 +6,13 @@ import {orders} from "./orders.mjs";
 
 const INTEREST = new Set(['land', 'mountain']);
 
-export function aiPlayer(index, name, color, units, map) {
+export function aiPlayer(index, id, name, color, units, map) {
     this.state="START";
     this.fogOfWar = new fogOfWar([], map);
     this.index = index;
     this.units = units;
     this.unitsMap = null;
+    this.id = id;
     this.name = name;
     this.color = color;
     this.type="AI";
@@ -156,6 +157,7 @@ export function aiPlayer(index, name, color, units, map) {
                     path = result.route;
                 }
             });
+            if(path) console.log(name, path);
             return path;
         }
 
@@ -183,7 +185,9 @@ export function aiPlayer(index, name, color, units, map) {
     };
 
     this.conquerTheWorld=()=>{
+        this.conquerHandle = null;
         if(this.selectedUnit && this.selectedUnit.clazz==='city'){
+            if(!this.selectedUnit.producingType) this.selectedUnit.produce('T');
             MessageBus.send("next-unit");
         }
         else if(this.selectedUnit && this.selectedUnit.canMove()){
@@ -206,12 +210,18 @@ export function aiPlayer(index, name, color, units, map) {
         }
     }
 
-    this.scheduleConquerTheWorld = () => {
-        setTimeout(()=>this.conquerTheWorld(), 250);
+    this.scheduleConquerTheWorld = (unit) => {
+       if(this.conquerHandle) {
+            console.log("scheduleConquerTheWorld active");
+            return;
+        }
+        console.log("scheduleConquerTheWorld schedule");
+        this.conquerHandle = setTimeout(()=>this.conquerTheWorld(), 250);
     }
 
     this.autoNext=()=>{
-        if(this.selectedUnit) this.scheduleConquerTheWorld();
+        if(this.selectedUnit) console.log("X", this.selectedUnit.getName(), this.selectedUnit.canMove());
+        if(this.selectedUnit && this.selectedUnit.canMove()) this.scheduleConquerTheWorld();
         return true;
     };
 
@@ -232,6 +242,7 @@ export function aiPlayer(index, name, color, units, map) {
     }
     this.init();
 
+    MessageBus.register("next-unit", this.autoNext, this)
     MessageBus.register("unit-order-step", this.unitOrderStep, this)
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
     MessageBus.register("unit-created", this.registerUnit, this);

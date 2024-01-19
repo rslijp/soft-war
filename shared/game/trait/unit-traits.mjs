@@ -52,5 +52,5 @@ export const unitTraits = {
 };
 
 export function applyUnitTraitsOn(target){
-    applyTraitsOn(unitTraits, target, ["remark"]);
+    applyTraitsOn("unit", unitTraits, target, ["remark"]);
 }

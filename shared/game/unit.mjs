@@ -168,6 +168,6 @@ export function unit(type, position) {
 
     applyUnitTraitsOn(this);
     if (this.definition().mixin) {
-        applyTraitsOn(this.definition().mixin, this, ["remark"]);
+        applyTraitsOn("unit-type", this.definition().mixin, this, ["remark"]);
     }
 };

@@ -5,6 +5,7 @@ export function gameMap(data) {
     this.data = [];
     this.cities = [];
     this.cityLookUp={};
+    this.dimensions={width:0, height: 0};
 
     this.guardData = () => {
         if (!data) {

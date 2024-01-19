@@ -640,7 +640,7 @@ describe("unitsMap", function(){
         it("should return none when there is no other unit", function(){
             //Given
             var subject = new unit("T", {y: 3, x:3});
-            var player=new humanPlayer(1, "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
             var map = new unitsMap([player], dummyMap);
             
             //When
@@ -653,8 +653,8 @@ describe("unitsMap", function(){
         it("should return none when there is a friendly unit near by", function(){
             //Given
             var subject = new unit("T", {y: 3, x:3});
-            var player=new humanPlayer(1, "Player", "green", [subject,new unit("T", {y: 4, x:4})], dummyMap);
-            var enemy=new humanPlayer(2, "Computer", "red", [], dummyMap);
+            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject,new unit("T", {y: 4, x:4})], dummyMap);
+            var enemy=new humanPlayer(2, "2", "Computer", "red", [], dummyMap);
             var map = new unitsMap([player], dummyMap);
 
             //When
@@ -667,9 +667,9 @@ describe("unitsMap", function(){
         it("should return the unit when there is an enemy unit", function(){
             //Given
             var subject = new unit("T", {y: 3, x:3});
-            var player=new humanPlayer(1, "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
             var foe = new unit("T", {y: 4, x:4});
-            var enemy=new humanPlayer(2, "Computer", "red", [foe], dummyMap);
+            var enemy=new humanPlayer(2, "2", "Computer", "red", [foe], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
 
             //When
@@ -681,8 +681,8 @@ describe("unitsMap", function(){
         it("should return none when the enemy unit is out of sight", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "Player", "green", [subject], dummyMap);
-            var enemy=new humanPlayer(2, "Computer", "red", [new unit("T", {y: 4, x:4})], dummyMap);
+            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var enemy=new humanPlayer(2, "2", "Computer", "red", [new unit("T", {y: 4, x:4})], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
 
             //When
@@ -694,8 +694,8 @@ describe("unitsMap", function(){
         it("should return none when the enemy unit is out of sight (border case)", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "Player", "green", [subject], dummyMap);
-            var enemy=new humanPlayer(2, "Computer", "red", [new unit("T", {y: 3, x:3})], dummyMap);
+            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var enemy=new humanPlayer(2, "2", "Computer", "red", [new unit("T", {y: 3, x:3})], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
 
             //When
@@ -708,9 +708,9 @@ describe("unitsMap", function(){
         it("should return true when the enemy unit is in sight (border case)", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
             var foe = new unit("T", {y: 2, x:2});
-            var enemy=new humanPlayer(2, "Computer", "red", [foe], dummyMap);
+            var enemy=new humanPlayer(2, "2", "Computer", "red", [foe], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
 
             //When
@@ -722,9 +722,9 @@ describe("unitsMap", function(){
         it("should return foe when the enemy unit is in sight", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
             var foe = new unit("T", {y: 0, x:3});
-            var enemy=new humanPlayer(2, "Computer", "red", [foe], dummyMap);
+            var enemy=new humanPlayer(2, "2", "Computer", "red", [foe], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
 
             //When
@@ -737,10 +737,10 @@ describe("unitsMap", function(){
         it("should return foo and bar when both in sight", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
             var foo = new unit("T", {y: 0, x:3});
             var bar = new unit("T", {y: 0, x:2});
-            var enemy=new humanPlayer(2, "Computer", "red", [foo, bar], dummyMap);
+            var enemy=new humanPlayer(2, "2", "Computer", "red", [foo, bar], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
 
             //When

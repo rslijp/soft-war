@@ -3,7 +3,7 @@ import {fogOfWar} from "./fog-of-war.mjs";
 import MessageBus from "../services/message-service.mjs";
 import {unitCarrousel} from "./unit-carrousel.mjs";
 
-export function humanPlayer(index, name, color, units, map) {
+export function humanPlayer(index, id, name, color, units, map) {
     this.fogOfWar = new fogOfWar([], map);
     this.position = {x: 0, y: 0};
     this.messages = [];
@@ -13,6 +13,7 @@ export function humanPlayer(index, name, color, units, map) {
     this.unitsMap = null;
     this.index = index;
     this.units = units;
+    this.id = id;
     this.name = name;
     this.color = color;
     this.selectedUnit = null;

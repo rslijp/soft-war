@@ -14,6 +14,7 @@ import {TOP_BAR_HEIGHT} from "../Constants";
 import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
 import {useLoaderData} from "react-router-dom";
+import {serializeGameState} from "softwar-shared/services/save-game.mjs";
 
 let timer = null;
 
@@ -32,6 +33,7 @@ function GamePage() {
     stateRef.current = {state: state, viewPort: viewPort, renderIteration: renderIteration};
 
     const newTurn = (messages) => {
+        console.log("XXX",serializeGameState(gameState));
         setDialog({name: 'messages', messages: messages, hide: true});
         focusOnTile(gameState.position());
     };

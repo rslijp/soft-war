@@ -112,7 +112,7 @@ export function unitsMap(players, map) {
             for (var x = position.x - radius; x <= position.x + radius; x++) {
                 var r = sight == 1 ? sight : Math.sqrt(((y - position.y) * (y - position.y)) + ((x - position.x) * (x - position.x)));
                 if (r <= radius) {
-                    var candidate = this.get({y: y, x: x});
+                    var candidate = this.get(map.normalize({y: y, x: x}));
                     if (candidate && candidate.player != unit.player) {
                         foes.push(candidate);
                     }

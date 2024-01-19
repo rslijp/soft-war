@@ -16,7 +16,7 @@ describe("game", function(){
                 new unit("T", {x: 3, y:3}),
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
-           var players = [new humanPlayer(0,"Name", "Color", units, map)];
+           var players = [new humanPlayer(0, "0","Name", "Color", units, map)];
 
            //When
            var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", players);
@@ -30,8 +30,8 @@ describe("game", function(){
        });
        it("should set unitsMap on players", function(){
            //Given
-           var red = new humanPlayer(0,"Red", "Color", []);
-           var blue = new humanPlayer(1,"Blue", "Color", []);
+           var red = new humanPlayer(0, "0","Red", "Color", []);
+           var blue = new humanPlayer(1, "1","Blue", "Color", []);
            var players = [red, blue];
            
            //When
@@ -50,7 +50,7 @@ describe("game", function(){
                 new unit("T", {x: 3, y:3}),
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
             
             //When
@@ -65,8 +65,8 @@ describe("game", function(){
                 new unit("T", {x: 3, y:3}),
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", []);
-            var other = new humanPlayer(1,"Name", "Color", units, map);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
+            var other = new humanPlayer(1, "1","Name", "Color", units, map);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
 
             //When
@@ -81,7 +81,7 @@ describe("game", function(){
                 new unit("T", {x: 3, y:3}),
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
             
             //When
@@ -94,7 +94,7 @@ describe("game", function(){
     describe("moveInDirection method", function(){
         it("should update current position and set that position", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             gameInstance.currentPlayer().position={x: 1, y: 2};
             spyOn(gameInstance.map, "move").and.returnValue({x: 1, y:3});
@@ -110,7 +110,7 @@ describe("game", function(){
     describe("setPosition method", function(){
         it("should update the position on the current player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             var position={x: 1, y: 2};
             spyOn(player, "cursorUpdate");
@@ -124,7 +124,7 @@ describe("game", function(){
         });
         it("should update send an update screen request", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             player.position={x: 1, y: 2};
             spyOn(player, "cursorUpdate").and.returnValue(true);
@@ -138,7 +138,7 @@ describe("game", function(){
         });
         it("should update send an update infobar request when a unit selected", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             var position={x: 1, y: 2};
             player.selectedUnit="a unit";
@@ -153,7 +153,7 @@ describe("game", function(){
         });
         it("should not update send an update screen request when the cursor update failed", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             var position={x: 1, y: 2};
             spyOn(player, "cursorUpdate").and.returnValue(false);
@@ -167,7 +167,7 @@ describe("game", function(){
         });
         it("should not update send an update infobar request when a unit selected", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             var position={x: 1, y: 2};
             player.selectedUnit="a unit";
@@ -184,7 +184,7 @@ describe("game", function(){
     describe("cityUnderSiege method", function(){
         it("should perform battle with units in cityInstance", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             var at = {y: 1, x:1};
             var attacker = new unit("T", {y:1, x:0});
@@ -200,7 +200,7 @@ describe("game", function(){
         });
         it("should perform battle with units in cityInstance even when the attacker isn't a ground force", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             var at = {y: 1, x:1};
             var attacker = new unit("T", {y:1, x:0});
@@ -216,7 +216,7 @@ describe("game", function(){
         });
         it("should perform battle with cityInstance defense when no units present", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             var at = {y: 1, x:1};
             var attacker = new unit("T", {y:1, x:0});
@@ -232,7 +232,7 @@ describe("game", function(){
         });
         it("should not take the cityInstance when your are not a ground force", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){}}, [player]);
             var at = {y: 1, x:1};
             var attacker = new unit("F", {y:1, x:0});
@@ -250,7 +250,7 @@ describe("game", function(){
     describe("battle method", function(){
         it("should perform an battle between the attacker and the defender", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){},position: function(){}}, [player]);
             var attacker = new unit("T", {y:1, x: 2});
             var defender = new unit("T", {y:2, x: 2});
@@ -268,7 +268,7 @@ describe("game", function(){
         });
         it("should perform an battle and include the modfiers", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){},position: function(){return "Land"}}, [player]);
             var attacker = new unit("T", {y:1, x: 2});
             var defender = new unit("T", {y:2, x: 2});
@@ -292,7 +292,7 @@ describe("game", function(){
         });
         it("should destroy the defender and move the attacker to the new position when attacker wins", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){},position: function(){}}, [player]);
             var attacker = new unit("T", {y:1, x: 2});
             attacker.health=1;
@@ -313,7 +313,7 @@ describe("game", function(){
         });
         it("should destroy the attacker when defender wins", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){},position: function(){}}, [player]);
             var attacker = new unit("T", {y:1, x: 2});
             attacker.health=0;
@@ -336,7 +336,7 @@ describe("game", function(){
         });
         it("should destroy the attacker when defender wins", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){},position: function(){}}, [player]);
             var attacker = new unit("T", {y:1, x: 2});
             attacker.health=0;
@@ -359,7 +359,7 @@ describe("game", function(){
         });
         it("should conquer the city and move the attacker to the new position when attacker wins", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},{move: function(){},position: function(){}}, [player]);
             var attacker = new unit("T", {y:1, x: 2});
             attacker.health=1;
@@ -387,9 +387,9 @@ describe("game", function(){
             new unit("F", {x: 7, y:7})
         ];
 
-        var data = {x:"X",move: function(){}};
-        var player = new humanPlayer(0,"Name", "Color", units, map);
-        var other = new humanPlayer(0,"Name", "Color", []);
+        var data = {x:"X",move: function(){}, normalize: (p)=>p};
+        var player = new humanPlayer(0, "0","Name", "Color", units, map);
+        var other = new humanPlayer(0, "0","Name", "Color", []);
         var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},data, [player, other]);
         player.selectedUnit=null;
 
@@ -439,8 +439,8 @@ describe("game", function(){
     describe("nextTurn method", function(){
         it("should hand over turn to other player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=null;
 
@@ -456,8 +456,8 @@ describe("game", function(){
         });
         it("should hand over turn to first player and increase turn when last player in turn is done", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
-            var other = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
+            var other = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             gameInstance.currentPlayerIndex=1;
             expect(gameInstance.currentPlayer()).toEqual(other);
@@ -472,8 +472,8 @@ describe("game", function(){
         });
         it("should init turn of new player", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
-            var other = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
+            var other = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             expect(gameInstance.currentPlayer()).toEqual(player);
             spyOn(other, "initTurn");
@@ -486,8 +486,8 @@ describe("game", function(){
         });
         it("should trigger a new turn dialog", function(){
             //Given
-            var player = new humanPlayer(0,"Name", "Color", []);
-            var other = new humanPlayer(0,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
+            var other = new humanPlayer(0, "0","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             other.messages=["No messages"]
             expect(gameInstance.currentPlayer()).toEqual(player);
@@ -504,8 +504,8 @@ describe("game", function(){
         it("should transfer cityInstance", function(){
             //Given
             var cityInstance =  new city("Tiel", {x: 4, y:8});
-            var player = new humanPlayer(0,"Name", "Color", [cityInstance]);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", [cityInstance]);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             spyOn(cityInstance, "conquered").and.callThrough();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
 
@@ -521,7 +521,7 @@ describe("game", function(){
         it("should claim neutral cityInstance", function(){
             //Given
             var cityInstance =  new city("Tiel", {x: 4, y:8});
-            var player = new humanPlayer(0,"Name", "Color", [cityInstance]);
+            var player = new humanPlayer(0, "0","Name", "Color", [cityInstance]);
             spyOn(cityInstance, "conquered").and.callThrough();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
 
@@ -535,8 +535,8 @@ describe("game", function(){
         it("should update fog of war", function(){
             //Given
             var cityInstance =  new city("Tiel", {x: 4, y:8});
-            var player = new humanPlayer(0,"Name", "Color", [cityInstance]);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", [cityInstance]);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             spyOn(player.fogOfWar, "remove");
             spyOn(other.fogOfWar, "add");
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
@@ -558,8 +558,8 @@ describe("game", function(){
                 infantry,
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", []);
-            var other = new humanPlayer(1,"Name", "Color", units, map);
+            var player = new humanPlayer(0, "0","Name", "Color", []);
+            var other = new humanPlayer(1, "1","Name", "Color", units, map);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
             player.selectedUnit=infantry;
             spyOn(player, "specialAction");
@@ -578,8 +578,8 @@ describe("game", function(){
                              infantry,
                              new unit("T", {x: 13, y:12}),
                              new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.position="position";
             other.position="other position";
@@ -600,8 +600,8 @@ describe("game", function(){
                              infantry,
                              new unit("T", {x: 13, y:12}),
                              new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.position="position";
             player.selectedUnit=infantry;
@@ -621,8 +621,8 @@ describe("game", function(){
                              infantry,
                              new unit("T", {x: 13, y:12}),
                              new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.position="position";
             player.selectedUnit=null;
@@ -645,8 +645,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -666,8 +666,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -687,8 +687,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -709,8 +709,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=null;
             spyOn(MessageBus, "send");
@@ -731,8 +731,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -751,8 +751,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -771,8 +771,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},map, [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -791,8 +791,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -812,8 +812,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=null;
             spyOn(MessageBus, "send");
@@ -833,8 +833,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -854,8 +854,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map);
-            var other = new humanPlayer(1,"Name", "Color", []);
+            var player = new humanPlayer(0, "0","Name", "Color", units, map);
+            var other = new humanPlayer(1, "1","Name", "Color", []);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             player.selectedUnit=infantry;
             spyOn(MessageBus, "send");
@@ -876,8 +876,8 @@ describe("game", function(){
                  infantry,
                  new unit("T", {x: 13, y:12}),
                  new unit("F", {x: 7, y:7})];
-            var player = new humanPlayer(0,"Name", "Color", units, map).initTurn();
-            var other = new humanPlayer(1,"Name", "Color", []).initTurn();
+            var player = new humanPlayer(0, "0","Name", "Color", units, map).initTurn();
+            var other = new humanPlayer(1, "1","Name", "Color", []).initTurn();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             spyOn(MessageBus,"send");
             infantry.movesLeft=1;
@@ -886,14 +886,14 @@ describe("game", function(){
             gameInstance.endTurn();
 
             ///Then
-            expect(MessageBus.send).toHaveBeenCalledWith("end-turn");
+            expect(MessageBus.send).toHaveBeenCalledWith("propose-end-turn");
         });
         it("should end the turn when there are no moveable units", function(){
             //Given
             var infantry = new unit("I", {x: 3, y:3});
             var units = [infantry];
-            var player = new humanPlayer(0,"Name", "Color", units, map).initTurn();
-            var other = new humanPlayer(1,"Name", "Color", []).initTurn();
+            var player = new humanPlayer(0, "0","Name", "Color", units, map).initTurn();
+            var other = new humanPlayer(1, "1","Name", "Color", []).initTurn();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             spyOn(MessageBus,"send");
             infantry.movesLeft=0;
@@ -902,15 +902,15 @@ describe("game", function(){
             gameInstance.endTurn();
 
             ///Then
-            expect(MessageBus.send).toHaveBeenCalledWith("end-turn");
+            expect(MessageBus.send).toHaveBeenCalledWith("propose-end-turn");
         });
         it("should end the turn when there are no moveable units with orders", function(){
             //Given
             var infantry = new unit("I", {x: 3, y:3});
             infantry.order="order";
             var units = [infantry];
-            var player = new humanPlayer(0,"Name", "Color", units, map).initTurn();
-            var other = new humanPlayer(1,"Name", "Color", []).initTurn();
+            var player = new humanPlayer(0, "0","Name", "Color", units, map).initTurn();
+            var other = new humanPlayer(1, "1","Name", "Color", []).initTurn();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             spyOn(MessageBus,"send");
             infantry.movesLeft=0;
@@ -919,15 +919,15 @@ describe("game", function(){
             gameInstance.endTurn();
 
             ///Then
-            expect(MessageBus.send).toHaveBeenCalledWith("end-turn");
+            expect(MessageBus.send).toHaveBeenCalledWith("propose-end-turn");
         });
         it("should proceed to end of the turn phase when there are  moveable units with orders", function(){
             //Given
             var infantry = new unit("I", {x: 3, y:3});
             infantry.order="order";
             var units = [infantry];
-            var player = new humanPlayer(0,"Name", "Color", units, map).initTurn();
-            var other = new humanPlayer(1,"Name", "Color", []).initTurn();
+            var player = new humanPlayer(0, "0","Name", "Color", units, map).initTurn();
+            var other = new humanPlayer(1, "1","Name", "Color", []).initTurn();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             spyOn(MessageBus,"send");
             infantry.movesLeft=1;
@@ -943,8 +943,8 @@ describe("game", function(){
             var infantry = new unit("I", {x: 3, y:3});
             infantry.order="order";
             var units = [infantry];
-            var player = new humanPlayer(0,"Name", "Color", units, map).initTurn();
-            var other = new humanPlayer(1,"Name", "Color", []).initTurn();
+            var player = new humanPlayer(0, "0","Name", "Color", units, map).initTurn();
+            var other = new humanPlayer(1, "1","Name", "Color", []).initTurn();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
             spyOn(MessageBus,"send");
             infantry.movesLeft=1;
@@ -962,8 +962,8 @@ describe("game", function(){
             infantry.order="order";
             var units = [infantry, new city({y: 3, x: 2}, "Tiel")];
 
-            var player = new humanPlayer(0,"Name", "Color", units, map).initTurn();
-            var other = new humanPlayer(1,"Name", "Color", []).initTurn();
+            var player = new humanPlayer(0, "0","Name", "Color", units, map).initTurn();
+            var other = new humanPlayer(1, "1","Name", "Color", []).initTurn();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
 
             spyOn(MessageBus, "send");
@@ -977,8 +977,8 @@ describe("game", function(){
             infantry.order="order";
             var units = [infantry, new city({y: 3, x: 2}, "Tiel")];
 
-            var player = new humanPlayer(0,"Name", "Color", units, map).initTurn();
-            var other = new humanPlayer(1,"Name", "Color", []).initTurn();
+            var player = new humanPlayer(0, "0","Name", "Color", units, map).initTurn();
+            var other = new humanPlayer(1, "1","Name", "Color", []).initTurn();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other]);
 
             spyOn(MessageBus, "send");
@@ -994,9 +994,9 @@ describe("game", function(){
             var infantry2 = new unit("I", {x: 2, y:2});
 
 
-            var player = new humanPlayer(0,"Name", "Color", [infantry1, new city({y: 3, x: 2}, "Tiel")], map).initTurn();
-            var other = new humanPlayer(1,"Name", "Color", [], map).initTurn();
-            var left = new humanPlayer(2,"Name", "Color", [infantry2, new city({y: 2, x: 3}, "Tiel")], map).initTurn();
+            var player = new humanPlayer(0, "0","Name", "Color", [infantry1, new city({y: 3, x: 2}, "Tiel")], map).initTurn();
+            var other = new humanPlayer(1, "1","Name", "Color", [], map).initTurn();
+            var left = new humanPlayer(2, "2","Name", "Color", [infantry2, new city({y: 2, x: 3}, "Tiel")], map).initTurn();
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player, other,left]);
 
             spyOn(MessageBus, "send");

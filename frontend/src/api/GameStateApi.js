@@ -4,7 +4,7 @@ import {apiFetch} from "./Api";
 export function loadGameState(code) {
     return apiFetch("GET",`/api/app-state/game/${code}`).then(r => {
         MessageBus.clear();
-        const gameState = deserializeGameState(r, r.players, r.map);
+        const gameState = deserializeGameState(r);
         decorateMap(gameState.world());
         return gameState;
     });
