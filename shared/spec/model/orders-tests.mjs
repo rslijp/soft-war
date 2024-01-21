@@ -5,7 +5,7 @@ import {humanPlayer} from "../../game/human-player.js";
 
 describe("orders class", function(){
     var unitsmap={move: function(){return true;}, normalize: (pos)=>pos};
-    var player = new humanPlayer(0, "Sirius", "black", [], unitsmap);
+    var player = new humanPlayer(0, "0","Sirius", "black", [], unitsmap);
     describe("executeOrders method", function(){
         afterEach(function(){
             MessageBus.unlock();

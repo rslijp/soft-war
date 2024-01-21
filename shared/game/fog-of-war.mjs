@@ -53,11 +53,16 @@ export function fogOfWar (data, map) {
         }
         return data[position.y][position.x] > 0;
     };
+
+    function empty(v){
+        return v===null || v===undefined;
+    }
+
     this.discovered = function(position) {
-        if (data[position.y] === undefined) {
+        if (empty(data[position.y])) {
             return false;
         }
-        return data[position.y][position.x] !== undefined;
+        return !empty(data[position.y][position.x]);
     };
     this.prettyPrint = () => {
         for(var y=0;y<data.length; y++){

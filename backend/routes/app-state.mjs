@@ -78,8 +78,42 @@ router.get('/user', async function(req, res){
     res.send(user).status(200);
 });
 
+async function  retrieveExistingGame(code, user){
+    console.log("Retrieving game", code);
+    if (!code) {
+        throw {httpCode :412, message: "No code provided"};
+    }
+    if (code.length > 16) {
+        throw {httpCode :412, message: "Code to long "+code};
+    }
+    let collection = await appStates();//connection.collection("app-state");
+    let retrievedGameState = await collection.findOne({code});
+    if (!retrievedGameState) {
+        throw {httpCode :404, message: "No such game "+code};
+    }
 
+    const player = retrievedGameState.players.find(p => p.id === user.email);
+    if (!player) {
+        throw {httpCode :403, message: "You don't participate in game "+code};
+    }
+    return retrievedGameState;
+}
 
+router.post('/save-game', async function(req, res, next) {
+    const user = req.session.passport.user._json;
+    const gameState = req.body;
+    try {
+        console.log("Checking")
+        let retrievedGameState = await retrieveExistingGame(gameState.code, user);
+        console.log("Saving")
+        let collection = await appStates();
+        return collection.replaceOne({code: gameState.code}, gameState, {upsert: true});
+    } catch(e){
+        console.log(e);
+        console.error("ERROR",e.messages);
+        res.status(e.httpCode);
+    }
+});
 
 router.post('/new-game', async function(req, res, next) {
   const {type, dimensions, name, players} = req.body;
@@ -188,53 +222,39 @@ router.put('/pending-game/:code', async function(req, res, next) {
 
 router.delete('/game/:code', async function(req, res, next) {
     const user = req.session.passport.user._json;
-    console.log("Retrieving game", req.params.code);
-    if (!req.params.code || req.params.code.length > 16) {
-        console.log("Code to long", req.params.code);
-        res.status("412");
-        return;
-    }
-    let collection = await appStates();//connection.collection("app-state");
-    let gameState = await collection.findOne({code: req.params.code});
-    if (!gameState) {
-        console.log("No such game", req.params.code);
-        res.status("404");
-        return;
-    }
+    console.log("Deleting game", req.params.code);
+    try {
+        const gameState = await retrieveExistingGame(req.params.code, user);
 
-    const player = gameState.players.find(p => p.id === user.email);
-    if (!player) {
-        console.log("Not your game");
-        res.status("403");
-        return;
-    }
-    player.status = "surrender";
-
-    const activePlayers = gameState.players.filter(p=>p.status==='active');
-    const lostPlayers = gameState.players.filter(p=>p.status!=='active');
-    const status = activePlayers.length>1?'active':'finished';
-    if(activePlayers.length === 1){
-        if(activePlayers[0].type==='Human') winnerEmail(activePlayers[0].id, gameState.name);
-        const lostHumanPlayers = lostPlayers.filter(p=>p.type === 'Human');
-        if(lostHumanPlayers.length>0) lostEmail(lostHumanPlayers.map(p=>p.id), gameState.name);
-    }
-    if(activePlayers.length===0){
-        const lostHumanPlayers = lostPlayers.filter(p=>p.type === 'Human');
-        if(lostHumanPlayers.length>0) lostEmail(lostHumanPlayers.map(p=>p.id), gameState.name);
-    }
-
-    if (status==='finished') {
-        const result = await collection.deleteOne({code: req.params.code});
-        if (result.deletedCount === 1) {
-            gameState._id = undefined;
-            await saveFinishedGame(gameState);
-        } else {
-            console.log("No documents matched the query. Deleted 0 documents.");
+        const activePlayers = gameState.players.filter(p => p.status === 'active');
+        const lostPlayers = gameState.players.filter(p => p.status !== 'active');
+        const status = activePlayers.length > 1 ? 'active' : 'finished';
+        if (activePlayers.length === 1) {
+            if (activePlayers[0].type === 'Human') winnerEmail(activePlayers[0].id, gameState.name);
+            const lostHumanPlayers = lostPlayers.filter(p => p.type === 'Human');
+            if (lostHumanPlayers.length > 0) lostEmail(lostHumanPlayers.map(p => p.id), gameState.name);
         }
-    } else {
-        return collection.replaceOne({code: req.params.code}, gameState, {upsert: true});
+        if (activePlayers.length === 0) {
+            const lostHumanPlayers = lostPlayers.filter(p => p.type === 'Human');
+            if (lostHumanPlayers.length > 0) lostEmail(lostHumanPlayers.map(p => p.id), gameState.name);
+        }
+
+        if (status === 'finished') {
+            const result = await collection.deleteOne({code: req.params.code});
+            if (result.deletedCount === 1) {
+                gameState._id = undefined;
+                await saveFinishedGame(gameState);
+            } else {
+                console.log("No documents matched the query. Deleted 0 documents.");
+            }
+        } else {
+            return collection.replaceOne({code: req.params.code}, gameState, {upsert: true});
+        }
+        res.send({status: status}).status(200);
+    } catch (e){
+        console.error(e.message);
+        res.status(e.httpCode);
     }
-    res.send({status: status}).status(200);
 });
 
 

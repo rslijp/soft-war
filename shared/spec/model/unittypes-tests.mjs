@@ -425,7 +425,7 @@ describe("unittypes class", function(){
             var result = submarine.specialAction();
 
             //Then
-            expect(result).toEqual({label: "Submerge", method: "dive", enabled: true});
+            expect(result).toEqual({label: "Submerge", method: "dive", enabled: true, value: false});
         });
         it("should allow unit to surface when submerged", function(){
             //Given
@@ -435,7 +435,7 @@ describe("unittypes class", function(){
             var result = submarine.specialAction();
 
             //Then
-            expect(result).toEqual({label: "Surface", method: "surface", enabled: true});
+            expect(result).toEqual({label: "Surface", method: "surface", enabled: true, value: true});
         });
         it("should disable submerge when can't submerge", function(){
             //Given
@@ -446,7 +446,7 @@ describe("unittypes class", function(){
             var result = submarine.specialAction();
 
             //Then
-            expect(result).toEqual({label: "Submerge", method: "dive", enabled: false});
+            expect(result).toEqual({label: "Submerge", method: "dive", enabled: false, value: false});
         });
         it("should allow unit to surface when submerged", function(){
             //Given
@@ -458,7 +458,7 @@ describe("unittypes class", function(){
             var result = submarine.specialAction();
 
             //Then
-            expect(result).toEqual({label: "Surface", method: "surface", enabled: false});
+            expect(result).toEqual({label: "Surface", method: "surface", enabled: false, value: true});
         });
         it("should allow to surface a submerged unit", function(){
             //Given
@@ -676,7 +676,7 @@ describe("unittypes class", function(){
             var result = infantry.specialAction();
 
             //Then
-            expect(result).toEqual({label: "Fortify", method: "fortify", enabled: true});
+            expect(result).toEqual({label: "Fortify", method: "fortify", enabled: true, value: false});
         });
         it("should allow unit to activate when fortified", function(){
             //Given
@@ -686,7 +686,7 @@ describe("unittypes class", function(){
             var result = infantry.specialAction();
 
             //Then
-            expect(result).toEqual({label: "Activate", method: "activate", enabled: true});
+            expect(result).toEqual({label: "Activate", method: "activate", enabled: true, value: true});
         });
         describe("fortify method", function(){
             it("should not allow unit to fortify when cant fortify", function(){
@@ -698,7 +698,7 @@ describe("unittypes class", function(){
                 var result = infantry.specialAction();
 
                 //Then
-                expect(result).toEqual({label: "Fortify", method: "fortify", enabled: false});
+                expect(result).toEqual({label: "Fortify", method: "fortify", enabled: false, value: false});
             });
             it("should allow unit to activate when fortified", function(){
                 //Given
@@ -710,7 +710,7 @@ describe("unittypes class", function(){
                 var result = infantry.specialAction();
 
                 //Then
-                expect(result).toEqual({label: "Activate", method: "activate", enabled: false});
+                expect(result).toEqual({label: "Activate", method: "activate", enabled: false, value: true});
             });
             it("should fortify unit", function(){
                 //Given

@@ -7,17 +7,17 @@ import {default as MessageBus} from "../../services/message-service.mjs";
 
 describe("unitsMap", function(){
     var dummyMapRaw = [];
-    for(var i=0;i<5;i++){
+    for(var i=0;i<15;i++){
         dummyMapRaw[i]=[];
-        for(var j=0;j<5;j++){
+        for(var j=0;j<15;j++){
             dummyMapRaw[i][j]="L";
         }
     }
 
     var dummyMap = new gameMap( {
         "dimensions": {
-            "width": 5,
-            "height": 5
+            "width": 15,
+            "height": 15
         },
         "world" : dummyMapRaw,
         "cities": []
@@ -222,11 +222,11 @@ describe("unitsMap", function(){
             spyOn(map, "collision");
 
             //When
-            var result  = map.move(player.units[0], {y: 4, x:4});
+            var result  = map.move(player.units[0], {y: 14, x:14});
 
             //Then
             expect(map.collision).not.toHaveBeenCalled();
-            expect(map.data[4][4]).toEqual(player.units[0]);
+            expect(map.data[14][14]).toEqual(player.units[0]);
         });
         it("should not move the unit over a distance greater than 1", function(){
             //Given
@@ -640,7 +640,7 @@ describe("unitsMap", function(){
         it("should return none when there is no other unit", function(){
             //Given
             var subject = new unit("T", {y: 3, x:3});
-            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "Player", "green", [subject], dummyMap);
             var map = new unitsMap([player], dummyMap);
             
             //When
@@ -653,7 +653,7 @@ describe("unitsMap", function(){
         it("should return none when there is a friendly unit near by", function(){
             //Given
             var subject = new unit("T", {y: 3, x:3});
-            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject,new unit("T", {y: 4, x:4})], dummyMap);
+            var player=new humanPlayer(1, "1", "Player", "green", [subject,new unit("T", {y: 4, x:4})], dummyMap);
             var enemy=new humanPlayer(2, "2", "Computer", "red", [], dummyMap);
             var map = new unitsMap([player], dummyMap);
 
@@ -667,7 +667,7 @@ describe("unitsMap", function(){
         it("should return the unit when there is an enemy unit", function(){
             //Given
             var subject = new unit("T", {y: 3, x:3});
-            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "Player", "green", [subject], dummyMap);
             var foe = new unit("T", {y: 4, x:4});
             var enemy=new humanPlayer(2, "2", "Computer", "red", [foe], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
@@ -681,7 +681,7 @@ describe("unitsMap", function(){
         it("should return none when the enemy unit is out of sight", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "Player", "green", [subject], dummyMap);
             var enemy=new humanPlayer(2, "2", "Computer", "red", [new unit("T", {y: 4, x:4})], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
 
@@ -694,7 +694,7 @@ describe("unitsMap", function(){
         it("should return none when the enemy unit is out of sight (border case)", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "Player", "green", [subject], dummyMap);
             var enemy=new humanPlayer(2, "2", "Computer", "red", [new unit("T", {y: 3, x:3})], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
 
@@ -708,7 +708,7 @@ describe("unitsMap", function(){
         it("should return true when the enemy unit is in sight (border case)", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "Player", "green", [subject], dummyMap);
             var foe = new unit("T", {y: 2, x:2});
             var enemy=new humanPlayer(2, "2", "Computer", "red", [foe], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
@@ -722,7 +722,7 @@ describe("unitsMap", function(){
         it("should return foe when the enemy unit is in sight", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "Player", "green", [subject], dummyMap);
             var foe = new unit("T", {y: 0, x:3});
             var enemy=new humanPlayer(2, "2", "Computer", "red", [foe], dummyMap);
             var map = new unitsMap([player,enemy], dummyMap);
@@ -737,7 +737,7 @@ describe("unitsMap", function(){
         it("should return foo and bar when both in sight", function(){
             //Given
             var subject = new unit("T", {y: 0, x:0});
-            var player=new humanPlayer(1, "1", "1", "Player", "green", [subject], dummyMap);
+            var player=new humanPlayer(1, "1", "Player", "green", [subject], dummyMap);
             var foo = new unit("T", {y: 0, x:3});
             var bar = new unit("T", {y: 0, x:2});
             var enemy=new humanPlayer(2, "2", "Computer", "red", [foo, bar], dummyMap);

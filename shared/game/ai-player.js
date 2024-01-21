@@ -210,6 +210,15 @@ export function aiPlayer(index, id, name, color, units, map) {
         }
     }
 
+    this.onEndTurn = ()=>{
+        this.units.filter(u=>u.clazz==='city').forEach(c=>{
+            if(!c.producingType) {
+                console.log("SELECT TANK FOR PRODCUTION", c.getName())
+                c.produce('T');
+            }
+        });
+    }
+
     this.scheduleConquerTheWorld = (unit) => {
        if(this.conquerHandle) {
             console.log("scheduleConquerTheWorld active");
@@ -220,7 +229,6 @@ export function aiPlayer(index, id, name, color, units, map) {
     }
 
     this.autoNext=()=>{
-        if(this.selectedUnit) console.log("X", this.selectedUnit.getName(), this.selectedUnit.canMove());
         if(this.selectedUnit && this.selectedUnit.canMove()) this.scheduleConquerTheWorld();
         return true;
     };
@@ -243,7 +251,7 @@ export function aiPlayer(index, id, name, color, units, map) {
     this.init();
 
     MessageBus.register("next-unit", this.autoNext, this)
-    MessageBus.register("unit-order-step", this.unitOrderStep, this)
+    // MessageBus.register("unit-order-step", this.unitOrderStep, this)
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
     MessageBus.register("unit-created", this.registerUnit, this);
     // MessageBus.register("city-defense-destroyed", this.enemyCityConquered, this);

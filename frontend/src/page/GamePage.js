@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
+import BattleResultsDialog from "./dialogs/BattleResultsDialog";
 import ChangeCityProductionDialog from "./dialogs/ChangeCityProductionDialog";
 import EndTurnDialog from "./dialogs/EndTurnDialog";
 import FlashMessagesDialog from "./dialogs/FlashMessagesDialog";
@@ -7,14 +8,16 @@ import GameView from "./component/GameView";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import HorizontalScrollBar from "../map/HorizontalScrollBar";
 import MessageBus from "softwar-shared/services/message-service.mjs";
+import OrderAttentionDialog from "./dialogs/OrderAttentionDialog";
+import OrderConfirmationDialog from "./dialogs/OrderConfirmationDialog";
 import OutOfFuelDialog from "./dialogs/OutOfFuelDialog";
 import ScrollableViewPort from "../map/ScrollableViewPort";
 import SurrenderDialog from "./dialogs/SurrenderDialog";
 import {TOP_BAR_HEIGHT} from "../Constants";
 import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
+import {saveGame} from "../api/GameStateApi";
 import {useLoaderData} from "react-router-dom";
-import {serializeGameState} from "softwar-shared/services/save-game.mjs";
 
 let timer = null;
 
@@ -33,13 +36,26 @@ function GamePage() {
     stateRef.current = {state: state, viewPort: viewPort, renderIteration: renderIteration};
 
     const newTurn = (messages) => {
-        console.log("XXX",serializeGameState(gameState));
+        console.log(messages);
         setDialog({name: 'messages', messages: messages, hide: true});
         focusOnTile(gameState.position());
     };
 
-    const render = ()=>{
+    const autoSaveGame = () => {
+        console.log("Auto save");
+        saveGame(gameState);
+    };
+
+    const render = (position)=>{
+        if(position) {
+            focusOnTile(position);
+            return;
+        }
         setRenderIteration(stateRef.current.renderIteration+1);
+    };
+
+    const unitSelected = (unit) => {
+        if(unit) focusOnTile(unit.derivedPosition());
     };
 
     const focusOnTile = ({x, y}) => {
@@ -59,17 +75,45 @@ function GamePage() {
     };
 
     const outOfFuel = (unit) => {
-        if (unit.player != gameState.currentPlayer()) {
+        if (unit.player != gameState.currentPlayerIndex) {
             return;
         }
         setDialog({name: 'unit-out-of-fuel', unit: unit});
     };
 
+    const orderAttention = (unit, order) => {
+        if (unit.player != gameState.currentPlayerIndex) {
+            return;
+        }
+        setDialog({name: 'order-attention', unit: unit, order: order});
+    };
+
+    const confirmOrder = (unit, order) => {
+        if (unit.player != gameState.currentPlayerIndex) {
+            return;
+        }
+        setDialog({name: 'confirm-order', unit: unit, order: order});
+    };
+
+    const battleResults = (attacker, defender, result) => {
+        if (attacker.player != gameState.currentPlayerIndex) {
+            return;
+        }
+        setDialog({name: 'battle-results', attacker: attacker, defender: defender, result: result});
+    };
+
     useEffect(() => {
         const handles = [
             MessageBus.register("new-turn", newTurn, this),
+            MessageBus.register("next-turn", autoSaveGame, this),
             MessageBus.register("screen-update", render, this),
             MessageBus.register("cursor-select", focusOnTile, this),
+            MessageBus.register("unit-selected", unitSelected, this),
+            MessageBus.register("battle-results", battleResults, this),
+            MessageBus.register("unit-order-attention", orderAttention, this),
+            MessageBus.register("confirm-order", confirmOrder, this),
+
+
             MessageBus.register("propose-end-turn", endTurn, this),
             MessageBus.register("unit-out-of-fuel", outOfFuel, this),
         ];
@@ -109,7 +153,10 @@ function GamePage() {
             'end-turn': () => <EndTurnDialog onClose={close}/>,
             'messages': () => <FlashMessagesDialog messages={dialog.messages} onClose={close}/>,
             'unit-out-of-fuel': () => <OutOfFuelDialog unit={dialog.unit} onClose={close}/>,
-            'change-city-production': () => <ChangeCityProductionDialog city={dialog.city} onClose={close}/>
+            'battle-results': () => <BattleResultsDialog attacker={dialog.attacker} defender={dialog.defender} result={dialog.result} player={gameState.currentPlayer()} onClose={close}/>,
+            'change-city-production': () => <ChangeCityProductionDialog city={dialog.city} onClose={close}/>,
+            'order-attention': () => <OrderAttentionDialog unit={dialog.unit}  order={dialog.order} onClose={close}/>,
+            'confirm-order': () => <OrderConfirmationDialog unit={dialog.unit}  order={dialog.order} onClose={close}/>
         };
         const builder = dialogs[dialog.name];
         return builder?builder(dialog):null;

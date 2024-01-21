@@ -67,6 +67,8 @@ export function deserializeGameState(raw){
             player = new aiPlayer(i, rawPlayer.id, rawPlayer.name, PLAYER_COLORS[i], units, map);
         }
         if(rawPlayer.fogOfWar) player.fogOfWar = new fogOfWar(rawPlayer.fogOfWar, map);
+        if(rawPlayer.discoveredTiles) player.fogOfWar.discoveredTiles = rawPlayer.discoveredTiles;
+        if(rawPlayer.messages) player.messages=rawPlayer.messages;
         return player;
     });
     const r = new game(raw, map, players);
@@ -82,25 +84,37 @@ export function serializeGameState(game){
         name: game.name,
         at: Date.now(),
         turn: game.turn,
-        currentPlayer: game.currentPlayer,
+        currentPlayer: game.currentPlayerIndex,
         players: game.players.map(player=>{
+            const units = [];
+            const cities = [];
+            player.units.filter(u=>u.clazz==='city').forEach(c=>{
+               cities.push(c);
+                (c.nestedUnits||[]).forEach(u=>units.push(u))
+            });
+            player.units.filter(u=>u.clazz==='unit'&&!u.inside).forEach(u=>{
+                units.push(u)
+            });
             return {
                 "id" : player.id,
                 "name" : player.name,
                 "type" : player.type,
-                "cities" : player.units.filter(u=>u.claz==='city').map(u=>{
+                "fogOfWar": player.fogOfWar.data,
+                "discoveredTiles": player.fogOfWar.discoveredTiles,
+                "messages": player.messages,
+                "cities" : cities.map(u=>{
                     const pos = u.derivedPosition();
                     return {
-                        "y" : pos.x,
+                        "y" : pos.y,
                         "x" : pos.x,
                         "producingType" : u.producingType,
                         "production": u.production||0
                     }
                 }),
-                "units": player.units.filter(u=>u.claz==='unit'&&!u.inside).map(u=>{
+                "units": units.map(u=>{
                     const pos = u.derivedPosition();
                     const unit = {
-                        "y" : pos.x,
+                        "y" : pos.y,
                         "x" : pos.x,
                         "type" : u.type,
                         health: u.health,
@@ -115,7 +129,7 @@ export function serializeGameState(game){
                         health: nu.health
                     }});
 
-                    return u;
+                    return unit;
                 }),
                 "status" : "accepted",
                 "position" : player.position
@@ -123,7 +137,8 @@ export function serializeGameState(game){
         }),
         map: {
             dimensions: map.dimensions,
-            world: map.data.map(row=>row.map(c=>c.type).join(''))
+            world: map.data.map(row=>row.map(c=>c.type).join('')),
+            cities: map.cities.map(c=>[c.position.y, c.position.x])
         },
         status: 'active'
     }

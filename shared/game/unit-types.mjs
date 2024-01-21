@@ -44,10 +44,10 @@ export const unitTypes = {
             },
             specialAction: function() {
                 if (this.fortified) {
-                    return {label: "Activate", method: "activate", enabled: this.canActivate()};
+                    return {label: "Activate", method: "activate", enabled: this.canActivate(), value: true};
                 }
                 else {
-                    return {label: "Fortify", method: "fortify",enabled: this.canFortify()};
+                    return {label: "Fortify", method: "fortify",enabled: this.canFortify(), value: false};
                 }
             },
             remark: function() {
@@ -207,10 +207,10 @@ export const unitTypes = {
             },
             specialAction: function() {
                 if (this.submerged) {
-                    return {label: "Surface", method: "surface", enabled: this.canSurface()};
+                    return {label: "Surface", method: "surface", enabled: this.canSurface(), value: true};
                 }
                 else {
-                    return {label: "Submerge", method: "dive", enabled: this.canDive()};
+                    return {label: "Submerge", method: "dive", enabled: this.canDive(), value: false};
                 }
             },
             remark: function() {

@@ -1,13 +1,44 @@
+import React, {useEffect, useRef, useState} from "react";
 import {any, number, shape} from "prop-types";
 import {MessageBus} from "softwar-shared";
-import React from "react";
 import {TILE_SIZE} from "../Constants";
 import UnitView from "./UnitView";
+import {navigationAStar} from "softwar-shared/game/navigationAStar.mjs";
 
 function WorldMapView({map, range, selectedUnit, fogOfWar}) {
+    const [state, setState] = useState({mode: 'regular', path: null});
     const dimensions = map.dimensions;
+    const stateRef = useRef();
+    stateRef.current = {mode: state.mode, path: state.path};
+
+    function moveToMode(){
+        const state = stateRef.current.mode;
+        if(selectedUnit && state!=='move-to'){
+            setState({...state, mode: 'move-to'});
+        } else {
+            setState({...state, mode: 'regular'});
+        }
+    }
+
+    function patrolToMode(){
+        const state = stateRef.current.mode;
+        if(selectedUnit && state!=='patrol-to'){
+            setState({...state, mode: 'patrol-to'});
+        } else {
+            setState({...state, mode: 'regular'});
+        }
+    }
 
 
+    useEffect(() => {
+        const handles = [
+            MessageBus.register("move-to-mode", moveToMode, this),
+            MessageBus.register("patrol-to-mode", patrolToMode, this)
+        ];
+        return ()=>{
+            MessageBus.revokeByHandles(handles);
+        };
+    }, []);
 
     function normalizedRange(range){
         const r = {...range, startX: Math.floor(range.startX), startY:  Math.floor(range.startY)};
@@ -25,16 +56,67 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         const pos = selectedUnit.derivedPosition();
         const allowed = (pos) => {
             pos=map.normalize(pos);
+            const collision = map.unitAt(pos);
+            if(collision) {
+                if(collision.player === selectedUnit.player){
+                    return collision.canLoad(selectedUnit, false);
+                } else if(collision.clazz==='city'){
+                    return selectedUnit.definition().groundForce; //attack
+                } else {
+                    return true;
+                }
+            }
             return selectedUnit.canMoveOn(world[pos.y][pos.x].type);
         };
-        if(allowed({y: pos.y-1,x: pos.x-1})) hudMap[`${pos.y-1}_${pos.x-1}`] = {className: "hud-move-top-left", action: ()=>MessageBus.sendLockable("cursor-direction", "NW")};
-        if(allowed({y: pos.y-1,x: pos.x})) hudMap[`${pos.y-1}_${pos.x}`]= {className: "hud-move-top", action: ()=>MessageBus.sendLockable("cursor-direction", "N")};
-        if(allowed({y: pos.y-1,x: pos.x+1})) hudMap[`${pos.y-1}_${pos.x+1}`]= {className: "hud-move-top-right", action: ()=>MessageBus.sendLockable("cursor-direction", "NE")};
-        if(allowed({y: pos.y,x:   pos.x-1})) hudMap[`${pos.y}_${pos.x-1}`]= {className: "hud-move-left", action: ()=>MessageBus.sendLockable("cursor-direction", "W")};
-        if(allowed({y: pos.y,x:   pos.x+1})) hudMap[`${pos.y}_${pos.x+1}`]= {className: "hud-move-right", action: ()=>MessageBus.sendLockable("cursor-direction", "E")};
-        if(allowed({y: pos.y+1,x: pos.x-1})) hudMap[`${pos.y+1}_${pos.x-1}`]= {className: "hud-move-down-left", action: ()=>MessageBus.sendLockable("cursor-direction", "SW")};
-        if(allowed({y: pos.y+1,x: pos.x})) hudMap[`${pos.y+1}_${pos.x}`]= {className: "hud-move-down", action: ()=>MessageBus.sendLockable("cursor-direction", "S")};
-        if(allowed({y: pos.y+1,x: pos.x+1})) hudMap[`${pos.y+1}_${pos.x+1}`]={className: "hud-move-down-right", action: ()=>MessageBus.sendLockable("cursor-direction", "SE")};
+        const hudPoint = (pos, dy , dx, direction) => {
+            const dp = map.normalize({y: pos.y+dy,x: pos.x+dx});
+            if(allowed(dp)) hudMap[`${dp.y}_${dp.x}`] = {
+                className: "hud-move-"+direction,
+                action: () => MessageBus.sendLockable("cursor-direction", direction)
+            };
+
+        };
+
+        const hudPath = (path, action) => {
+            path.forEach((pos,i)=>{
+                if(i!==path.length-1) {
+                    hudMap[`${pos.y}_${pos.x}`] = {
+                        className: "hud-move-" + pos.direction
+                    };
+                } else {
+                    hudMap[`${pos.y}_${pos.x}`] = {
+                        className: "hud-move-X"
+                    };
+                    if(action){
+                        hudMap[`${pos.y}_${pos.x}`].action = () => {
+                            setState({...state, mode: 'regular', path: null});
+                            MessageBus.send("give-order", action, state.path, null, false);
+                        };
+                    }
+                }
+            });
+        };
+
+        if(state.mode === 'regular') {
+            if(selectedUnit.order){
+                hudPath(selectedUnit.order.queue);
+            } else if(selectedUnit.canMove()){
+                hudPoint(pos, -1, -1, "NW");
+                hudPoint(pos, -1, 0, "N");
+                hudPoint(pos, -1, +1, "NE");
+                hudPoint(pos, 0, -1, "W");
+                hudPoint(pos, 0, +1, "E");
+                hudPoint(pos, +1, -1, "SW");
+                hudPoint(pos, +1, 0, "S");
+                hudPoint(pos, +1, +1, "SE");
+            }
+        }
+        if(state.mode === 'move-to' && state.path) {
+            hudPath(state.path, "move");
+        }
+        if(state.mode === 'patrol-to' && state.path) {
+            hudPath(state.path, "patrol");
+        }
     }
 
     function intelligenceHud(hudMap){
@@ -67,15 +149,22 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
     const hudMap = {};
     if(map.intelligence){
         intelligenceHud(hudMap);
-    } else if(selectedUnit && selectedUnit.canMove()){
+    } else if(selectedUnit){
         unitHud(hudMap);
     }
 
 
+    function onMouseOver(position){
+        if(state.mode==='regular') return;
+        const result = new navigationAStar(map.gameMap, selectedUnit, fogOfWar, false).route(position, false);
+        let path = (result && result.route)?result.route:null;
+        setState({...state, path: path});
+
+    }
     // console.log(fogOfWar.prettyPrint());
 
     function cell(key, x, y, entry){
-        const position = {x, y};
+        const position = {y, x};
         const positionKey = `${y}_${x}`;
         const selected = selectedUnit&&
                         (!selectedUnit.isAlive||selectedUnit.isAlive())&&
@@ -92,7 +181,7 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
             unit=null;
             clazzes.push("land-fog-of-war");
         }
-        return <td key={key} className={clazzes.join(" ")}>
+        return <td key={key} className={clazzes.join(" ")} onMouseOver={()=>onMouseOver(position)}>
             {unit?<UnitView unit={unit} selected={selected}/>:null}
             {hud?<div className={(unit?"hud-action with-unit ":"hud-action ")+hud.className} onClick={hud.action}></div>:null}
         </td>;

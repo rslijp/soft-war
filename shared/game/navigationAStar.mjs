@@ -19,7 +19,7 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
 
         function open(node) {
             head.push(node);
-            head.sort((item) => item.costs);
+            head.sort((lhs, rhs) => lhs.costs-rhs.costs);
             var position = node.position;
             headXY[position.y][position.x] = node;
         }
@@ -66,6 +66,7 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
         }
 
         function ChebyshevDistance(from, to) {
+            if(flatEarth) return 1.5 * Math.max(Math.abs(from.y - to.y), Math.abs(from.x - to.x));
             return /*D **/ 1.5 * map.distance(from, to);
         }
 
@@ -84,10 +85,9 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
                 }
             }
             else {
-                 next = map.normalize(next);
+                next = map.normalize(next);
             }
-            //unit limitations
-            if (!unit.canMoveOn(map.type(next)) || !ignoreFogOfWar && !fogofwar.discovered(next)) {
+            if (!unit.canMoveOn(map.type(next)) || (!ignoreFogOfWar && !fogofwar.discovered(next))) {
                 return;
             }
 

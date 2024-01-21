@@ -92,7 +92,19 @@ function GameView({state, range}) {
                 MessageBus.sendLockable("special-action", unit, unit.specialAction().method);
             }
             break;
+        case 109: //m
+        case 77: //M
+            MessageBus.send("move-to-mode");
+            break;
+        case 112: //p
+        case 80: //P
+            MessageBus.send("patrol-to-mode");
+            break;
+        default:
+            console.log(key);
+
         }
+
     };
 
     return <div ref={gameView} onKeyPress={(e) => onKeyPress(e)} tabIndex={0}>

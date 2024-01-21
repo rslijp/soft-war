@@ -29,6 +29,10 @@ export const playerTraits = {
        this.units.forEach((unit) => {
            unit.endTurn();
        });
+       this.onEndTurn();
+   },
+   onEndTurn: function(){
+
    },
    enemySpotted: function(foes, by){
         this.contactedEnemy=true;
@@ -148,5 +152,5 @@ export const playerTraits = {
 }
 
 export function applyPlayerTraitsOn(target){
-    applyTraitsOn("player", playerTraits, target);
+    applyTraitsOn("player", playerTraits, target, [], ['onEndTurn']);
 }

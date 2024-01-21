@@ -1,6 +1,6 @@
-import {Button, Container, Navbar} from "react-bootstrap";
+import {Button, ButtonGroup, Container, Navbar} from "react-bootstrap";
 import {any, func} from "prop-types";
-import {faCrosshairs, faFlag, faForwardStep, faIndustry} from "@fortawesome/free-solid-svg-icons";
+import {faChevronRight, faCrosshairs, faFlag, faForwardStep, faIndustry, faMapLocationDot, faPersonMilitaryRifle, faTents, faWater} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {MessageBus} from "softwar-shared";
 import React from "react";
@@ -22,6 +22,12 @@ const TYPE_MAP = {
     'b' : 'battleship',
 };
 
+const SPECIAL_MAP = {
+    'fortify': faTents,
+    'activate': faTents,
+    'surface': faWater,
+    'dive': faWater
+};
 
 function GameUnitBar({gameState, openDialog}) {
     const currentPlayer = gameState.currentPlayer();
@@ -41,7 +47,11 @@ function GameUnitBar({gameState, openDialog}) {
     };
 
     const regularUnit = (unit) => {
-        return <span className={"bottom-bar-space"}>{unit.getName()}, moves left <u>{unit.movesLeft}</u></span>;
+        const definition = unit.definition();
+
+        return <span className={"bottom-bar-space"}>{unit.getName()}, moves left <u>{unit.movesLeft}</u>
+            {definition.fuel?<span>{" "}fuel <u>{unit.fuel}</u>/{definition.fuel}</span>:null}
+        </span>;
     };
 
     const nestedUnits = (unit) => {
@@ -59,16 +69,51 @@ function GameUnitBar({gameState, openDialog}) {
         </div>;
     };
 
+    const specialActions = (unit) => {
+        const action = unit.specialAction?unit.specialAction():null;
+        if(!action) return null;
+        return <Button
+            active={action.value}
+            disabled={!action.enabled}
+            variant={"outline-secondary"}
+            size={"xs"}
+            title={action.label}
+            onClick={() => {
+                unit[action.method]();
+                MessageBus.send("screen-update", unit.derivedPosition());
+            }}><FontAwesomeIcon icon={SPECIAL_MAP[action.method]}/></Button>;
+    };
+
     const unitBar = (unit) => {
         if (!unit) return;
+        const ownUnit = unit.player===currentPlayer.index;
         return <Navbar.Text className={"unit-bar"}>
+            <ButtonGroup>
+                <Button variant={"outline-secondary"} size={"xs"}
+                    onClick={() => MessageBus.send("screen-update", selectedUnit.derivedPosition())}>
+                    <FontAwesomeIcon icon={faCrosshairs}/>
+                </Button>
+                {ownUnit?<Button className="bottom-bar-space" disabled={!selectedUnit} variant={"outline-secondary"} size={"xs"}
+                    onClick={() => {
+                        gameState.currentPlayer().jumpToNextUnit(selectedUnit);
+                    }}><FontAwesomeIcon icon={faChevronRight}/></Button>:null}
+            </ButtonGroup>
             <div className={"unit-view "+TYPE_MAP[unit.type]}/>
-            <Button variant={"outline-secondary"} size={"xs"}
-                onClick={() => MessageBus.send("cursor-select", selectedUnit.derivedPosition())}>
-                <FontAwesomeIcon icon={faCrosshairs}/>
-            </Button>
             {unit.clazz === 'city' ? cityUnit(unit) : regularUnit(unit)}
-            {nestedUnits(unit)}
+            {ownUnit?
+                <ButtonGroup className="bottom-bar-space">
+                    {specialActions(unit)}
+                    <Button variant={"outline-secondary"} size={"xs"} title={"move"}
+                        onClick={() => MessageBus.send("move-to-mode")}>
+                        <FontAwesomeIcon icon={faMapLocationDot}/>
+                    </Button>
+                    <Button variant={"outline-secondary"} size={"xs"} title={"patrol"}
+                        onClick={() => MessageBus.send("patrol-to-mode")}>
+                        <FontAwesomeIcon icon={faPersonMilitaryRifle}/>
+                    </Button>
+                </ButtonGroup>:null}
+            {ownUnit?nestedUnits(unit):null}
+            {unit.remark()?" ("+unit.remark()+")":null}
         </Navbar.Text>;
     };
 
@@ -82,12 +127,14 @@ function GameUnitBar({gameState, openDialog}) {
                 <Navbar.Text className="bottom-bar-space">
                     Turn{" "}<u>{gameState.turn}</u>
                 </Navbar.Text>
-                <Button className="bottom-bar-space" variant={"warning"} size={"xs"}
-                    onClick={() => MessageBus.send("propose-end-turn")}><FontAwesomeIcon
-                        icon={faForwardStep}/></Button>
-                <Button className="bottom-bar-space" variant={"danger"} size={"xs"}
-                    onClick={() => openDialog({name: 'surrender', code: gameState.code})}><FontAwesomeIcon
-                        icon={faFlag}/></Button>
+                <ButtonGroup className="bottom-bar-space" >
+                    <Button variant={"warning"} size={"xs"}
+                        onClick={() => MessageBus.send("propose-end-turn")}><FontAwesomeIcon
+                            icon={faForwardStep}/></Button>
+                    <Button variant={"danger"} size={"xs"}
+                        onClick={() => openDialog({name: 'surrender', code: gameState.code})}><FontAwesomeIcon
+                            icon={faFlag}/></Button>
+                </ButtonGroup>
             </Navbar.Collapse>
         </Container>
     </Navbar>;

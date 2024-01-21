@@ -1,5 +1,6 @@
 import {MessageBus, decorateMap, deserializeGameState} from "softwar-shared";
 import {apiFetch} from "./Api";
+import {serializeGameState} from "softwar-shared/services/save-game.mjs";
 
 export function loadGameState(code) {
     return apiFetch("GET",`/api/app-state/game/${code}`).then(r => {
@@ -20,6 +21,10 @@ export function newGame(type, dimensions, name, players) {
     return apiFetch("POST",`/api/app-state/new-game`, {
         type, dimensions, name, players
     });
+}
+
+export function saveGame(gameState) {
+    return apiFetch("POST",`/api/app-state/save-game`, serializeGameState(gameState));
 }
 
 export function surrenderGame(code) {

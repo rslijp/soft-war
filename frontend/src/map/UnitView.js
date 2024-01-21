@@ -1,5 +1,5 @@
+import {Badge, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {MessageBus, PLAYER_COLORS} from "softwar-shared";
-import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {bool, shape, string} from "prop-types";
 import React from "react";
 
@@ -30,7 +30,7 @@ function UnitView({unit, selected}) {
     if (unit.player!==undefined) additionalStyle['backgroundColor'] = PLAYER_COLORS[unit.player];
     const cssClasses = ["unit-view", TYPE_TILE_MAP[unit.type]];
     if(selected) cssClasses.push("selected-unit");
-
+    const remark = unit.remark?unit.remark():null;
     return <OverlayTrigger
         placement="bottom"
         delay={{show: 250, hide: 400}}
@@ -39,7 +39,7 @@ function UnitView({unit, selected}) {
         <div className={cssClasses.join(" ")}
             style={additionalStyle}
             onClick={() => MessageBus.send("cursor-select", unit.derivedPosition())}>
-
+            {remark?<Badge className={"unit-remark"} pill bg={"dark"}>{remark[0].toUpperCase()}</Badge>:null}
         </div>
     </OverlayTrigger>;
 }

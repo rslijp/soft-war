@@ -51,34 +51,44 @@
     box-shadow: 0px 0px 5px 5px #ffc107;
 }
 
-.hud-action.hud-move-top-left {
+.hud-action.hud-move-NW {
     background-image: url("/content/hud/arrow-up-left.png");
 }
 
-.hud-action.hud-move-top {
+.hud-action.hud-move-N {
     background-image: url("/content/hud/arrow-up.png");
 }
 
-.hud-action.hud-move-top-right {
+.hud-action.hud-move-NE {
     background-image: url("/content/hud/arrow-up-right.png");
 }
 
-.hud-action.hud-move-left {
+.hud-action.hud-move-W {
     background-image: url("/content/hud/arrow-left.png");
 }
 
-.hud-action.hud-move-right {
+.hud-action.hud-move-E {
     background-image: url("/content/hud/arrow-right.png");
 }
 
-.hud-action.hud-move-down-left {
+.hud-action.hud-move-SW {
     background-image: url("/content/hud/arrow-down-left.png");
 }
 
-.hud-action.hud-move-down {
+.hud-action.hud-move-S {
     background-image: url("/content/hud/arrow-down.png");
 }
 
-.hud-action.hud-move-down-right {
+.hud-action.hud-move-SE {
     background-image: url("/content/hud/arrow-down-right.png");
+}
+
+.hud-action.hud-move-X {
+    background-image: url("/content/hud/finish-x.png");
+}
+
+.unit-remark {
+    position: relative;
+    top: -10px;
+    left: -20px;
 }

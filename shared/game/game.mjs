@@ -176,6 +176,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         const t = map.world();
         const p = this.currentPlayer();
         return {
+            gameMap: map,
             dimensions: t.dimensions,
             world: t.world,
             unitAt: this.unitsMap.get,
@@ -271,5 +272,6 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     MessageBus.register("end-turn", this.endTurn, this);
     MessageBus.register("game-state-changed", this.winOrLoose, this);
     MessageBus.register("select-unit", this.selectUnit, this);
+    MessageBus.register("give-order", this.giveOrder, this);
 
 };
