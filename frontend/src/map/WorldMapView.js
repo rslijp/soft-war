@@ -3,6 +3,7 @@ import {any, number, shape} from "prop-types";
 import {MessageBus} from "softwar-shared";
 import {TILE_SIZE} from "../Constants";
 import UnitView from "./UnitView";
+import {city} from "softwar-shared/game/city.mjs";
 import {navigationAStar} from "softwar-shared/game/navigationAStar.mjs";
 
 function WorldMapView({map, range, selectedUnit, fogOfWar}) {
@@ -178,7 +179,8 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
             clazzes.push("land-tile-type-" + detail);
         }
         if(fogOfWar && !fogOfWar.visible(position)){
-            unit=null;
+            if(unit && unit.clazz==='city' && fogOfWar.discovered(position)) unit=new city(unit.derivedPosition(), unit.getName());
+            else unit=null;
             clazzes.push("land-fog-of-war");
         }
         return <td key={key} className={clazzes.join(" ")} onMouseOver={()=>onMouseOver(position)}>

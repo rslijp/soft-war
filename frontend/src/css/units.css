@@ -76,3 +76,19 @@
 .unit-view.missile {
     background-image: url("/content/units/45x45/missile.png");
 }
+
+.battle-dialog table {
+    width: 100%;
+    border-spacing: 10px;
+    border-collapse: separate;
+}
+
+.battle-dialog table td.separator {
+    border-right: 1px dashed black;
+    width: 1px;
+}
+
+.battle-dialog .unit-view {
+    display: inline-block;
+    margin-right: 10px;
+}

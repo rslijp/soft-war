@@ -142,7 +142,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
             MessageBus.send("unit-destroyed", attacker, this.currentPlayer());
         } else {
             MessageBus.send(defender.clazz + "-destroyed", defender, this.currentPlayer());
-            if (blitz) {
+            if (blitz && attacker.canMove(blitz)) {
                 MessageBus.send("move-unit", attacker, at, blitz);
             }
         }

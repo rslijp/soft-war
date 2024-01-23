@@ -47,7 +47,7 @@ export function unitsMap(players, map) {
         if (!unit.inside) {
             if (map.distance(position, to) !== 1)  return false;
             unit = this.remove(position);
-            unit.move(to);
+            unit.move(to, blitz);
         } else {
             unit.disembark(to);
         }

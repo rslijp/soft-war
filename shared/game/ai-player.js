@@ -18,6 +18,8 @@ export function aiPlayer(index, id, name, color, units, map) {
     this.type="AI";
     this.position={y:0, x:0};
     this.intelligence=[];
+    this.attention=new Set();
+    this.activeOrders={};
 
     const toKey = (pos) => `${pos.y}_${pos.x}`;
     const addUnit = (u, sweep)=>{
@@ -141,39 +143,59 @@ export function aiPlayer(index, id, name, color, units, map) {
         }
     }
 
-    this.makeOrderBasedOnIntelligence = (mainUnit)=> {
+    this.makeOrderBasedOnIntelligence = (mainUnit, foes)=> {
+        if(foes && foes.length>0){
+            const unitPosition = mainUnit.derivedPosition();
+            for(var i=0;i<foes.length; i++){
+                const target = foes[i];
+                const targetPos = target.derivedPosition();
+                if(map.distance(unitPosition, targetPos) == 1){
+                    // mainUnit.order=null;
+                    // delete this.activeOrders[mainUnit.id];
+                    this.unitsMap.move(mainUnit, targetPos, false);
+                    return {
+                        action: "attack",
+                        hash: "attack"
+                    }
+                }
+            }
+            console.log("APPROACH");
+        }
+
         let sweep = this.intelligence.find(c => c.ids[mainUnit.id]);
-        const aStar = new navigationAStar(map, mainUnit, this.fogOfWar);
+        const aStar = new navigationAStar(map, mainUnit, this.fogOfWar, false, this.attention.has(mainUnit.id)?this.unitsMap:null);
         const plan = (name, targets, toPos, ignoreFogOfWar)=> {
-            let path = null;
+            let navigation = null;
             Object.keys(targets).forEach(d => {
                 const to = targets[d];
                 const result = aStar.route(toPos(to), ignoreFogOfWar);
                 if (!result || !result.route) {
                     return
                 }
-                if (path === null ||
-                    result.route.length < path.length) {
-                    path = result.route;
+                if (navigation === null ||
+                    result.route.length < navigation.route.length) {
+                    navigation = result;
                 }
             });
-            if(path) console.log(name, path);
-            return path;
+            if(navigation) console.log(name, navigation.route);
+            return navigation;
         }
 
         const path = plan("enemy",sweep.enemies, n=>n.derivedPosition(), false) ||
                      plan("discover", sweep.undiscovered , n=>n, true);
 
-        if(path) console.log("move", mainUnit.derivedPosition(), JSON.stringify(path))
-        else console.log("roam");
+        // if(path) console.log("move", mainUnit.derivedPosition(), JSON.stringify(path))
+        // else console.log("roam");
 
         return path ? {
             action: "move",
-            queue: path,
-            from: path[0],
-            to: path[path.length - 1]
+            queue: path.route,
+            from: path.route[0],
+            to: path.route[path.route.length - 1],
+            hash: path.hash
         } : {
-            action: "roam"
+            action: "roam",
+            hash: "road"
         }
     }
 
@@ -185,26 +207,72 @@ export function aiPlayer(index, id, name, color, units, map) {
     };
 
     this.conquerTheWorld=()=>{
+        console.log("Thinking...");
+
+        const attackOrder = (unit) => {
+            unit.order = null;
+            this.attention.delete(unit.id);
+            console.log(unit.id, "BEFORE");
+            console.log(this.activeOrders);
+            delete this.activeOrders[unit.id];
+            console.log(unit.id, "AFTER");
+            console.log(this.activeOrders);
+            this.scheduleConquerTheWorld();
+            return;
+        }
+
         this.conquerHandle = null;
         if(this.selectedUnit && this.selectedUnit.clazz==='city'){
             if(!this.selectedUnit.producingType) this.selectedUnit.produce('T');
             MessageBus.send("next-unit");
         }
-        else if(this.selectedUnit && this.selectedUnit.canMove()){
+        else if(this.selectedUnit &&
+                this.selectedUnit.canMove()){
             const unit = this.selectedUnit;
             if(!unit.order) {
+                delete this.activeOrders[unit.id];
+            }
+            let activeOrders = this.activeOrders[unit.id];
+            if(activeOrders && this.attention.has(unit.id)){
+                console.log("Possible reassignment of orders", unit.getName(), unit.order.foes, unit.order.hash);
+                const order = this.makeOrderBasedOnIntelligence(unit, unit.order.foes);
+                if(order.action === 'attack') {
+                    attackOrder(unit);
+                    console.log("AFTER",this.activeOrders);
+                    return;
+                }
+                if(order.hash!==unit.order.hash) {
+                    unit.order = order;
+                    delete this.activeOrders[unit.id];
+                    console.log("Reassignment", unit.getName(), order.hash);
+                }
+            } else
+            if(!unit.order) {
+                console.log("Assigning orders", unit.getName());
                 const order = this.makeOrderBasedOnIntelligence(unit);
+                if(order.action === 'attack') {
+                    attackOrder(unit);
+                    return;
+                }
+                console.log("ORDERS", !!order);
                 unit.order = order;
             }
-            const r = new orders(unit, this.unitsMap, this).lockedExecuteOrders();
-             if(unit.isAlive()){
-                // this.fogOfWar.add(unit);
-                this.position = unit.derivedPosition();
-            }
+            if(unit.order) {
+                if (!this.activeOrders[unit.id]) {
+                    this.activeOrders[unit.id] = new orders(unit, this.unitsMap, this);
+                }
+                this.activeOrders[unit.id].lockedExecuteOrders();
+                if (unit.isAlive()) {
+                    // this.fogOfWar.add(unit);
+                    this.position = unit.derivedPosition();
+                }
 
-            this.updateIntelligence(unit);
-            MessageBus.send("screen-update");
-            this.scheduleConquerTheWorld();
+                this.updateIntelligence(unit);
+                MessageBus.send("screen-update");
+                this.scheduleConquerTheWorld();
+            } else {
+                MessageBus.send("next-unit");
+            }
         } else {
             MessageBus.send("next-unit");
         }
@@ -221,10 +289,8 @@ export function aiPlayer(index, id, name, color, units, map) {
 
     this.scheduleConquerTheWorld = (unit) => {
        if(this.conquerHandle) {
-            console.log("scheduleConquerTheWorld active");
             return;
         }
-        console.log("scheduleConquerTheWorld schedule");
         this.conquerHandle = setTimeout(()=>this.conquerTheWorld(), 250);
     }
 
@@ -237,10 +303,20 @@ export function aiPlayer(index, id, name, color, units, map) {
         this.selectedUnit = unit;
     }
 
+    this.unitAttention=(unit)=>{
+        console.log(unit.getName(), "requires attention");
+        console.log(unit.order);
+        console.log("=====");
+        console.log(this.activeOrders);
+        this.attention.add(unit.id);
+    }
+
     applyPlayerTraitsOn(this);
     const _super =  {initTurn: this.initTurn.bind(this)};
     this.initTurn = () => {
         _super.initTurn();
+        this.attention=new Set();
+        this.activeOrders={};
         this.intelligence=[];
         this.scheduleConquerTheWorld();
         this.units.forEach(u=>{
@@ -250,7 +326,8 @@ export function aiPlayer(index, id, name, color, units, map) {
     }
     this.init();
 
-    MessageBus.register("next-unit", this.autoNext, this)
+    MessageBus.register("next-unit", this.autoNext, this);
+    MessageBus.register("unit-order-attention", this.unitAttention, this);
     // MessageBus.register("unit-order-step", this.unitOrderStep, this)
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
     MessageBus.register("unit-created", this.registerUnit, this);

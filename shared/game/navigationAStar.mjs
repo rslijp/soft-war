@@ -1,6 +1,7 @@
 import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
+import {unitsMap} from "./units-map.mjs";
 
-export function navigationAStar(map, unit, fogofwar, flatEarth) {
+export function navigationAStar(map, unit, fogofwar, flatEarth, avoidUnits) {
     var origin = unit.derivedPosition();
     this.route = function(to, ignoreFogOfWar) {
         var iterations = 0;
@@ -10,6 +11,7 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
         var goal = undefined;
         var steps = [];
         var headXY = [];
+        var avoided = [];
 
         function make(position, parent, costs, direction, moved) {
             if(costs === null || costs === undefined) throw "Panic";
@@ -91,6 +93,11 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
                 return;
             }
 
+            if(avoidUnits && avoidUnits.get(next)){
+                avoided.push(avoidUnits.get(next).id);
+                return;
+            }
+
             var moved = step.moved + 1;
             var currentCosts = costs(next, to, offset.penalty, moved);
             var existing = onOpen(next);
@@ -168,7 +175,9 @@ export function navigationAStar(map, unit, fogofwar, flatEarth) {
             while (head.length > 0 && !goal) {
                 iteration();
             }
-            return {route: flatten(goal), goal: goal, iterations: iterations, calculations: calculations};
+            let hash = `${origin.y},${origin.y}->${to.y},${to.y}:`;
+            hash=hash+avoided.join(",");
+            return {hash: hash, route: flatten(goal), goal: goal, iterations: iterations, calculations: calculations};
         }
 
         return calculate();

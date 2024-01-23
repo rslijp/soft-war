@@ -71,6 +71,10 @@ function GamePage() {
     };
 
     const endTurn = () => {
+        if(gameState.currentPlayer().type==='AI') {
+            MessageBus.send("next-turn");
+            return;
+        }
         setDialog({name: 'end-turn', code: gameState.code});
     };
 
@@ -148,6 +152,7 @@ function GamePage() {
             setDialog(null);
             MessageBus.send("game-view-focus");
         };
+        if(gameState.currentPlayer().type==='AI') return;
         const dialogs = {
             'surrender': () => <SurrenderDialog code={dialog.code} onClose={close}/>,
             'end-turn': () => <EndTurnDialog onClose={close}/>,

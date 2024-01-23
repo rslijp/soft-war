@@ -114,11 +114,14 @@ export function city(position, name, producing, production) {
     }
     this.siege = () => {
         var position = this.derivedPosition();
-        return {
+        const siege = {
             health: 1,
             city: this,
             player: this.player,
+            type: 'C',
             clazz: "city-defense",
+            getName: ()=>this.getName(),
+            isAlive: ()=>this.health>0,
             derivedPosition: () => {
                 return position;
             },
@@ -126,6 +129,8 @@ export function city(position, name, producing, production) {
                 return [];
             }
         };
+        siege.isAlive=()=>siege.health>0;
+        return siege;
     };
     this.getName = () => {
         return this.name;

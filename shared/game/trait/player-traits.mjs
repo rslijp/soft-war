@@ -128,6 +128,34 @@ export const playerTraits = {
         }
         this.units.push(unit);
     },
+    unregisterUnit: function(unit) {
+        var index = this.units.indexOf(unit);
+        if (index >= 0) {
+            this.units.splice(index, 1);
+        }
+    },
+    unregisterChilds: function (unit) {
+        if (unit.nestedUnits.length > 0) {
+            unit.nestedUnits.forEach((child) => {
+                this.unregisterUnit(child);
+            });
+        }
+    },
+    destroyed: function(unit, aggressor) {
+        if (unit.player != this.index) {
+            return;
+        }
+        this.unregisterChilds(unit);
+        this.unregisterUnit(unit);
+        if(aggressor && this.index != aggressor.index) {
+            this.fogOfWar.remove(unit, true);
+        }
+        if (this.selectedUnit == unit) {
+            this.cursorSelect(null);
+        }
+        MessageBus.send("game-state-changed", this.index);
+
+    },
     init: function (){
         this.units.forEach((unit) => {
             unit.player = this.index;

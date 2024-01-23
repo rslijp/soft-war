@@ -23,7 +23,7 @@ export function orders (unit, unitsmap, player) {
         if (unit.order && unit.canMove()) {
             var foes = unitsmap.enemyNearyBy(unit, 1);
             if (this.newEnemies(foes)) {
-               MessageBus.send("unit-order-attention", unit, unit.order);
+                MessageBus.send("unit-order-attention", unit, unit.order);
                 return true;
             }
             if (!this.executeAction(unit.order)) {

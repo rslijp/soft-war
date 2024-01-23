@@ -49,7 +49,7 @@ function GameUnitBar({gameState, openDialog}) {
     const regularUnit = (unit) => {
         const definition = unit.definition();
 
-        return <span className={"bottom-bar-space"}>{unit.getName()}, moves left <u>{unit.movesLeft}</u>
+        return <span className={"bottom-bar-space"}>{unit.getName()}, health <u>{unit.health}/{unit.definition().health}</u>, moves left <u>{unit.movesLeft}</u>
             {definition.fuel?<span>{" "}fuel <u>{unit.fuel}</u>/{definition.fuel}</span>:null}
         </span>;
     };
@@ -113,7 +113,7 @@ function GameUnitBar({gameState, openDialog}) {
                     </Button>
                 </ButtonGroup>:null}
             {ownUnit?nestedUnits(unit):null}
-            {unit.remark()?" ("+unit.remark()+")":null}
+            {unit.remark&&unit.remark()?" ("+unit.remark()+")":null}
         </Navbar.Text>;
     };
 

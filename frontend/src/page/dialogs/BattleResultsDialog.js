@@ -1,4 +1,4 @@
-import {Button, Modal} from "react-bootstrap";
+import {Alert, Button, Modal} from "react-bootstrap";
 import {MessageBus, PLAYER_COLORS} from "softwar-shared";
 import {React, useEffect, useRef} from "react";
 import {any, func} from "prop-types";
@@ -74,20 +74,26 @@ function BattleResultsDialog({attacker, defender, result, player, onClose}) {
         </tr>;
     };
 
+    const renderOutCome = (winner) => {
+        return <Alert variant={winner?"success":"danger"}>{winner?"Won!":"Lost!"}</Alert>;
+    };
+
     return <Modal  show={true} >
         <Modal.Header closeButton>
             <Modal.Title>Battle result</Modal.Title>
         </Modal.Header>
-        <Modal.Body className={"unit-dialog"}>
+        <Modal.Body className={"battle-dialog"}>
             <table>
                 <tbody>
                     <tr>
                         <th>Attacker {attacker.player===player.index?"(you)":null}</th>
+                        <th></th>
                         <th>Defender {defender.player===player.index?"(you)":null}</th>
                     </tr>
                     <tr>
-                        <td>{renderUnit(attacker)}<br/>{attacker.getName()}</td>
-                        <td>{renderUnit(defender)}<br/>{defender.getName()}</td>
+                        <td>{renderUnit(attacker)}{attacker.getName()}</td>
+                        <td rowSpan={4} className={"separator"}></td>
+                        <td>{renderUnit(defender)}{defender.getName()}</td>
                     </tr>
                     <tr>
                         <td>{renderBonus(result.attackerBonus)}</td>
@@ -95,8 +101,8 @@ function BattleResultsDialog({attacker, defender, result, player, onClose}) {
                     </tr>
                     {renderRounds(result.rounds)}
                     <tr>
-                        <td>{attacker.isAlive()?"Won!":"Lost!"}</td>
-                        <td>{defender.isAlive()?"Won!":"Lost!"}</td>
+                        <td>{renderOutCome(attacker.isAlive())}</td>
+                        <td>{renderOutCome(defender.isAlive())}</td>
                     </tr>
                 </tbody>
             </table>

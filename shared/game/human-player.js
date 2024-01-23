@@ -69,35 +69,6 @@ export function humanPlayer(index, id, name, color, units, map) {
             this.carrousel.reschedule(oldUnit);
         }
     };
-    this.unregisterUnit = function(unit) {
-        var index = self.units.indexOf(unit);
-        if (index >= 0) {
-            self.units.splice(index, 1);
-        }
-    };
-
-    this.unregisterChilds = function (unit) {
-        if (unit.nestedUnits.length > 0) {
-            unit.nestedUnits.forEach((child) => {
-                self.unregisterUnit(child);
-            });
-        }
-    };
-    this.destroyed = function(unit, aggressor) {
-        if (unit.player != self.index) {
-            return;
-        }
-        this.unregisterChilds(unit);
-        this.unregisterUnit(unit);
-        if(aggressor && self.index != aggressor.index) {
-            this.fogOfWar.remove(unit, true);
-        }
-        if (self.selectedUnit == unit) {
-            this.cursorSelect(null);
-        }
-        MessageBus.send("game-state-changed", this.index);
-
-    };
     this.flashDestruction = function(unit, aggressor) {
         if (unit.player != self.index || (aggressor && aggressor.index == self.index)) {
             return;
