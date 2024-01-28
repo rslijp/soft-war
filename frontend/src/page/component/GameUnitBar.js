@@ -118,7 +118,7 @@ function GameUnitBar({gameState, openDialog}) {
     };
 
 
-    return <Navbar sticky="bottom" bg="dark" data-bs-theme="dark" className={"bottom-bar"}>
+    return <Navbar sticky="bottom" bg="dark" data-bs-theme="dark" className={"bottom-bar"} >
         <Container fluid>
             <Navbar.Collapse className="justify-content-start">
                 {unitBar(selectedUnit)}
@@ -127,7 +127,7 @@ function GameUnitBar({gameState, openDialog}) {
                 <Navbar.Text className="bottom-bar-space">
                     Turn{" "}<u>{gameState.turn}</u>
                 </Navbar.Text>
-                <ButtonGroup className="bottom-bar-space" >
+                <ButtonGroup className="bottom-bar-space" style={{"marginRight": "0px"}}>
                     <Button variant={"warning"} size={"xs"}
                         onClick={() => MessageBus.send("propose-end-turn")}><FontAwesomeIcon
                             icon={faForwardStep}/></Button>

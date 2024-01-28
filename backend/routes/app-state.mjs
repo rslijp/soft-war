@@ -180,6 +180,9 @@ async function retrieve(req, res, onLoad){
 }
 
 router.delete('/pending-game/:code', async function(req, res, next) {
+
+
+
     await retrieve(req, res, async (state, player)=>{
         if(player.status !== 'pending'){
             console.log("Already accepted");
@@ -240,6 +243,7 @@ router.delete('/game/:code', async function(req, res, next) {
         }
 
         if (status === 'finished') {
+            let collection = await appStates();//connection.collection("app-state");
             const result = await collection.deleteOne({code: req.params.code});
             if (result.deletedCount === 1) {
                 gameState._id = undefined;

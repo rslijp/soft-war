@@ -14,6 +14,9 @@ export const playerTraits = {
         this.endTurnPhase = false;
         this.units.forEach((unit) => {
             unit.initTurn();
+            (unit.nestedUnits||[]).forEach((nestedUnit) => {
+                nestedUnit.initTurn();
+            });
         });
         this.carrousel = new unitCarrousel(this.units);
         this.enemySpottedThisTurn={};
@@ -157,12 +160,17 @@ export const playerTraits = {
 
     },
     init: function (){
-        this.units.forEach((unit) => {
+        ([].concat(this.units)).forEach((unit) => {
             unit.player = this.index;
             this.fogOfWar.add(unit);
             if(unit.clazz === 'unit'){
                 unit.id=this.nextId();
             }
+            (unit.nestedUnits||[]).forEach(nestedUnit => {
+                nestedUnit.player = this.index
+                nestedUnit.id=this.nextId();
+            });
+
         });
        if(this.autoNextFlag) {
            this.selectedUnit=this.carrousel.next()

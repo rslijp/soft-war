@@ -4,6 +4,7 @@ export const unitTraits = {
     stealth: false,
     internalLoad: function(unit) {
         this.nestedUnits.push(unit);
+        unit.inside=this;
         unit.position = null;
         unit.inside = this;
         if (unit.onLoad) {

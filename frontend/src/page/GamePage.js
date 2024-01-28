@@ -111,6 +111,7 @@ function GamePage() {
             MessageBus.register("new-turn", newTurn, this),
             MessageBus.register("next-turn", autoSaveGame, this),
             MessageBus.register("screen-update", render, this),
+            MessageBus.register("unit-order-step", unitSelected, this),
             MessageBus.register("cursor-select", focusOnTile, this),
             MessageBus.register("unit-selected", unitSelected, this),
             MessageBus.register("battle-results", battleResults, this),

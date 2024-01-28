@@ -27,6 +27,7 @@ const saveGame = {
             if(rawunit.fortified!==undefined) mainUnit.fortified=rawunit.fortified;
             if(rawunit.submerged!==undefined) mainUnit.submerged=rawunit.submerged;
             if(rawunit.fuel!==undefined) mainUnit.fuel=rawunit.fuel;
+            if(rawunit.order!==undefined) mainUnit.order=rawunit.order;
             this.loadNestedUnits(rawunit, mainUnit);
             units.push(mainUnit);
 
@@ -120,7 +121,15 @@ export function serializeGameState(game){
                         health: u.health,
                         fortified: u.fortified,
                         submerged: u.submerged,
-                        fuel: u.fuel
+                        fuel: u.fuel,
+                    }
+                    if(u.order){
+                        u.order={
+                            action: u.order.action,
+                            queue: u.order.queue,
+                            reverse: u.order.reverse,
+                            direction: u.order.direction
+                        };
                     }
                     if(u.nestedUnits) unit.nestedUnits = u.nestedUnits.map(nu=>{return {
                         "y" : pos.x,

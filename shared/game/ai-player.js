@@ -5,6 +5,22 @@ import {navigationAStar} from "./navigationAStar.mjs";
 import {orders} from "./orders.mjs";
 
 const INTEREST = new Set(['land', 'mountain']);
+const AI_PARAMETERS = [
+    {
+        type: 'land',
+        units: new Set(['I', 'T', 'M']),
+    },
+    {
+        type: 'air',
+        units: new Set(['F', 'B', 'H']),
+    },
+    {
+        type: 'sea',
+        units: new Set(['D', 'S', 't', 'c', 'a', 'b']),
+    }
+
+]
+
 
 export function aiPlayer(index, id, name, color, units, map) {
     this.state="START";
@@ -33,6 +49,12 @@ export function aiPlayer(index, id, name, color, units, map) {
             } else {
                 sweep.friendlyUnits[k]=u;
             }
+            if(u.order){
+                sweep.goals[u.order.purpose]++;
+            }
+            AI_PARAMETERS.forEach(param => {
+                if(param.units.has(u.type)) sweep.ownStats[param.type]++;
+            });
         } else {
             sweep.enemies[k]=u;
             if(u.clazz==='city') {
@@ -40,6 +62,9 @@ export function aiPlayer(index, id, name, color, units, map) {
             } else {
                 sweep.enemyUnits[k]=u;
             }
+            AI_PARAMETERS.forEach(param => {
+               if(param.units.has(u.type)) sweep.foeStats[param.type]++;
+            });
         }
     }
 
@@ -52,10 +77,35 @@ export function aiPlayer(index, id, name, color, units, map) {
             sweep = this.intelligence.find(c=>c.ids[mainUnit.inside.id]);
         }
         if(!sweep){
-            sweep={ids: {}, landmass: {}, undiscovered: {}, friendlyCities:{}, friendlyUnits:{}, enemies:{}, enemyCities:{}, enemyUnits:{}};
+            sweep={ids: {},
+                   transport: false,
+                   landmass: {},
+                   undiscovered: {},
+                   friendlyCities:{},
+                   friendlyUnits:{},
+                   enemies:{},
+                   enemyCities:{},
+                   enemyUnits:{},
+                   typeStats: {},
+                   ownStats: {land: 0, air: 0, sea: 0},
+                   foeStats: {land: 0, air: 0, sea: 0},
+                   goals: {attack:0, discover: 0, transport: 0}
+            };
             this.intelligence.push(sweep);
         }
 
+        const ensureUnitStats = (type) => {
+            if(sweep.typeStats[mainUnit.type]) return sweep.typeStats[mainUnit.type];
+            const unitStats = {count: 0, construction: 0};
+            sweep.typeStats[mainUnit.type] = unitStats;
+            return unitStats;
+        }
+        const unitStats = ensureUnitStats(mainUnit.type);
+        unitStats.count++;
+        if(mainUnit.type==='C' && mainUnit.producingType){
+            const producingStats = ensureUnitStats(mainUnit.producingType);
+            producingStats.construction++;
+        }
 
         addUnit(mainUnit, sweep);
 
@@ -159,7 +209,7 @@ export function aiPlayer(index, id, name, color, units, map) {
                     }
                 }
             }
-            console.log("APPROACH");
+            console.log("Continue approach");
         }
 
         let sweep = this.intelligence.find(c => c.ids[mainUnit.id]);
@@ -174,15 +224,21 @@ export function aiPlayer(index, id, name, color, units, map) {
                 }
                 if (navigation === null ||
                     result.route.length < navigation.route.length) {
+                    result.purpose = name;
                     navigation = result;
                 }
             });
-            if(navigation) console.log(name, navigation.route);
             return navigation;
         }
 
-        const path = plan("enemy",sweep.enemies, n=>n.derivedPosition(), false) ||
+        const path = plan("attack",sweep.enemies, n=>n.derivedPosition(), false) ||
                      plan("discover", sweep.undiscovered , n=>n, true);
+
+        if(path) {
+            sweep.goals[path.purpose]++;
+        } else {
+            sweep.goals['transport']++;
+        }
 
         // if(path) console.log("move", mainUnit.derivedPosition(), JSON.stringify(path))
         // else console.log("roam");
@@ -195,7 +251,7 @@ export function aiPlayer(index, id, name, color, units, map) {
             hash: path.hash
         } : {
             action: "roam",
-            hash: "road"
+            hash: "roam"
         }
     }
 
@@ -212,11 +268,7 @@ export function aiPlayer(index, id, name, color, units, map) {
         const attackOrder = (unit) => {
             unit.order = null;
             this.attention.delete(unit.id);
-            console.log(unit.id, "BEFORE");
-            console.log(this.activeOrders);
             delete this.activeOrders[unit.id];
-            console.log(unit.id, "AFTER");
-            console.log(this.activeOrders);
             this.scheduleConquerTheWorld();
             return;
         }
@@ -234,17 +286,20 @@ export function aiPlayer(index, id, name, color, units, map) {
             }
             let activeOrders = this.activeOrders[unit.id];
             if(activeOrders && this.attention.has(unit.id)){
-                console.log("Possible reassignment of orders", unit.getName(), unit.order.foes, unit.order.hash);
+                console.log("Possible reassignment of orders", unit.getName(), unit.order.foes, activeOrders.hash);
                 const order = this.makeOrderBasedOnIntelligence(unit, unit.order.foes);
                 if(order.action === 'attack') {
                     attackOrder(unit);
                     console.log("AFTER",this.activeOrders);
                     return;
                 }
-                if(order.hash!==unit.order.hash) {
+                if(order.hash!==activeOrders.hash) {
                     unit.order = order;
                     delete this.activeOrders[unit.id];
                     console.log("Reassignment", unit.getName(), order.hash);
+                } else {
+                    console.log("Roam");
+                    this.attention.delete(unit.id);
                 }
             } else
             if(!unit.order) {
@@ -279,10 +334,21 @@ export function aiPlayer(index, id, name, color, units, map) {
     }
 
     this.onEndTurn = ()=>{
-        this.units.filter(u=>u.clazz==='city').forEach(c=>{
-            if(!c.producingType) {
-                console.log("SELECT TANK FOR PRODCUTION", c.getName())
-                c.produce('T');
+        this.units.filter(u=>u.clazz==='city').forEach(city=>{
+            let sweep = this.intelligence.find(c => c.ids[city.id]);
+            console.log("OWN STATS",Object.keys(sweep.landmass).length, sweep.ownStats, sweep.ownStats['land'] / Object.keys(sweep.landmass).length);
+
+            if(!city.producingType || city.production == 0) {
+                console.log(this.intelligence[0].ids[city.id]);
+                let sweep = this.intelligence.find(c => c.ids[city.id]);
+                console.log("OWN STATS",sweep.ownStats, sweep.ownStats['land'] / Object.keys(sweep.landmass).length);
+                console.log("FOE STATS",sweep.foeStats);
+                if(sweep.goals.transport>0 && sweep.ownStats.land> 2){
+                    city.produce('t');
+                } else {
+                    city.produce('T');
+                }
+                console.log("SELECT",city.producingType,"FOR PRODCUTION", city.getName())
             }
         });
     }
@@ -304,10 +370,10 @@ export function aiPlayer(index, id, name, color, units, map) {
     }
 
     this.unitAttention=(unit)=>{
-        console.log(unit.getName(), "requires attention");
-        console.log(unit.order);
-        console.log("=====");
-        console.log(this.activeOrders);
+        console.log(unit.getName(), "requires attention", unit.order.foes);
+        // console.log(unit.order);
+        // console.log("=====");
+        // console.log(this.activeOrders);
         this.attention.add(unit.id);
     }
 
@@ -323,6 +389,10 @@ export function aiPlayer(index, id, name, color, units, map) {
             if(u.inside) this.intelligenceSweep(u.inside);
             this.intelligenceSweep(u);
         });
+        this.intelligence.forEach(sweep=>{
+            console.log("OWN STATS",sweep.ownStats);
+            console.log("FOE STATS",sweep.foeStats);
+        })
     }
     this.init();
 

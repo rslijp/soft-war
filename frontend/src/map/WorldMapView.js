@@ -100,7 +100,11 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
 
         if(state.mode === 'regular') {
             if(selectedUnit.order){
-                hudPath(selectedUnit.order.queue);
+                if(selectedUnit.order.action==='move') {
+                    hudPath(selectedUnit.order.queue);
+                } else if(selectedUnit.order.action==='patrol') {
+                    hudPath(selectedUnit.order.queue);
+                }
             } else if(selectedUnit.canMove()){
                 hudPoint(pos, -1, -1, "NW");
                 hudPoint(pos, -1, 0, "N");
@@ -128,7 +132,7 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
             });
         };
         const showPath = (unit,clazz) => {
-            if(unit.order){
+            if(unit.order && unit.order.queue){
                 const order = unit.order;
                 const key = (pos) => `${pos.y}_${pos.x}`;
                 hudMap[key(order.from)]={className: clazz};
