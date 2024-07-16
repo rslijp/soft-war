@@ -68,6 +68,7 @@ export function humanPlayer(index, id, name, color, units, map) {
         if (oldUnit && oldUnit.canMove()) {
             this.carrousel.reschedule(oldUnit);
         }
+        this.fogOfWar.failSave(newUnit);
     };
     this.flashDestruction = function(unit, aggressor) {
         if (unit.player != self.index || (aggressor && aggressor.index == self.index)) {

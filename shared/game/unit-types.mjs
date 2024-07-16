@@ -78,7 +78,52 @@ export const unitTypes = {
             {reason: "Cover", percentage: 40, applicable: function(self, opponent, ground) {
                     return ground == "city";
                 }}
-        ]
+        ],
+        mixin: {
+            fortified: false,
+            canFortify: function() {
+                return this.canMove() && !this.fortified && !this.inside;
+            },
+            canActivate: function() {
+                return this.fortified;
+            },
+            fortify: function() {
+                if (!this.canFortify()) {
+                    throw "Unit can't fortify in this turn";
+                }
+                this.movesLeft -= 1;
+                this.sight += 1;
+                this.fortified = true;
+            },
+            activate: function() {
+                if (!this.canActivate()) {
+                    throw "Unit can't activate in this turn";
+                }
+                this.sight -= 1;
+                this.fortified = false;
+            },
+            specialAction: function() {
+                if (this.fortified) {
+                    return {label: "Activate", method: "activate", enabled: this.canActivate(), value: true};
+                }
+                else {
+                    return {label: "Fortify", method: "fortify",enabled: this.canFortify(), value: false};
+                }
+            },
+            remark: function() {
+                if (this.fortified) {
+                    return "fortified";
+                }
+                else {
+                    return this.innerRemark();
+                }
+            },
+            specialInit: function() {
+                if (this.fortified) {
+                    this.movesLeft = 0;
+                }
+            }
+        }
 
     },
     "M": {

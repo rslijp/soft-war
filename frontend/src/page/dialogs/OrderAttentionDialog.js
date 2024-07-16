@@ -24,7 +24,7 @@ function OrderAttentionDialog({unit, order, onClose}) {
             <Modal.Title>Attention requried</Modal.Title>
         </Modal.Header>
         <Modal.Body className={"unit-dialog"}>
-            <span className={"dialog-space"}>The {unit.getName()} at ({position.y}, {position.x}) can&apos;t execute {order.action}-orders to ({order.to.y}, {order.to.x}).</span>
+            <span className={"dialog-space"}>The {unit.getName()} at ({position.y}, {position.x}) can&apos;t execute {order.action}-orders to ({order.to?order.to.y:'-'}, {order.to?order.to.x:'-'}).</span>
         </Modal.Body>
         <Modal.Footer>
             <Button variant={"outline-secondary"} size={"xs"}

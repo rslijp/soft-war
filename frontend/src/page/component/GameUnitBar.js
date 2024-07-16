@@ -1,6 +1,17 @@
-import {Button, ButtonGroup, Container, Navbar} from "react-bootstrap";
+import {Button, ButtonGroup, Container, Form, Navbar} from "react-bootstrap";
 import {any, func} from "prop-types";
-import {faChevronRight, faCrosshairs, faFlag, faForwardStep, faIndustry, faMapLocationDot, faPersonMilitaryRifle, faTents, faWater} from "@fortawesome/free-solid-svg-icons";
+import {
+    faCancel,
+    faChevronRight,
+    faCrosshairs,
+    faFlag,
+    faForwardStep,
+    faIndustry,
+    faMapLocationDot,
+    faPersonMilitaryRifle,
+    faTents,
+    faWater
+} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {MessageBus} from "softwar-shared";
 import React from "react";
@@ -83,17 +94,16 @@ function GameUnitBar({gameState, openDialog}) {
                 MessageBus.send("screen-update", unit.derivedPosition());
             }}><FontAwesomeIcon icon={SPECIAL_MAP[action.method]}/></Button>;
     };
-
     const unitBar = (unit) => {
         if (!unit) return;
         const ownUnit = unit.player===currentPlayer.index;
         return <Navbar.Text className={"unit-bar"}>
             <ButtonGroup>
-                <Button variant={"outline-secondary"} size={"xs"}
+                <Button variant={"outline-secondary"} size={"xs"} title={"show on map"}
                     onClick={() => MessageBus.send("screen-update", selectedUnit.derivedPosition())}>
                     <FontAwesomeIcon icon={faCrosshairs}/>
                 </Button>
-                {ownUnit?<Button className="bottom-bar-space" disabled={!selectedUnit} variant={"outline-secondary"} size={"xs"}
+                {ownUnit?<Button className="bottom-bar-space" title={"next unit"} disabled={!selectedUnit} variant={"outline-secondary"} size={"xs"}
                     onClick={() => {
                         gameState.currentPlayer().jumpToNextUnit(selectedUnit);
                     }}><FontAwesomeIcon icon={faChevronRight}/></Button>:null}
@@ -103,14 +113,18 @@ function GameUnitBar({gameState, openDialog}) {
             {ownUnit?
                 <ButtonGroup className="bottom-bar-space">
                     {specialActions(unit)}
-                    <Button variant={"outline-secondary"} size={"xs"} title={"move"}
+                    <Button variant={"outline-secondary"} size={"xs"} title={"Move"}
                         onClick={() => MessageBus.send("move-to-mode")}>
                         <FontAwesomeIcon icon={faMapLocationDot}/>
                     </Button>
-                    <Button variant={"outline-secondary"} size={"xs"} title={"patrol"}
+                    <Button variant={"outline-secondary"} size={"xs"} title={"Patrol"}
                         onClick={() => MessageBus.send("patrol-to-mode")}>
                         <FontAwesomeIcon icon={faPersonMilitaryRifle}/>
                     </Button>
+                    {unit.order ? <Button variant={"outline-secondary"} size={"xs"} title={"Clear orders"}
+                        onClick={() => MessageBus.send("confirm-order", selectedUnit, null)}>
+                        <FontAwesomeIcon icon={faCancel}/>
+                    </Button> : null}
                 </ButtonGroup>:null}
             {ownUnit?nestedUnits(unit):null}
             {unit.remark&&unit.remark()?" ("+unit.remark()+")":null}
@@ -127,6 +141,15 @@ function GameUnitBar({gameState, openDialog}) {
                 <Navbar.Text className="bottom-bar-space">
                     Turn{" "}<u>{gameState.turn}</u>
                 </Navbar.Text>
+                <Form.Check
+                    disabled={currentPlayer.type!="Human"}
+                    className={"toggle-auto-next"}
+                    type="switch"
+                    id="custom-switch"
+                    label="Auto play"
+                    checked={currentPlayer.autoNextFlag}
+                    onClick={()=>currentPlayer.toggleAutoNext()}
+                />
                 <ButtonGroup className="bottom-bar-space" style={{"marginRight": "0px"}}>
                     <Button variant={"warning"} size={"xs"}
                         onClick={() => MessageBus.send("propose-end-turn")}><FontAwesomeIcon

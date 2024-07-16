@@ -129,6 +129,9 @@ export const playerTraits = {
         if(unit.clazz=="unit"){
             unit.id= this.nextId();
         }
+        if(this.onRegisterUnit){
+           this.onRegisterUnit(unit)
+        }
         this.units.push(unit);
     },
     unregisterUnit: function(unit) {
@@ -162,7 +165,7 @@ export const playerTraits = {
     init: function (){
         ([].concat(this.units)).forEach((unit) => {
             unit.player = this.index;
-            this.fogOfWar.add(unit);
+            if(!unit.inside) this.fogOfWar.add(unit);
             if(unit.clazz === 'unit'){
                 unit.id=this.nextId();
             }

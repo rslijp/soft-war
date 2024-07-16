@@ -141,7 +141,7 @@ export function unitsMap(players, map) {
             return unit.clazz === "city";
         }));
         this.addOrLoadRange(player.units.filter((unit) => {
-            return unit.clazz === "unit";
+            return unit.clazz === "unit" && !unit.inside;
         }));
     }
 

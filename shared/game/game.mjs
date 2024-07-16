@@ -19,7 +19,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         return this.player(this.currentPlayerIndex);
     };
     this.position = function() {
-        return this.currentPlayer().position;
+        return this.currentPlayer().position || {x: 0, y:0};
     };
     this.statistics=[];
 
@@ -44,8 +44,8 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     };
 
     this.nextUnit = function() {
-        var currentPlayer = this.currentPlayer();
-        var unit = currentPlayer.carrousel.next();
+        const currentPlayer = this.currentPlayer();
+        const unit = currentPlayer.carrousel.next();
         this.selectUnit(unit);
         this.executeOrders(unit);
         if(unit) MessageBus.send("next-unit-updated", unit);
@@ -80,6 +80,11 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
             }
         }
     };
+    this.clearOrder = function(action, path, direction, confirmed) {
+        var currentPlayer = this.currentPlayer();
+        var unit = currentPlayer.selectedUnit;
+        unit.order=undefined;
+    }
 
     this.revokeOrder = (confirmed) => {
         var unit = this.currentPlayer().selectedUnit;
@@ -161,7 +166,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     };
 
     this.nextTurn = function() {
-        this.currentPlayer().endTurn();
+        // this.currentPlayer().endTurn();
         this.currentPlayerIndex += 1;
         if (this.currentPlayerIndex === this.players.length) {
             this.turn += 1;
@@ -171,6 +176,15 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         currentPlayer.initTurn();
         MessageBus.send("new-turn", currentPlayer.readMessages?currentPlayer.readMessages():[], currentPlayer.index);
     };
+
+    this.newTurn = function(){
+        const currentPlayer = this.currentPlayer();
+        console.log("AUTO", currentPlayer.autoNextFlag);
+        const unit = currentPlayer.carrousel.current();
+        console.log("unit", unit);
+        console.log("order", unit.order);
+        this.executeOrders(unit);
+    }
 
     this.world = ()=>{
         const t = map.world();
@@ -258,6 +272,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     }
 
     this.init();
+    MessageBus.register("new-turn", this.newTurn, this),
     MessageBus.register("cursor-direction", this.moveInDirection, this);
     MessageBus.register("cursor-select", this.cursorSelect, this);
     MessageBus.register("cursor-go-to", this.setPosition, this);
@@ -273,5 +288,5 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     MessageBus.register("game-state-changed", this.winOrLoose, this);
     MessageBus.register("select-unit", this.selectUnit, this);
     MessageBus.register("give-order", this.giveOrder, this);
-
+    MessageBus.register("clear-order", this.clearOrder, this);
 };

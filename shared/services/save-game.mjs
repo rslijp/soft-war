@@ -9,6 +9,7 @@ import {generateCode} from "./random-code-service.mjs";
 
 const saveGame = {
     loadNestedUnits: function(rawunit, carryingUnit) {
+        const units = [];
         var load = rawunit.nestedUnits || [];
         load.forEach((rawload) => {
             var load = new unit(rawload.type);
@@ -17,10 +18,12 @@ const saveGame = {
                 throw "Can't load unit";
             }
             carryingUnit.internalLoad(load);
+            units.push(load);
         });
+        return units;
     },
     loadUnits: function(rawunits) {
-        const units = [];
+        let units = [];
         rawunits.forEach((rawunit) => {
             const mainUnit = new unit(rawunit.type, {y: rawunit.y, x: rawunit.x});
             if(rawunit.health!==undefined) mainUnit.health=rawunit.health;
@@ -28,7 +31,7 @@ const saveGame = {
             if(rawunit.submerged!==undefined) mainUnit.submerged=rawunit.submerged;
             if(rawunit.fuel!==undefined) mainUnit.fuel=rawunit.fuel;
             if(rawunit.order!==undefined) mainUnit.order=rawunit.order;
-            this.loadNestedUnits(rawunit, mainUnit);
+            units=units.concat(this.loadNestedUnits(rawunit, mainUnit));
             units.push(mainUnit);
 
         });
@@ -70,6 +73,7 @@ export function deserializeGameState(raw){
         if(rawPlayer.fogOfWar) player.fogOfWar = new fogOfWar(rawPlayer.fogOfWar, map);
         if(rawPlayer.discoveredTiles) player.fogOfWar.discoveredTiles = rawPlayer.discoveredTiles;
         if(rawPlayer.messages) player.messages=rawPlayer.messages;
+        if(rawPlayer.embarking) player.messages=rawPlayer.embarking;
         return player;
     });
     const r = new game(raw, map, players);
@@ -112,6 +116,7 @@ export function serializeGameState(game){
                         "production": u.production||0
                     }
                 }),
+                "embarking": player.embarking?player.embarking:undefined,
                 "units": units.map(u=>{
                     const pos = u.derivedPosition();
                     const unit = {
@@ -121,10 +126,10 @@ export function serializeGameState(game){
                         health: u.health,
                         fortified: u.fortified,
                         submerged: u.submerged,
-                        fuel: u.fuel,
+                        fuel: u.fuel
                     }
                     if(u.order){
-                        u.order={
+                        unit.order={
                             action: u.order.action,
                             queue: u.order.queue,
                             reverse: u.order.reverse,

@@ -14,7 +14,11 @@ function OrderConfirmationDialog({unit, order, onClose}) {
     };
 
     function confirmAndClose() {
-        MessageBus.send("give-order", order.action, order.queue, null, true);
+        if(order) {
+            MessageBus.send("give-order", order.action, order.queue, null, true);
+        } else {
+            MessageBus.send("clear-order");
+        }
         onClose();
     }
 
@@ -25,10 +29,13 @@ function OrderConfirmationDialog({unit, order, onClose}) {
     const position = unit.derivedPosition();
     return <Modal  show={true} >
         <Modal.Header closeButton>
-            <Modal.Title>Confirm order</Modal.Title>
+            <Modal.Title>{order?"Confirm order":"Confirm clear order"}</Modal.Title>
         </Modal.Header>
         <Modal.Body className={"unit-dialog"}>
-            <span className={"dialog-space"}>The {unit.getName()} at ({position.y}, {position.x}) received {order.action}-orders to ({order.to.y}, {order.to.x}) ?</span>
+            {order ?
+                <span className={"dialog-space"}>The {unit.getName()} at ({position.y}, {position.x}) received {order.action}-orders to ({order.to.y}, {order.to.x}) ?</span> :
+                <span className={"dialog-space"}>Clear the orders of {unit.getName()} at ({position.y}, {position.x})</span>
+            }
         </Modal.Body>
         <Modal.Footer>
             <Button variant={"outline-secondary"} size={"xs"}

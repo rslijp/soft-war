@@ -87,7 +87,7 @@ export function city(position, name, producing, production) {
         this.producingType = type;
     };
     this.conquered = (conquerer) => {
-        this.produce(null);
+        this.produce('T');
         this.player = conquerer;
         MessageBus.send("city-conquered", this);
     };

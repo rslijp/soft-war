@@ -75,4 +75,10 @@ export function fogOfWar (data, map) {
             }
         }
     }
+    this.failSave = (unit) => {
+        if(!unit) return;
+        if(!this.visible(unit.derivedPosition())){
+            this.add(unit);
+        }
+    }
 };

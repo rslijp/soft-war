@@ -3,9 +3,14 @@ import {fogOfWar} from "./fog-of-war.mjs";
 import {applyPlayerTraitsOn} from "./trait/player-traits.mjs";
 import {navigationAStar} from "./navigationAStar.mjs";
 import {orders} from "./orders.mjs";
+import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
 
 const INTEREST = new Set(['land', 'mountain']);
 const AI_PARAMETERS = [
+    {
+        type: 'land',
+        units: new Set(['C']),
+    },
     {
         type: 'land',
         units: new Set(['I', 'T', 'M']),
@@ -35,6 +40,7 @@ export function aiPlayer(index, id, name, color, units, map) {
     this.position={y:0, x:0};
     this.intelligence=[];
     this.attention=new Set();
+    this.embarking={};
     this.activeOrders={};
 
     const toKey = (pos) => `${pos.y}_${pos.x}`;
@@ -71,6 +77,12 @@ export function aiPlayer(index, id, name, color, units, map) {
     this.intelligenceSweep = (mainUnit)=> {
         const unitPos = mainUnit.derivedPosition();
         const unitKey = toKey(unitPos);
+        const aiParam = AI_PARAMETERS.find(param => param.units.has(mainUnit.type));
+        let sweepType = aiParam.type;
+        console.log(mainUnit.type, sweepType, this.embarking);
+        if(sweepType==='sea' && this.embarking[mainUnit.id]!==undefined){
+            sweepType='land';
+        }
 
         let sweep = this.intelligence.find(c=>c.ids[mainUnit.id]);
         if(!sweep && mainUnit.inside){
@@ -78,6 +90,7 @@ export function aiPlayer(index, id, name, color, units, map) {
         }
         if(!sweep){
             sweep={ids: {},
+                   type: sweepType,
                    transport: false,
                    landmass: {},
                    undiscovered: {},
@@ -225,17 +238,49 @@ export function aiPlayer(index, id, name, color, units, map) {
                 if (navigation === null ||
                     result.route.length < navigation.route.length) {
                     result.purpose = name;
+                    result.target = d;
                     navigation = result;
                 }
             });
             return navigation;
-        }
+        };
 
-        const path = plan("attack",sweep.enemies, n=>n.derivedPosition(), false) ||
-                     plan("discover", sweep.undiscovered , n=>n, true);
+        const loadSpot = (name) => {
+            if(sweep.type !== 'land') return null;
+            if(!mainUnit.type === 't') return null;
+            if(this.embarking[mainUnit.id]) return null;
+            if(!this.inside || this.inside.type !== 'C') return null;
+            const pos = mainUnit.derivedPosition();
+            const directions = NAVIGATIONS_OFFSETS.filter(offSet => this.unitsMap.canMoveOn(mainUnit, map.normalize({
+                y: pos.y+offSet.y,
+                x: pos.x+offSet.x
+            })));
+            if(directions.length===0) return null;
+            const i = Math.floor(Math.random()*directions.length);
+            const direction = directions[i];
+            const to = map.normalize({
+                y: pos.y+direction.y,
+                x: pos.x+direction.x
+            });
+            return {
+                route: [to],
+                purpose: name,
+                target: to
+            }
+        };
+
+        const transports = Object.values(sweep.friendlyUnits).filter(u=>u.type==='t' && this.embarking[u.id]<=2);
+        let path = loadSpot("load") ||
+            plan("attack",sweep.enemies, n=>n.derivedPosition(), false) ||
+            plan("load",transports, n=>n.derivedPosition(), false) ||
+            plan("discover", sweep.undiscovered , n=>n, true);
 
         if(path) {
             sweep.goals[path.purpose]++;
+            if(path.purpose==="load"){
+                const transporter = path.target;
+                this.embarking[transporter.id]++;
+            }
         } else {
             sweep.goals['transport']++;
         }
@@ -281,6 +326,13 @@ export function aiPlayer(index, id, name, color, units, map) {
         else if(this.selectedUnit &&
                 this.selectedUnit.canMove()){
             const unit = this.selectedUnit;
+            if(this.embarking[unit.id] !== undefined){
+                if(unit.nestedUnits.length == this.embarking[unit.id]){
+                    this.embarking[unit.id]=undefined;
+                } else {
+                    unit.movesLeft=0;
+                }
+            }
             if(!unit.order) {
                 delete this.activeOrders[unit.id];
             }
@@ -339,16 +391,36 @@ export function aiPlayer(index, id, name, color, units, map) {
             console.log("OWN STATS",Object.keys(sweep.landmass).length, sweep.ownStats, sweep.ownStats['land'] / Object.keys(sweep.landmass).length);
 
             if(!city.producingType || city.production == 0) {
+                console.log(">>>>>>>",city.getName())
                 console.log(this.intelligence[0].ids[city.id]);
                 let sweep = this.intelligence.find(c => c.ids[city.id]);
                 console.log("OWN STATS",sweep.ownStats, sweep.ownStats['land'] / Object.keys(sweep.landmass).length);
                 console.log("FOE STATS",sweep.foeStats);
-                if(sweep.goals.transport>0 && sweep.ownStats.land> 2){
+                if(sweep.goals.transport>0 && sweep.ownStats.land > 2){
+                    console.log("transport");
                     city.produce('t');
+                } else if(sweep.goals.attack==0 && sweep.ownStats.land > 4) {
+                    var transport = Math.random()>0.8;
+                    console.log("transport", transport);
+                    city.produce(transport?'t':'T');
+                } else if((sweep.goals.attack>0 || sweep.goals.transport>0)  && sweep.ownStats.land > 4) {
+                    var fighter = Math.random()>0.8;
+                    console.log("fighter", fighter);
+                    city.produce(fighter?'f':city.producingType);
                 } else {
+                    console.log("default tank")
                     city.produce('T');
                 }
-                console.log("SELECT",city.producingType,"FOR PRODCUTION", city.getName())
+                console.log("SELECT",city.producingType,"FOR PRODUCTION", city.getName())
+            }
+        });
+        console.log("===========")
+        this.units.forEach(u=>{
+            if(u.clazz==='city') {
+                console.log(u.getName(), u.producingType, u.production);
+            } else {
+                const postfix = "("+u.type+")";
+                console.log(u.getName(),postfix, u.derivedPosition(), u.order);
             }
         });
     }
@@ -371,10 +443,13 @@ export function aiPlayer(index, id, name, color, units, map) {
 
     this.unitAttention=(unit)=>{
         console.log(unit.getName(), "requires attention", unit.order.foes);
-        // console.log(unit.order);
-        // console.log("=====");
-        // console.log(this.activeOrders);
         this.attention.add(unit.id);
+    }
+
+    this.onRegisterUnit = (unit)=>{
+        if(unit.type === 't'){
+            this.embarking[unit.id]=0;
+        }
     }
 
     applyPlayerTraitsOn(this);
