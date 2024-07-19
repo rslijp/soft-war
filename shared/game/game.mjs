@@ -18,8 +18,8 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     this.currentPlayer = function() {
         return this.player(this.currentPlayerIndex);
     };
-    this.position = function() {
-        return this.currentPlayer().position || {x: 0, y:0};
+    this.position = function(backup) {
+        return this.currentPlayer().position || backup || {x: 0, y:0};
     };
     this.statistics=[];
 
@@ -43,9 +43,13 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         }
     };
 
-    this.nextUnit = function() {
+    this.nextUnit = function(clickBased) {
         const currentPlayer = this.currentPlayer();
+        var oldUnit = currentPlayer.selectedUnit;
         const unit = currentPlayer.carrousel.next();
+        if(!unit && clickBased) {
+            currentPlayer.findNextMoveableUnit(oldUnit);
+        }
         this.selectUnit(unit);
         this.executeOrders(unit);
         if(unit) MessageBus.send("next-unit-updated", unit);
@@ -179,11 +183,15 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
 
     this.newTurn = function(){
         const currentPlayer = this.currentPlayer();
-        console.log("AUTO", currentPlayer.autoNextFlag);
-        const unit = currentPlayer.carrousel.current();
-        console.log("unit", unit);
-        console.log("order", unit.order);
-        this.executeOrders(unit);
+        // console.log("AUTO", currentPlayer.autoNextFlag);
+        // const unit = currentPlayer.carrousel.current();
+        // console.log("unit", unit);
+        // this.selectUnit(unit);
+        // console.log("order", unit.order);
+        // this.executeOrders(unit);
+        if(currentPlayer.autoNext()){
+            MessageBus.send("next-unit");
+        }
     }
 
     this.world = ()=>{

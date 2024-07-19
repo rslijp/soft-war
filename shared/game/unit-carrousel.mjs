@@ -19,7 +19,6 @@ export function unitCarrousel(units) {
     }
 
     this.next = function() {
-        console.log(_current);
         skip();
         _current = null;
         if (queue.length > 0) {

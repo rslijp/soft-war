@@ -1,7 +1,7 @@
 let REGISTER_HANDLE = 0;
 
 export default {
-    verbose: false,
+    verbose: true,
     locked: false,
     registrations: {},
     clear: function(){

@@ -162,6 +162,16 @@ export const playerTraits = {
         MessageBus.send("game-state-changed", this.index);
 
     },
+    findNextMoveableUnit: function (current){
+       var currentIndex = this.units.indexOf(current);
+       for(var i=currentIndex; i<this.units.length; i++){
+            if(this.units[i].canMove()) return this.units[i];
+       }
+       for(var i=0; i<currentIndex; i++){
+            if(this.units[i].canMove()) return this.units[i];
+       }
+       return this.units[currentIndex+1] || this.units[0];
+    },
     init: function (){
         ([].concat(this.units)).forEach((unit) => {
             unit.player = this.index;

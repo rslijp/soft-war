@@ -3,6 +3,7 @@ import './css/main.css';
 import './css/maptiles.css';
 import './css/units.css';
 import './css/hud.css';
+import './css/responsive.css';
 import React from "react";
 import SoftWarApp from "./SoftWarApp";
 import { createRoot } from "react-dom/client";

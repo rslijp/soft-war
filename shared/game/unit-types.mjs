@@ -22,7 +22,7 @@ export const unitTypes = {
         mixin: {
             fortified: false,
             canFortify: function() {
-                return this.canMove() && !this.fortified && !this.inside;
+                return this.canMove() && !this.fortified && !(this.inside && this.inside.type!='C');
             },
             canActivate: function() {
                 return this.fortified;
@@ -31,7 +31,7 @@ export const unitTypes = {
                 if (!this.canFortify()) {
                     throw "Unit can't fortify in this turn";
                 }
-                this.movesLeft -= 1;
+                this.movesLeft = 0;
                 this.sight += 1;
                 this.fortified = true;
             },
@@ -82,7 +82,7 @@ export const unitTypes = {
         mixin: {
             fortified: false,
             canFortify: function() {
-                return this.canMove() && !this.fortified && !this.inside;
+                return this.canMove() && !this.fortified && !(this.inside && this.inside.type!='C');
             },
             canActivate: function() {
                 return this.fortified;
@@ -91,7 +91,7 @@ export const unitTypes = {
                 if (!this.canFortify()) {
                     throw "Unit can't fortify in this turn";
                 }
-                this.movesLeft -= 1;
+                this.movesLeft = 0;
                 this.sight += 1;
                 this.fortified = true;
             },

@@ -1,0 +1,14 @@
+.responsive-show {
+    display: none;
+}
+
+@media only screen and (max-width : 640px) {
+
+    .responsive-hide {
+        display: none;
+    }
+
+    .responsive-show {
+        display: inherit;
+    }
+}

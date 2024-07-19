@@ -44,6 +44,12 @@ function GameUnitBar({gameState, openDialog}) {
     const currentPlayer = gameState.currentPlayer();
     const selectedUnit = currentPlayer.selectedUnit;
 
+    const onKeyPress = (e) => {
+        var key = e.charCode === 0 ? e.keyCode : e.charCode;
+        MessageBus.sendLockable("keyboard-key-pressed", key);
+    };
+
+
     const cityUnit = (unit) => {
         const production = unit.producing();
         return <>
@@ -60,7 +66,7 @@ function GameUnitBar({gameState, openDialog}) {
     const regularUnit = (unit) => {
         const definition = unit.definition();
 
-        return <span className={"bottom-bar-space"}>{unit.getName()}, health <u>{unit.health}/{unit.definition().health}</u>, moves left <u>{unit.movesLeft}</u>
+        return <span className={"bottom-bar-space"}>{unit.getName()}, <span className={"responsive-hide"}>health </span><u>{unit.health}/{unit.definition().health}</u>, moves <span className={"responsive-hide"}>left</span> <u>{unit.movesLeft}</u>
             {definition.fuel?<span>{" "}fuel <u>{unit.fuel}</u>/{definition.fuel}</span>:null}
         </span>;
     };
@@ -105,7 +111,8 @@ function GameUnitBar({gameState, openDialog}) {
                 </Button>
                 {ownUnit?<Button className="bottom-bar-space" title={"next unit"} disabled={!selectedUnit} variant={"outline-secondary"} size={"xs"}
                     onClick={() => {
-                        gameState.currentPlayer().jumpToNextUnit(selectedUnit);
+                        MessageBus.send("next-unit");
+                        // gameState.currentPlayer().jumpToNextUnit(selectedUnit);
                     }}><FontAwesomeIcon icon={faChevronRight}/></Button>:null}
             </ButtonGroup>
             <div className={"unit-view "+TYPE_MAP[unit.type]}/>
@@ -132,21 +139,21 @@ function GameUnitBar({gameState, openDialog}) {
     };
 
 
-    return <Navbar sticky="bottom" bg="dark" data-bs-theme="dark" className={"bottom-bar"} >
+    return <Navbar sticky="bottom" bg="dark" data-bs-theme="dark" className={"bottom-bar"}  onKeyPress={(e) => onKeyPress(e)}>
         <Container fluid>
             <Navbar.Collapse className="justify-content-start">
                 {unitBar(selectedUnit)}
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text className="bottom-bar-space">
-                    Turn{" "}<u>{gameState.turn}</u>
+                    <span className={"responsive-hide"}>Turn{" "}</span><span className={"responsive-show"}>#</span><u>{gameState.turn}</u>
                 </Navbar.Text>
                 <Form.Check
                     disabled={currentPlayer.type!="Human"}
                     className={"toggle-auto-next"}
                     type="switch"
                     id="custom-switch"
-                    label="Auto play"
+                    label={<>auto <span className={"responsive-hide"}> play</span></>}
                     checked={currentPlayer.autoNextFlag}
                     onClick={()=>currentPlayer.toggleAutoNext()}
                 />

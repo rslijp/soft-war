@@ -7,6 +7,7 @@ import GameUnitBar from "./component/GameUnitBar";
 import GameView from "./component/GameView";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import HorizontalScrollBar from "../map/HorizontalScrollBar";
+import KeyBoardHandler from "./component/KeyBoardHandler";
 import MessageBus from "softwar-shared/services/message-service.mjs";
 import OrderAttentionDialog from "./dialogs/OrderAttentionDialog";
 import OrderConfirmationDialog from "./dialogs/OrderConfirmationDialog";
@@ -36,7 +37,6 @@ function GamePage() {
     stateRef.current = {state: state, viewPort: viewPort, renderIteration: renderIteration};
 
     const newTurn = (messages) => {
-        console.log(messages);
         setDialog({name: 'messages', messages: messages, hide: true});
         focusOnTile(gameState.position());
     };
@@ -134,7 +134,7 @@ function GamePage() {
         messages.push("Welcome back. Enjoy the game!");
         gameState.players.forEach((p,i) => messages.push(`Player ${i+1} ${p.name} (${p.type})`));
         MessageBus.send("new-turn", messages);
-        focusOnTile(position);
+        focusOnTile(gameState.position(position));
     }, [state]);
 
     if(viewPort.deltaX && viewPort.deltaY && state === 'initializing') setState("ready");
@@ -171,6 +171,7 @@ function GamePage() {
 
     return <>
         {dialog ? renderDialog(dialog) : null}
+        <KeyBoardHandler state={gameState}/>
         <ScrollableViewPort
             dimensions={gameState.dimensions()}
             value={viewPort}
