@@ -75,7 +75,7 @@ export function humanPlayer(index, id, name, color, units, map) {
             return;
         }
         var position = unit.derivedPosition();
-        this.flash("The " + unit.definition().name + " at (" + position.y + ", " + position.x + ") was destroyed by " + aggressor.name);
+        this.flash({variant: 'warning', text: "The " + unit.definition().name + " at (" + position.y + ", " + position.x + ") was destroyed by " + aggressor.name});
     };
     this.flashCityFallen = function(cityDefense, player) {
         var city = cityDefense.city;
@@ -83,14 +83,14 @@ export function humanPlayer(index, id, name, color, units, map) {
             return;
         }
         var position = city.position;
-        this.flash("The city of " + city.name + "(" + position.y + ", " + position.x + ") is fallen into the control of " + player.name);
+        this.flash({variant: 'warning', text: "The city of " + city.name + "(" + position.y + ", " + position.x + ") is fallen into the control of " + player.name});
     };
     this.flashAttack = function(unit, damage) {
         if (unit.player != self.index) {
             return;
         }
         var position = unit.derivedPosition();
-        this.flash("The " + unit.definition().name + " at (" + position.y + ", " + position.x + ") was attacked and received " + damage + " points of damage");
+        this.flash({variant: 'warning', text: "The " + unit.definition().name + " at (" + position.y + ", " + position.x + ") was attacked and received " + damage + " points of damage"});
     };
     this.flashUnitCreationSuspended = function(city, definition) {
         if (city.player != self.index) {

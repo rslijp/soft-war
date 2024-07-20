@@ -6,6 +6,7 @@ import {battle} from "./battle.mjs";
 
 export function game ({code, name, turn, currentPlayer}, map, players) {
     this.turn = turn||1;
+    this.proposedEndOfTurn = false;
     this.name = name;
     this.code = code;
     this.players = players;
@@ -45,15 +46,16 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
 
     this.nextUnit = function(clickBased) {
         const currentPlayer = this.currentPlayer();
-        var oldUnit = currentPlayer.selectedUnit;
-        const unit = currentPlayer.carrousel.next();
+        const oldUnit = currentPlayer.selectedUnit;
+        let unit = currentPlayer.carrousel.next();
         if(!unit && clickBased) {
-            currentPlayer.findNextMoveableUnit(oldUnit);
+            unit = currentPlayer.findNextMoveableUnit(oldUnit);
         }
         this.selectUnit(unit);
         this.executeOrders(unit);
         if(unit) MessageBus.send("next-unit-updated", unit);
-        if (currentPlayer.autoNext() && unit === null) {
+        if (!this.proposedEndOfTurn && currentPlayer.autoNext() && unit === null) {
+            this.proposedEndOfTurn=true;
             MessageBus.send("end-turn");
         }
     };
@@ -189,6 +191,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         // this.selectUnit(unit);
         // console.log("order", unit.order);
         // this.executeOrders(unit);
+        this.proposedEndOfTurn = false;
         if(currentPlayer.autoNext()){
             MessageBus.send("next-unit");
         }

@@ -100,8 +100,24 @@ function GameUnitBar({gameState, openDialog}) {
                 MessageBus.send("screen-update", unit.derivedPosition());
             }}><FontAwesomeIcon icon={SPECIAL_MAP[action.method]}/></Button>;
     };
+    const noUnitBar = ()=> {
+        return <Navbar.Text className={"unit-bar"}>
+            <ButtonGroup>
+                <Button variant={"outline-secondary"} size={"xs"} title={"show on map"} disabled={true}
+                    onClick={()=>{}}>
+                    <FontAwesomeIcon icon={faCrosshairs}/>
+                </Button>
+                <Button className="bottom-bar-space" title={"next unit"} variant={"outline-secondary"} size={"xs"}
+                    onClick={() => {
+                        MessageBus.send("next-unit", true);
+                        // gameState.currentPlayer().jumpToNextUnit(selectedUnit);
+                    }}><FontAwesomeIcon icon={faChevronRight}/></Button>
+
+            </ButtonGroup>
+        </Navbar.Text>;
+    };
     const unitBar = (unit) => {
-        if (!unit) return;
+        if (!unit) return noUnitBar();
         const ownUnit = unit.player===currentPlayer.index;
         return <Navbar.Text className={"unit-bar"}>
             <ButtonGroup>
@@ -109,11 +125,11 @@ function GameUnitBar({gameState, openDialog}) {
                     onClick={() => MessageBus.send("screen-update", selectedUnit.derivedPosition())}>
                     <FontAwesomeIcon icon={faCrosshairs}/>
                 </Button>
-                {ownUnit?<Button className="bottom-bar-space" title={"next unit"} disabled={!selectedUnit} variant={"outline-secondary"} size={"xs"}
+                <Button className="bottom-bar-space" title={"next unit"} variant={"outline-secondary"} size={"xs"}
                     onClick={() => {
-                        MessageBus.send("next-unit");
+                        MessageBus.send("next-unit", true);
                         // gameState.currentPlayer().jumpToNextUnit(selectedUnit);
-                    }}><FontAwesomeIcon icon={faChevronRight}/></Button>:null}
+                    }}><FontAwesomeIcon icon={faChevronRight}/></Button>
             </ButtonGroup>
             <div className={"unit-view "+TYPE_MAP[unit.type]}/>
             {unit.clazz === 'city' ? cityUnit(unit) : regularUnit(unit)}
@@ -139,7 +155,7 @@ function GameUnitBar({gameState, openDialog}) {
     };
 
 
-    return <Navbar sticky="bottom" bg="dark" data-bs-theme="dark" className={"bottom-bar"}  onKeyPress={(e) => onKeyPress(e)}>
+    return <Navbar sticky="bottom" bg="dark" data-bs-theme="dark" className={"bottom-bar"}  onKeyPress={(e) => onKeyPress(e)} tabIndex={999}>
         <Container fluid>
             <Navbar.Collapse className="justify-content-start">
                 {unitBar(selectedUnit)}

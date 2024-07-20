@@ -117,7 +117,6 @@ export const playerTraits = {
                 MessageBus.send("next-unit");
             }
         }
-
         if (unit && !unit.canMove() && this.autoNext()) {
             setTimeout(innerAutoNext, 1500);
         }
@@ -163,6 +162,9 @@ export const playerTraits = {
 
     },
     findNextMoveableUnit: function (current){
+       if(!current) {
+           return this.units[0];
+       }
        var currentIndex = this.units.indexOf(current);
        for(var i=currentIndex; i<this.units.length; i++){
             if(this.units[i].canMove()) return this.units[i];
