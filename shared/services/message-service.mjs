@@ -8,9 +8,23 @@ export default {
         if (this.verbose) {
             console.log("Clearing registrations");
         }
-        this.registrations={};
+        const clone = [].concat(Object.keys(this.registrations));
+        var retained = {};
+        clone.forEach(name=>{
+            this.registrations[name].filter(r=>r.retain).forEach(r => {
+                    if (this.verbose) {
+                        console.log("retaining", name, r.handle);
+                    }
+                console.log("retaining", name, r.retain);
+                    if (!retained[name]) {
+                        retained[name] = [];
+                    }
+                    retained[name].push(r);
+                })
+        })
+        this.registrations = retained;
     },
-    register: function(name, func, context) {
+    register: function(name, func, context, retain) {
         if (this.verbose) {
             console.log("Register " + name);
         }
@@ -18,7 +32,7 @@ export default {
             this.registrations[name] = [];
         }
         REGISTER_HANDLE++;
-        this.registrations[name].push({callback: func, context: context, handle: ""+REGISTER_HANDLE});
+        this.registrations[name].push({callback: func, context: context, handle: ""+REGISTER_HANDLE, retain: retain||false});
         return name+":"+REGISTER_HANDLE;
     },
     revoke: function(name, func) {
@@ -77,6 +91,15 @@ export default {
             return;
         }
         this.send.apply(this, arguments);
+    },
+    sendDebounced: function (name, argument){
+        var name = arguments[0];
+        if (this.verbose) {
+            console.log("Send debounced " + name);
+        }
+        setTimeout(()=>{
+            this.send.apply(this, arguments);
+        },0)
     },
     send: function() {
         var name = arguments[0];

@@ -5,5 +5,6 @@ export function localDemoLoader() {
     const rawMap = generateMap('REGULAR', 32,32);
     const gameState = deserializeGameState({map: rawMap, players: []});
     decorateMap(gameState.world());
+    MessageBus.send("update-game-state", null);
     return gameState;
 }

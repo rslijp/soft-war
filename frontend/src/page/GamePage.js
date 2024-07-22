@@ -168,6 +168,7 @@ function GamePage() {
         return builder?builder(dialog):null;
     };
 
+    // MessageBus.sendDebounced("update-game-state", gameState, this);
 
     return <>
         {dialog ? renderDialog(dialog) : null}

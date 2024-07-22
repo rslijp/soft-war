@@ -14,7 +14,7 @@ function FlashMessageDialog({messages, onClose}) {
         setTimeout(()=>focusView(), 0);
     }, []);
 
-    return <Modal  show={true} >
+    return <Modal  show={true} onHide={onClose}>
         <Modal.Header closeButton>
             <Modal.Title>Flash messaged</Modal.Title>
         </Modal.Header>

@@ -1,4 +1,4 @@
-import {Button, ButtonGroup, Container, Form, Navbar} from "react-bootstrap";
+import {Button, ButtonGroup, Container, Navbar} from "react-bootstrap";
 import {any, func} from "prop-types";
 import {
     faCancel,
@@ -161,18 +161,6 @@ function GameUnitBar({gameState, openDialog}) {
                 {unitBar(selectedUnit)}
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
-                <Navbar.Text className="bottom-bar-space">
-                    <span className={"responsive-hide"}>Turn{" "}</span><span className={"responsive-show"}>#</span><u>{gameState.turn}</u>
-                </Navbar.Text>
-                <Form.Check
-                    disabled={currentPlayer.type!="Human"}
-                    className={"toggle-auto-next"}
-                    type="switch"
-                    id="custom-switch"
-                    label={<>auto <span className={"responsive-hide"}> play</span></>}
-                    checked={currentPlayer.autoNextFlag}
-                    onClick={()=>currentPlayer.toggleAutoNext()}
-                />
                 <ButtonGroup className="bottom-bar-space" style={{"marginRight": "0px"}}>
                     <Button variant={"warning"} size={"xs"}
                         onClick={() => MessageBus.send("propose-end-turn")}><FontAwesomeIcon

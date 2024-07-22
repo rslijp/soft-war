@@ -7,6 +7,7 @@ export function loadGameState(code) {
         MessageBus.clear();
         const gameState = deserializeGameState(r);
         decorateMap(gameState.world());
+        MessageBus.send("update-game-state", gameState);
         return gameState;
     });
 }

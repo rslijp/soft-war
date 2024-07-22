@@ -366,7 +366,20 @@ body {
     padding-right: 0px;
 }
 
-.toggle-auto-next {
-    color:white;
+
+.top-bar-game-control {
+    margin-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #7b18e4;
+    border-radius: 5px;
 }
 
+.top-bar-game-control .turn-info {
+    color: white;
+    margin-right: 10px;
+}
+
+.top-bar-game-control .toggle-auto-next {
+    color:white;
+}
