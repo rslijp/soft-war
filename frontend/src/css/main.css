@@ -336,6 +336,10 @@ body {
     height: var(--top-bar-height);
 }
 
+.nested-unit-tooltip .tooltip-inner {
+    max-width: 100%;
+}
+
 .nested-unit-slots {
     display: inline-block;
     border: 1px dashed rgba(211, 211, 211, 0.8);

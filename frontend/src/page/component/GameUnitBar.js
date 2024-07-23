@@ -1,4 +1,5 @@
 import {Button, ButtonGroup, Container, Navbar} from "react-bootstrap";
+import {SPECIAL_MAP, TYPE_MAP} from "./UnitTypesConstants";
 import {any, func} from "prop-types";
 import {
     faCancel,
@@ -8,37 +9,14 @@ import {
     faForwardStep,
     faIndustry,
     faMapLocationDot,
-    faPersonMilitaryRifle,
-    faTents,
-    faWater
+    faPersonMilitaryRifle
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import GameUnitNestedUnitsToolTip from "./GameUnitNestedUnitsToolTip";
 import {MessageBus} from "softwar-shared";
 import React from "react";
 
-const TYPE_MAP = {
-    'C' : 'city',
-    'I' : 'infantry',
-    'T' : 'tank',
-    'M' : 'truck',
-    'F' : 'fighter',
-    'B' : 'bomber',
-    'H' : 'helicopter',
-    'D' : 'destroyer',
-    'c' : 'cruiser',
-    'A' : 'aircraftcarrier',
-    'S' : 'submarine',
-    'm' : 'missile',
-    't' : 'transport',
-    'b' : 'battleship',
-};
 
-const SPECIAL_MAP = {
-    'fortify': faTents,
-    'activate': faTents,
-    'surface': faWater,
-    'dive': faWater
-};
 
 function GameUnitBar({gameState, openDialog}) {
     const currentPlayer = gameState.currentPlayer();
@@ -52,14 +30,18 @@ function GameUnitBar({gameState, openDialog}) {
 
     const cityUnit = (unit) => {
         const production = unit.producing();
+        const ownUnit = unit.player===currentPlayer.index;
         return <>
             <span className={"bottom-bar-space"}>{unit.getName()}, <span className={"responsive-hide"}>producing</span>  {" "}
                 <u>{production ? (production.name + " " + selectedUnit.production + "/" + production.costs) : "nothing"}</u>
             </span>
-            <Button variant={"outline-secondary"} size={"xs"}
-                onClick={() => openDialog({name: "change-city-production", city: unit})}>
-                <FontAwesomeIcon icon={faIndustry}/>
-            </Button>
+            {ownUnit?<ButtonGroup className="bottom-bar-space">
+                <Button variant={"outline-secondary"} size={"xs"}
+                    onClick={() => openDialog({name: "change-city-production", city: unit})}>
+                    <FontAwesomeIcon icon={faIndustry}/>
+                </Button>
+                {nestedUnits(unit)}
+            </ButtonGroup>:null}
         </>;
     };
 
@@ -73,17 +55,7 @@ function GameUnitBar({gameState, openDialog}) {
 
     const nestedUnits = (unit) => {
         if (!unit || !unit.capacity) return;
-        var slots = new Array(unit.capacity);
-        for(var i=0; i<slots.length; i++){
-            slots[i]=unit.nestedUnits[i]||null;
-        }
-        return <div className={"nested-unit-slots"}>
-            {slots.map((s,i)=><div key={i} className={"nested-unit-slot"}>{
-                s?<div className={"unit-view "+TYPE_MAP[s.type]}
-                    onClick={() => MessageBus.send("select-unit", s)}
-                />:null}
-            </div>)}
-        </div>;
+        return <GameUnitNestedUnitsToolTip unit={unit}/>;
     };
 
     const specialActions = (unit) => {
@@ -133,25 +105,25 @@ function GameUnitBar({gameState, openDialog}) {
             </ButtonGroup>
             <div className={"unit-view "+TYPE_MAP[unit.type]}/>
             {unit.clazz === 'city' ? cityUnit(unit) : regularUnit(unit)}
-            {ownUnit?
+            {ownUnit && unit.clazz === 'unit'?
                 <ButtonGroup className="bottom-bar-space">
                     {specialActions(unit)}
                     {unit.clazz === 'unit' ?
                         <Button variant={"outline-secondary"} size={"xs"} title={"Move"}
-                        onClick={() => MessageBus.send("move-to-mode")}>
-                        <FontAwesomeIcon icon={faMapLocationDot}/>
-                    </Button> : null}
+                            onClick={() => MessageBus.send("move-to-mode")}>
+                            <FontAwesomeIcon icon={faMapLocationDot}/>
+                        </Button> : null}
                     {unit.clazz === 'unit' ?
-                    <Button variant={"outline-secondary"} size={"xs"} title={"Patrol"}
-                        onClick={() => MessageBus.send("patrol-to-mode")}>
-                        <FontAwesomeIcon icon={faPersonMilitaryRifle}/>
-                    </Button> : null}
+                        <Button variant={"outline-secondary"} size={"xs"} title={"Patrol"}
+                            onClick={() => MessageBus.send("patrol-to-mode")}>
+                            <FontAwesomeIcon icon={faPersonMilitaryRifle}/>
+                        </Button> : null}
                     {unit.order ? <Button variant={"outline-secondary"} size={"xs"} title={"Clear orders"}
                         onClick={() => MessageBus.send("confirm-order", selectedUnit, null)}>
                         <FontAwesomeIcon icon={faCancel}/>
                     </Button> : null}
+                    {nestedUnits(unit)}
                 </ButtonGroup>:null}
-            {ownUnit?nestedUnits(unit):null}
         </Navbar.Text>;
     };
 
