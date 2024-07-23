@@ -53,7 +53,7 @@ function GameUnitBar({gameState, openDialog}) {
     const cityUnit = (unit) => {
         const production = unit.producing();
         return <>
-            <span className={"bottom-bar-space"}>{unit.getName()}, producing{" "}
+            <span className={"bottom-bar-space"}>{unit.getName()}, <span className={"responsive-hide"}>producing</span>  {" "}
                 <u>{production ? (production.name + " " + selectedUnit.production + "/" + production.costs) : "nothing"}</u>
             </span>
             <Button variant={"outline-secondary"} size={"xs"}
@@ -136,21 +136,22 @@ function GameUnitBar({gameState, openDialog}) {
             {ownUnit?
                 <ButtonGroup className="bottom-bar-space">
                     {specialActions(unit)}
-                    <Button variant={"outline-secondary"} size={"xs"} title={"Move"}
+                    {unit.clazz === 'unit' ?
+                        <Button variant={"outline-secondary"} size={"xs"} title={"Move"}
                         onClick={() => MessageBus.send("move-to-mode")}>
                         <FontAwesomeIcon icon={faMapLocationDot}/>
-                    </Button>
+                    </Button> : null}
+                    {unit.clazz === 'unit' ?
                     <Button variant={"outline-secondary"} size={"xs"} title={"Patrol"}
                         onClick={() => MessageBus.send("patrol-to-mode")}>
                         <FontAwesomeIcon icon={faPersonMilitaryRifle}/>
-                    </Button>
+                    </Button> : null}
                     {unit.order ? <Button variant={"outline-secondary"} size={"xs"} title={"Clear orders"}
                         onClick={() => MessageBus.send("confirm-order", selectedUnit, null)}>
                         <FontAwesomeIcon icon={faCancel}/>
                     </Button> : null}
                 </ButtonGroup>:null}
             {ownUnit?nestedUnits(unit):null}
-            {unit.remark&&unit.remark()?" ("+unit.remark()+")":null}
         </Navbar.Text>;
     };
 

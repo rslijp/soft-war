@@ -23,7 +23,7 @@ const TYPE_TILE_MAP = {
 function UnitView({unit, selected}) {
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
-            {unit.getName()}
+            {unit.getName()} {unit.remark&&unit.remark()?" ("+unit.remark()+")":null}
         </Tooltip>
     );
     const additionalStyle = {};
