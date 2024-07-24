@@ -14,7 +14,7 @@ describe("bus class", function(){
             const handle = MessageBus.register('a', '1', "context").split(':')[1];
 
             //Then
-            expect(MessageBus.registrations['a']).toEqual([{callback: '1', context: "context", handle: handle}]);
+            expect(MessageBus.registrations['a']).toEqual([{callback: '1', context: "context", handle: handle, retain: false}]);
         });
         it("should register 'a' with function '1','2'", function(){
             //Given
@@ -25,7 +25,7 @@ describe("bus class", function(){
             const handle2 = MessageBus.register('a', '2', "contextB").split(':')[1];;
 
             //Then
-            expect(MessageBus.registrations['a']).toEqual([{callback: '1', context: "contextA", handle: handle1},{callback: '2', context: "contextB", handle: handle2}]);
+            expect(MessageBus.registrations['a']).toEqual([{callback: '1', context: "contextA", handle: handle1, retain: false},{callback: '2', context: "contextB", handle: handle2, retain: false}]);
         });
     });
     describe("send method", function(){

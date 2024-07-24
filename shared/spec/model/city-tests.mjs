@@ -517,7 +517,7 @@ describe("city class", function(){
         });
     });
     describe("conquered method", function(){
-        it("should reset production", function(){
+        it("should reset production to TANK", function(){
             spyOn(MessageBus, "send");
             var cityInstance =  new city({x: 4, y:8}, "Tiel");
             cityInstance.player=0;
@@ -527,7 +527,7 @@ describe("city class", function(){
             cityInstance.conquered(1);
 
             expect(cityInstance.production).toEqual(0);
-            expect(cityInstance.producingType).toBeNull();
+            expect(cityInstance.producingType).toEqual('T');
         });
         it("should set player", function(){
             spyOn(MessageBus, "send");

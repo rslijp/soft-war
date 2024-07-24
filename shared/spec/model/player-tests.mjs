@@ -47,14 +47,14 @@ describe("humanPlayer class", function(){
             expect(player.selectedUnit).toEqual(units[0]);
         });
     });
-    describe("updateSelectedUnit", function(){
+    describe("updateSelectedUnit method", function(){
         it("should reschedule old unit when unit is updated", function(){
             var tank = new unit("T", {y: 3, x:3}).initTurn();
             var player = new humanPlayer(0, "0",  "Name", "Color", [tank], map);
             player.selectedUnit=tank;
             spyOn(player.carrousel, "reschedule");
 
-            player.updateSelectedUnit("other");
+            player.updateSelectedUnit({name: "other", derivedPosition: ()=>{return {y: 3, x:3}}});
 
             expect(player.carrousel.reschedule).toHaveBeenCalledWith(tank);
         });
@@ -65,7 +65,7 @@ describe("humanPlayer class", function(){
             player.selectedUnit=tank;
             spyOn(player.carrousel, "reschedule");
 
-            player.updateSelectedUnit("other");
+            player.updateSelectedUnit({name: "other", derivedPosition: ()=>{return {y: 3, x:3}}});
 
             expect(player.carrousel.reschedule).not.toHaveBeenCalledWith(tank);
         });
@@ -74,7 +74,7 @@ describe("humanPlayer class", function(){
             player.selectedUnit=null;
             spyOn(player.carrousel, "reschedule");
 
-            player.updateSelectedUnit("other");
+            player.updateSelectedUnit({name: "other", derivedPosition: ()=>{return {y: 3, x:3}}});
 
             expect(player.carrousel.reschedule).not.toHaveBeenCalled();
         });
@@ -329,7 +329,7 @@ describe("humanPlayer class", function(){
             player.flashDestruction(tank, {name: "Computer", index: 1});
 
             //Then
-            expect(player.messages.pop()).toEqual("The Tank at (3, 2) was destroyed by Computer");
+            expect(player.messages.pop()).toEqual({variant: 'warning', text: "The Tank at (3, 2) was destroyed by Computer"});
         });
         it("should not report destruction if player is the aggressor", function(){
             //Given
@@ -370,7 +370,7 @@ describe("humanPlayer class", function(){
             player.flashCityFallen({city: cityInstance}, {name: "Computer"});
 
             //Then
-            expect(player.messages.pop()).toEqual("The city of Tiel(3, 2) is fallen into the control of Computer");
+            expect(player.messages.pop()).toEqual({variant: 'warning', text: "The city of Tiel(3, 2) is fallen into the control of Computer"});
         });
         it("should not report destruction if unit is of other players", function(){
             //Given
@@ -398,7 +398,7 @@ describe("humanPlayer class", function(){
             player.flashAttack(tank,5);
 
             //Then
-            expect(player.messages.pop()).toEqual("The Tank at (3, 2) was attacked and received 5 points of damage");
+            expect(player.messages.pop()).toEqual({variant: 'warning', text: "The Tank at (3, 2) was attacked and received 5 points of damage"});
         });
         it("should not report attack if unit is of other players", function(){
             //Given
