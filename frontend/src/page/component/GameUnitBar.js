@@ -1,20 +1,18 @@
 import {Button, ButtonGroup, Container, Navbar} from "react-bootstrap";
-import {SPECIAL_MAP, TYPE_MAP} from "./UnitTypesConstants";
 import {any, func} from "prop-types";
 import {
-    faCancel,
     faChevronRight,
     faCrosshairs,
     faFlag,
     faForwardStep,
-    faIndustry,
-    faMapLocationDot,
-    faPersonMilitaryRifle
+    faIndustry
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import GameUnitActionsToolTip from "./GameUnitActionsToolTip";
 import GameUnitNestedUnitsToolTip from "./GameUnitNestedUnitsToolTip";
 import {MessageBus} from "softwar-shared";
 import React from "react";
+import {TYPE_MAP} from "./UnitTypesConstants";
 
 
 
@@ -32,7 +30,7 @@ function GameUnitBar({gameState, openDialog}) {
         const production = unit.producing();
         const ownUnit = unit.player===currentPlayer.index;
         return <>
-            <span className={"bottom-bar-space"}>{unit.getName()}, <span className={"responsive-hide"}>producing</span>  {" "}
+            <span className={"bottom-bar-space"}><span className={"responsive-show"}>{unit.getShortName()}</span><span className={"responsive-hide"}>{unit.getName()}</span>, <span className={"responsive-hide"}>producing</span>  {" "}
                 <u>{production ? (production.name + " " + selectedUnit.production + "/" + production.costs) : "nothing"}</u>
             </span>
             {ownUnit?<ButtonGroup className="bottom-bar-space">
@@ -40,7 +38,7 @@ function GameUnitBar({gameState, openDialog}) {
                     onClick={() => openDialog({name: "change-city-production", city: unit})}>
                     <FontAwesomeIcon icon={faIndustry}/>
                 </Button>
-                {nestedUnits(unit)}
+                <GameUnitNestedUnitsToolTip unit={unit}/>
             </ButtonGroup>:null}
         </>;
     };
@@ -48,30 +46,12 @@ function GameUnitBar({gameState, openDialog}) {
     const regularUnit = (unit) => {
         const definition = unit.definition();
 
-        return <span className={"bottom-bar-space"}>{unit.getName()}, <span className={"responsive-hide"}>health </span><u>{unit.health}/{unit.definition().health}</u>, moves <span className={"responsive-hide"}>left</span> <u>{unit.movesLeft}</u>
-            {definition.fuel?<span>{" "}fuel <u>{unit.fuel}</u>/{definition.fuel}</span>:null}
+        return <span className={"bottom-bar-space"}><u>{unit.getShortName()}</u> <span className={"responsive-hide"}>army</span>, <span className={"responsive-show"}>h</span><span className={"responsive-hide"}>health</span> <u>{unit.health}/{unit.definition().health}</u>, <span className={"responsive-show"}>m</span><span className={"responsive-hide"}>moves </span> <u>{unit.movesLeft}</u>
+            {definition.fuel?<span className={"responsive-hide"}>{" "}fuel <u>{unit.fuel}</u>/{definition.fuel}</span>:null}
         </span>;
     };
 
-    const nestedUnits = (unit) => {
-        if (!unit || !unit.capacity) return;
-        return <GameUnitNestedUnitsToolTip unit={unit}/>;
-    };
 
-    const specialActions = (unit) => {
-        const action = unit.specialAction?unit.specialAction():null;
-        if(!action) return null;
-        return <Button
-            active={action.value}
-            disabled={!action.enabled}
-            variant={"outline-secondary"}
-            size={"xs"}
-            title={action.label}
-            onClick={() => {
-                unit[action.method]();
-                MessageBus.send("screen-update", unit.derivedPosition());
-            }}><FontAwesomeIcon icon={SPECIAL_MAP[action.method]}/></Button>;
-    };
     const noUnitBar = ()=> {
         return <Navbar.Text className={"unit-bar"}>
             <ButtonGroup>
@@ -105,25 +85,7 @@ function GameUnitBar({gameState, openDialog}) {
             </ButtonGroup>
             <div className={"unit-view "+TYPE_MAP[unit.type]}/>
             {unit.clazz === 'city' ? cityUnit(unit) : regularUnit(unit)}
-            {ownUnit && unit.clazz === 'unit'?
-                <ButtonGroup className="bottom-bar-space">
-                    {specialActions(unit)}
-                    {unit.clazz === 'unit' ?
-                        <Button variant={"outline-secondary"} size={"xs"} title={"Move"}
-                            onClick={() => MessageBus.send("move-to-mode")}>
-                            <FontAwesomeIcon icon={faMapLocationDot}/>
-                        </Button> : null}
-                    {unit.clazz === 'unit' ?
-                        <Button variant={"outline-secondary"} size={"xs"} title={"Patrol"}
-                            onClick={() => MessageBus.send("patrol-to-mode")}>
-                            <FontAwesomeIcon icon={faPersonMilitaryRifle}/>
-                        </Button> : null}
-                    {unit.order ? <Button variant={"outline-secondary"} size={"xs"} title={"Clear orders"}
-                        onClick={() => MessageBus.send("confirm-order", selectedUnit, null)}>
-                        <FontAwesomeIcon icon={faCancel}/>
-                    </Button> : null}
-                    {nestedUnits(unit)}
-                </ButtonGroup>:null}
+            {ownUnit && unit.clazz === 'unit'? <GameUnitActionsToolTip unit={unit} selectedUnit={selectedUnit}/>:null}
         </Navbar.Text>;
     };
 

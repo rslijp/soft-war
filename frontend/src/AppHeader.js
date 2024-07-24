@@ -87,7 +87,7 @@ function AppHeader() {
             <Navbar.Collapse className="justify-content-end">
                 {gameState?
                     <Navbar.Text className={"d-flex top-bar-game-control"}>
-                        <span className={"turn-info"}><span className={"responsive-hide"}>Turn{" "}</span><span className={"responsive-show"}>#</span><u>{gameState.turn}</u></span>
+                        <span className={"turn-info"}><span className={"responsive-hide"}>Turn{" "}<u>{gameState.turn}</u></span><span className={"responsive-show"}>#<u>{gameState.turn}</u></span></span>
                         <Form.Check
                             disabled={gameState.currentPlayer().type!="Human"}
                             className={"toggle-auto-next"}

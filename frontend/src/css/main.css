@@ -322,7 +322,7 @@ body {
     /*margin-right: 5px;*/
 }
 
-.bottom-bar .btn-outline-secondary, .unit-dialog .btn-outline-secondary {
+.bottom-bar .btn-outline-secondary, .unit-dialog .btn-outline-secondary, .special-action-unit-tooltip .btn-outline-secondary {
     color: white;
 }
 

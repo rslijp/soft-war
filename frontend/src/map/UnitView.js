@@ -31,6 +31,7 @@ function UnitView({unit, selected}) {
     const cssClasses = ["unit-view", TYPE_TILE_MAP[unit.type]];
     if(selected) cssClasses.push("selected-unit");
     const remark = unit.remark?unit.remark():null;
+    const definition = unit.definition?unit.definition():null;
     return <OverlayTrigger
         placement="bottom"
         delay={{show: 250, hide: 400}}
@@ -39,7 +40,9 @@ function UnitView({unit, selected}) {
         <div className={cssClasses.join(" ")}
             style={additionalStyle}
             onClick={() => MessageBus.send("cursor-select", unit.derivedPosition())}>
-            {remark?<Badge className={"unit-remark"} pill bg={"dark"}>{remark[0].toUpperCase()}</Badge>:null}
+            {remark?<Badge className={"unit-remark"} pill bg={"dark"}>{remark[0].toUpperCase()}</Badge>:
+                definition&&definition.fuel?<Badge className={"unit-remark"} pill bg={"dark"}>{unit.fuel}/{definition.fuel}</Badge>:
+                    null}
         </div>
     </OverlayTrigger>;
 }

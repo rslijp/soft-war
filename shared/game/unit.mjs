@@ -160,10 +160,14 @@ export function unit(type, position) {
     };
 
     this.getName = () => {
-        if(this.id===1) { return "1st army"; }
-        else if(this.id===2) { return "2nd army"; }
-        else if(this.id===3) { return "3rd army"; }
-        else { return this.id+"nd army"; }
+        return this.getShortName()+" army";
+    }
+
+    this.getShortName = () => {
+        if(this.id===1) { return "1st"; }
+        else if(this.id===2) { return "2nd"; }
+        else if(this.id===3) { return "3rd"; }
+        else { return this.id+"nd"; }
     }
 
     applyUnitTraitsOn(this);

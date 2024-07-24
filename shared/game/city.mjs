@@ -135,4 +135,8 @@ export function city(position, name, producing, production) {
     this.getName = () => {
         return this.name;
     }
+
+    this.getShortName = () => {
+        return this.getName().substr(0,3).toUpperCase();
+    }
 };
