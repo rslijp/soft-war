@@ -73,7 +73,11 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
             const dp = map.normalize({y: pos.y+dy,x: pos.x+dx});
             if(allowed(dp)) hudMap[`${dp.y}_${dp.x}`] = {
                 className: "hud-move-"+direction,
-                action: () => MessageBus.sendLockable("cursor-direction", direction)
+                action: (e) => {
+                    MessageBus.sendLockable("cursor-direction", direction);
+                    e.stopPropagation();
+                    return true;
+                }
             };
 
         };
@@ -89,9 +93,11 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
                         className: "hud-move-X"
                     };
                     if(action){
-                        hudMap[`${pos.y}_${pos.x}`].action = () => {
+                        hudMap[`${pos.y}_${pos.x}`].action = (e) => {
                             setState({...state, mode: 'regular', path: null});
                             MessageBus.send("give-order", action, state.path, null, false);
+                            e.stopPropagation();
+                            return true;
                         };
                     }
                 }
@@ -187,7 +193,7 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
             else unit=null;
             clazzes.push("land-fog-of-war");
         }
-        return <td key={key} className={clazzes.join(" ")} onMouseOver={()=>onMouseOver(position)}>
+        return <td key={key} className={clazzes.join(" ")} onMouseOver={()=>onMouseOver(position)} onClick={unit?null:()=>MessageBus.send("cursor-select", position)}>
             {unit?<UnitView unit={unit} selected={selected}/>:null}
             {hud?<div className={(unit?"hud-action with-unit ":"hud-action ")+hud.className} onClick={hud.action}></div>:null}
         </td>;

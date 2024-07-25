@@ -61,7 +61,8 @@ function GameUnitActionsToolTip({unit, selectedUnit}) {
             <Button ref={target}
                 variant={"outline-secondary"}
                 size={"xs"}
-                onClick={() => setShow(!show)}>
+                onClick={() => setShow(!show)}
+                onBlur={() => setShow(false)}>
                 <FontAwesomeIcon icon={faBolt}/>
             </Button>
             {nestedUnits(unit)}

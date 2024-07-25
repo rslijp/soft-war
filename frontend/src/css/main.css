@@ -387,3 +387,13 @@ body {
 .top-bar-game-control .toggle-auto-next {
     color:white;
 }
+
+ul.production-list {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+ul.production-list li * {
+    margin-top: auto;
+    margin-bottom: auto;
+}

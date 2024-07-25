@@ -50,7 +50,7 @@ function ChangeCityProducion({city, onClose}) {
                 active={typeKey === producing}
                 onClick={()=>setProducing(typeKey)}
                 className={"d-flex justify-content-between align-items-start"}
-            ><div className={"unit-view "+TYPE_MAP[typeKey]}/> {type.name} <Badge bg="secondary" pill>{typeKey === city.producingType?type.costs-city.production:type.costs}</Badge>
+            ><div className={"unit-view "+TYPE_MAP[typeKey]}/><span>{type.name}</span>{" "}<Badge bg="secondary" pill>{typeKey === city.producingType?type.costs-city.production:type.costs}</Badge>
             </ListGroup.Item>;
         });
     }
@@ -62,13 +62,13 @@ function ChangeCityProducion({city, onClose}) {
         </Modal.Header>
         <Modal.Body className={"unit-dialog"}>
             <span className={"dialog-space"}>Change the production of {city.name} ({position.y}, {position.x}). It is currently producing <u>{production ? (production.name + " " + city.production + "/" + production.costs) : null}</u></span>
-            <ListGroup as={"ul"}>
+            <ListGroup as={"ul"} className={"production-list"}>
                 <ListGroup.Item
                     as={"li"}
                     active={!producing}
                     onClick={()=>setProducing('')}
                     className={"d-flex justify-content-between align-items-start"}
-                ><div className={"unit-view"}/> none <Badge bg="secondary" pill>-</Badge>
+                ><div className={"unit-view"}/><span>none</span>{" "}<Badge bg="secondary" pill>-</Badge>
                 </ListGroup.Item>
                 {unitSelection()}
             </ListGroup>

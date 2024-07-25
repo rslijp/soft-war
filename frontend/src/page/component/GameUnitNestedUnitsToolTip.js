@@ -32,7 +32,9 @@ function GameUnitNestedUnitsToolTip({unit}) {
         <Button ref={target}
             variant={"outline-secondary"}
             size={"xs"}
-            onClick={() => setShow(!show)}>
+            onClick={() => setShow(!show)}
+            onBlur={() => setShow(false)}
+        >
             {unit.nestedUnits.length>0?
                 <>
                     <FontAwesomeIcon style={{"marginTop": "9px"}} icon={faTruckRampBox}/>

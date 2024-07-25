@@ -71,7 +71,7 @@ function AppHeader() {
     };
 
     function userName(user) {
-        return <>{user.picture ? <img src={user.picture} className={"profile-picture"}/> : null}<span className={"responsive-hide"}>Welcome</span> {user.name}</>;
+        return <>{user.picture ? <img src={user.picture} className={"profile-picture"}/> : null}<span className={"responsive-hide"}>Welcome {user.name}</span></>;
     }
 
     const pendingActions = () => {
