@@ -427,13 +427,11 @@ describe("unitsMap", function(){
             tank.movesLeft=1;
             var player = {units: [tank, city1, city2]};
             var map = new unitsMap([player], dummyMap);
-            // spyOn(map, "collision");
 
             //When
             var result  = map.move(player.units[0], {y: 4, x:4});
 
             //Then
-            // expect(map.collision).not.toHaveBeenCalled();
             expect(city1.nestedUnits.length).toEqual(0);
             expect(city2.nestedUnits.length).toEqual(1);
             expect(city2.nestedUnits[0]).toEqual(tank);
@@ -451,7 +449,6 @@ describe("unitsMap", function(){
             tank.movesLeft=1;
             var player = {units: [tank, city1]};
             var map = new unitsMap([player], dummyMap);
-            // spyOn(map, "collision");
 
             //When
             expect(map.unitAt(3,3)).toEqual(city1);
@@ -459,10 +456,6 @@ describe("unitsMap", function(){
             var result  = map.move(player.units[0], {y: 4, x:4});
 
             //Then
-            // expect(map.collision).not.toHaveBeenCalled();
-            // expect(city1.nestedUnits.length).toEqual(0);
-            // expect(city2.nestedUnits.length).toEqual(1);
-            // expect(city2.nestedUnits[0]).toEqual(tank);
             expect(map.data[3][3]).toEqual(city1);
         });
 
@@ -478,7 +471,6 @@ describe("unitsMap", function(){
             tank.movesLeft=1;
             var player = {units: [tank, city1, city2]};
             var map = new unitsMap([player], dummyMap);
-            // spyOn(map, "collision");
 
             //When
             expect(map.unitAt(3,3)).toEqual(city1);
@@ -486,10 +478,6 @@ describe("unitsMap", function(){
             var result  = map.move(player.units[0], {y: 4, x:4});
 
             //Then
-            // expect(map.collision).not.toHaveBeenCalled();
-            // expect(city1.nestedUnits.length).toEqual(0);
-            // expect(city2.nestedUnits.length).toEqual(1);
-            // expect(city2.nestedUnits[0]).toEqual(tank);
             expect(map.data[3][3]).toEqual(city1);
         });
     });

@@ -42,7 +42,6 @@ function GamePage() {
     };
 
     const autoSaveGame = () => {
-        console.log("Auto save");
         saveGame(gameState);
     };
 
@@ -168,7 +167,6 @@ function GamePage() {
         return builder?builder(dialog):null;
     };
 
-    // MessageBus.sendDebounced("update-game-state", gameState, this);
 
     return <>
         {dialog ? renderDialog(dialog) : null}

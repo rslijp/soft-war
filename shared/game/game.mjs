@@ -172,7 +172,6 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     };
 
     this.nextTurn = function() {
-        // this.currentPlayer().endTurn();
         this.currentPlayerIndex += 1;
         if (this.currentPlayerIndex === this.players.length) {
             this.turn += 1;
@@ -185,12 +184,6 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
 
     this.newTurn = function(){
         const currentPlayer = this.currentPlayer();
-        // console.log("AUTO", currentPlayer.autoNextFlag);
-        // const unit = currentPlayer.carrousel.current();
-        // console.log("unit", unit);
-        // this.selectUnit(unit);
-        // console.log("order", unit.order);
-        // this.executeOrders(unit);
         this.proposedEndOfTurn = false;
         if(currentPlayer.autoNext()){
             MessageBus.send("next-unit");

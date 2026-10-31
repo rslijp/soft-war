@@ -78,7 +78,6 @@ function AppHeader() {
         return user.pendingActions?<Badge bg={"danger"} pill>{user.pendingActions}</Badge>:null;
     };
 
-    console.log(">", renderIteration, gameState);
 
     return  <Navbar bg="dark" data-bs-theme="dark" className={"top-bar ustify-content-between"} onKeyPress={(e) => onKeyPress(e)} tabIndex={999}>
         <Container fluid>

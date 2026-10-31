@@ -26,7 +26,6 @@ async function saveFinishedGame(state){
 router.get('/your-games', async function(req, res, next) {
   const user = req.session.passport.user._json;
   let collection = await appStates();
-  console.log("Listing game for",user.email);
   let results = await collection.find({ "players" : { $elemMatch : { "id" : user.email } } })
       .limit(10)
       .toArray();
@@ -47,7 +46,6 @@ router.get('/your-games', async function(req, res, next) {
 
 router.get('/game/:code', async function(req, res, next) {
   const user = req.session.passport.user._json;
-  console.log("Retrieving game",req.params.code);
   if(!req.params.code || req.params.code.length>16) {
     console.log("Code to long", req.params.code);
     res.status("412");
@@ -79,7 +77,6 @@ router.get('/user', async function(req, res){
 });
 
 async function  retrieveExistingGame(code, user){
-    console.log("Retrieving game", code);
     if (!code) {
         throw {httpCode :412, message: "No code provided"};
     }
@@ -103,9 +100,7 @@ router.post('/save-game', async function(req, res, next) {
     const user = req.session.passport.user._json;
     const gameState = req.body;
     try {
-        console.log("Checking")
         let retrievedGameState = await retrieveExistingGame(gameState.code, user);
-        console.log("Saving")
         let collection = await appStates();
         return collection.replaceOne({code: gameState.code}, gameState, {upsert: true});
     } catch(e){
@@ -162,7 +157,6 @@ router.post('/new-game', async function(req, res, next) {
 
 async function retrieve(req, res, onLoad){
     const user = req.session.passport.user._json;
-    console.log("Retrieving game", req.params.code);
     if (!req.params.code || req.params.code.length > 16) {
         console.log("Code to long", req.params.code);
         res.status("412");
@@ -225,7 +219,6 @@ router.put('/pending-game/:code', async function(req, res, next) {
 
 router.delete('/game/:code', async function(req, res, next) {
     const user = req.session.passport.user._json;
-    console.log("Deleting game", req.params.code);
     try {
         const gameState = await retrieveExistingGame(req.params.code, user);
 

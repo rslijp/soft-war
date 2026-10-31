@@ -79,7 +79,6 @@ export function aiPlayer(index, id, name, color, units, map) {
         const unitKey = toKey(unitPos);
         const aiParam = AI_PARAMETERS.find(param => param.units.has(mainUnit.type));
         let sweepType = aiParam.type;
-        console.log(mainUnit.type, sweepType, this.embarking);
         if(sweepType==='sea' && this.embarking[mainUnit.id]!==undefined){
             sweepType='land';
         }
@@ -179,7 +178,6 @@ export function aiPlayer(index, id, name, color, units, map) {
         if(mainUnit.isAlive()){
             const newPos = mainUnit.derivedPosition();
             const oldPos = sweep.ids[mainUnit.id];
-            // console.log(oldPos,"==>",newPos);
             if(toKey(newPos) === toKey(oldPos)) return;
             sweep.ids[mainUnit.id]=newPos;
             if(oldPos) {
@@ -213,8 +211,6 @@ export function aiPlayer(index, id, name, color, units, map) {
                 const target = foes[i];
                 const targetPos = target.derivedPosition();
                 if(map.distance(unitPosition, targetPos) == 1){
-                    // mainUnit.order=null;
-                    // delete this.activeOrders[mainUnit.id];
                     this.unitsMap.move(mainUnit, targetPos, false);
                     return {
                         action: "attack",
@@ -222,7 +218,6 @@ export function aiPlayer(index, id, name, color, units, map) {
                     }
                 }
             }
-            console.log("Continue approach");
         }
 
         let sweep = this.intelligence.find(c => c.ids[mainUnit.id]);
@@ -285,8 +280,6 @@ export function aiPlayer(index, id, name, color, units, map) {
             sweep.goals['transport']++;
         }
 
-        // if(path) console.log("move", mainUnit.derivedPosition(), JSON.stringify(path))
-        // else console.log("roam");
 
         return path ? {
             action: "move",
@@ -301,8 +294,6 @@ export function aiPlayer(index, id, name, color, units, map) {
     }
 
     this.conquerTheWorld=()=>{
-        console.log("Thinking...");
-
         const attackOrder = (unit) => {
             unit.order = null;
             this.attention.delete(unit.id);
@@ -331,30 +322,24 @@ export function aiPlayer(index, id, name, color, units, map) {
             }
             let activeOrders = this.activeOrders[unit.id];
             if(activeOrders && this.attention.has(unit.id)){
-                console.log("Possible reassignment of orders", unit.getName(), unit.order.foes, activeOrders.hash);
                 const order = this.makeOrderBasedOnIntelligence(unit, unit.order.foes);
                 if(order.action === 'attack') {
                     attackOrder(unit);
-                    console.log("AFTER",this.activeOrders);
                     return;
                 }
                 if(order.hash!==activeOrders.hash) {
                     unit.order = order;
                     delete this.activeOrders[unit.id];
-                    console.log("Reassignment", unit.getName(), order.hash);
                 } else {
-                    console.log("Roam");
                     this.attention.delete(unit.id);
                 }
             } else
             if(!unit.order) {
-                console.log("Assigning orders", unit.getName());
                 const order = this.makeOrderBasedOnIntelligence(unit);
                 if(order.action === 'attack') {
                     attackOrder(unit);
                     return;
                 }
-                console.log("ORDERS", !!order);
                 unit.order = order;
             }
             if(unit.order) {
@@ -363,7 +348,6 @@ export function aiPlayer(index, id, name, color, units, map) {
                 }
                 this.activeOrders[unit.id].lockedExecuteOrders();
                 if (unit.isAlive()) {
-                    // this.fogOfWar.add(unit);
                     this.position = unit.derivedPosition();
                 }
 
@@ -380,40 +364,19 @@ export function aiPlayer(index, id, name, color, units, map) {
 
     this.onEndTurn = ()=>{
         this.units.filter(u=>u.clazz==='city').forEach(city=>{
-            let sweep = this.intelligence.find(c => c.ids[city.id]);
-            console.log("OWN STATS",Object.keys(sweep.landmass).length, sweep.ownStats, sweep.ownStats['land'] / Object.keys(sweep.landmass).length);
-
             if(!city.producingType || city.production == 0) {
-                console.log(">>>>>>>",city.getName())
-                console.log(this.intelligence[0].ids[city.id]);
                 let sweep = this.intelligence.find(c => c.ids[city.id]);
-                console.log("OWN STATS",sweep.ownStats, sweep.ownStats['land'] / Object.keys(sweep.landmass).length);
-                console.log("FOE STATS",sweep.foeStats);
                 if(sweep.goals.transport>0 && sweep.ownStats.land > 2){
-                    console.log("transport");
                     city.produce('t');
                 } else if(sweep.goals.attack==0 && sweep.ownStats.land > 4) {
                     var transport = Math.random()>0.8;
-                    console.log("transport", transport);
                     city.produce(transport?'t':'T');
                 } else if((sweep.goals.attack>0 || sweep.goals.transport>0)  && sweep.ownStats.land > 4) {
                     var fighter = Math.random()>0.8;
-                    console.log("fighter", fighter);
                     city.produce(fighter?'f':city.producingType);
                 } else {
-                    console.log("default tank")
                     city.produce('T');
                 }
-                console.log("SELECT",city.producingType,"FOR PRODUCTION", city.getName())
-            }
-        });
-        console.log("===========")
-        this.units.forEach(u=>{
-            if(u.clazz==='city') {
-                console.log(u.getName(), u.producingType, u.production);
-            } else {
-                const postfix = "("+u.type+")";
-                console.log(u.getName(),postfix, u.derivedPosition(), u.order);
             }
         });
     }
@@ -435,7 +398,6 @@ export function aiPlayer(index, id, name, color, units, map) {
     }
 
     this.unitAttention=(unit)=>{
-        console.log(unit.getName(), "requires attention", unit.order.foes);
         this.attention.add(unit.id);
     }
 
@@ -457,10 +419,6 @@ export function aiPlayer(index, id, name, color, units, map) {
             if(u.inside) this.intelligenceSweep(u.inside);
             this.intelligenceSweep(u);
         });
-        this.intelligence.forEach(sweep=>{
-            console.log("OWN STATS",sweep.ownStats);
-            console.log("FOE STATS",sweep.foeStats);
-        })
     }
     this.init();
 
@@ -468,5 +426,4 @@ export function aiPlayer(index, id, name, color, units, map) {
     MessageBus.register("unit-order-attention", this.unitAttention, this);
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
     MessageBus.register("unit-created", this.registerUnit, this);
-    // MessageBus.register("city-defense-destroyed", this.enemyCityConquered, this);
 }

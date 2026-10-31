@@ -172,7 +172,6 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         setState({...state, path: path});
 
     }
-    // console.log(fogOfWar.prettyPrint());
 
     function cell(key, x, y, entry){
         const position = {y, x};

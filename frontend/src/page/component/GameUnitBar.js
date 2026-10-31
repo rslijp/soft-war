@@ -62,7 +62,6 @@ function GameUnitBar({gameState, openDialog}) {
                 <Button className="bottom-bar-space" title={"next unit"} variant={"outline-secondary"} size={"xs"}
                     onClick={() => {
                         MessageBus.send("next-unit", true);
-                        // gameState.currentPlayer().jumpToNextUnit(selectedUnit);
                     }}><FontAwesomeIcon icon={faChevronRight}/></Button>
 
             </ButtonGroup>
@@ -80,7 +79,6 @@ function GameUnitBar({gameState, openDialog}) {
                 <Button className="bottom-bar-space" title={"next unit"} variant={"outline-secondary"} size={"xs"}
                     onClick={() => {
                         MessageBus.send("next-unit", true);
-                        // gameState.currentPlayer().jumpToNextUnit(selectedUnit);
                     }}><FontAwesomeIcon icon={faChevronRight}/></Button>
             </ButtonGroup>
             <div className={"unit-view "+TYPE_MAP[unit.type]}/>

@@ -11,7 +11,6 @@ const makeMap = (world) => {
         "world" : world,
         "cities": []
     }
-    // console.log(data)
     return new gameMap(data);
 };
 
@@ -267,7 +266,6 @@ describe("Model.Navigation class", function(){
             }
             var end = new Date();
             var runTime = end.getTime()-start.getTime();
-            // if(window["console"]) window["console"].log(runTime+"msecs");
             expect(runTime).toBeLessThan(100);
         });
     });

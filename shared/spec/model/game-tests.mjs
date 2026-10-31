@@ -23,10 +23,8 @@ describe("game", function(){
 
            //Then
            expect(gameInstance.unitsMap.map).toEqual("data");
-           // expect(gameInstance.unitsMap.players).toEqual(players);
            expect(gameInstance.statistics.length).toEqual(1);
            expect(gameInstance.statistics[0].player).toEqual(players[0]);
-           // expect(statistics).toHaveBeenCalledWith(players[0]);
        });
        it("should set unitsMap on players", function(){
            //Given
@@ -263,7 +261,6 @@ describe("game", function(){
             gameInstance.battle(attacker, defender, at);
 
             //Then
-            // expect(Model.Battle).toHaveBeenCalledWith(attacker, defender, [], []);
             expect(battle.fight).toHaveBeenCalled();
         });
         it("should perform an battle and include the modfiers", function(){

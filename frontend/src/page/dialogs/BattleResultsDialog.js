@@ -62,8 +62,6 @@ function BattleResultsDialog({attacker, defender, result, player, onClose}) {
     };
 
     const renderRounds = (rounds)=>{
-        // console.log(rounds, result);
-        // return null;
         return <tr>
             <td id='battle-defender'>
                 {rounds.filter(r=>r==="defender").map((r,i)=><img key={r+i} src={"/content/units/45x45/explosionv2.png"}/>)}

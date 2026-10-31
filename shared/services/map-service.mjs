@@ -65,7 +65,6 @@ function growCycle(world, width, height){
                     const uy = normalizeY(y+dy);
                     const ux = normalizeX(x+dx);
                     const a = Math.random();
-                    // console.log("  ?", a,matrix[dy][dx],a<matrix[dy][dx])
                     if(a<matrix[dy][dx]) {
                         temp[uy][ux]="L";
                     }
@@ -140,7 +139,6 @@ function generateCities(number, world, width, height) {
                 if (world[uy][ux] === "S") t+=0.15;
                 else if (world[uy][ux] === "M") t-=0.05;
                 else if (seen[uy+","+ux]) t-=0.2;
-                // else t+=0.05;
             }
         }
         if (Math.random() < t) {
@@ -193,7 +191,6 @@ export function generateMap(type, width, height) {
         console.log("MAP GENERATION FAILED", type, "is unknown");
         return null;
     }
-    console.log("Generating map ",width, height)
     let world = seed(settings.seedFactor, width, height);
     world = grow(settings.growCycles, world, width, height);
     world = mountains(settings.mountainFactor, world, width, height);
@@ -234,12 +231,10 @@ export function generatePlayerList(user, additionalPlayers, world){
         id: user.email,
         name: user.name,
         type: "Human",
-        // units: [{x: city1.x, y: city1.y, type: 'T'}],
         cities: [randomStartCity()],
         status: 'accepted'
     }];
 
-    console.log(additionalPlayers);
     additionalPlayers.forEach((p,i)=> {
         const player = {
             id: p ? p : "ai_" + i,
@@ -257,4 +252,3 @@ export function generatePlayerList(user, additionalPlayers, world){
     });
     return players;
 }
-// export default {generateMap};

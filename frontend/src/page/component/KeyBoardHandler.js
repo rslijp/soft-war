@@ -28,7 +28,6 @@ function KeyBoardHandler({state}) {
     };
 
     const onKeyPress = (key) => {
-        // console.log("onKeyPress", key);
         if (key > 48 && key < 58) {
             return onNumericKeyPressed(key);
         }
@@ -91,8 +90,6 @@ function KeyBoardHandler({state}) {
         case 80: //P
             MessageBus.send("patrol-to-mode");
             break;
-        default:
-            console.log(key);
         }
 
     };

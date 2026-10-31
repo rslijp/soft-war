@@ -542,11 +542,6 @@ describe("orders class", function(){
         });
     });
     describe("goDirection method", function(){
-        //    this.goDirection=function(direction){
-        //        var current = unit.derivedPosition();
-        //        var to = unitsmap.map.goDirection(direction, current);
-        //        return (to.y==current.y && to.x==current.x)?null:step;
-        //    }
         it("should ask map for new coordinates", function(){
             //Given
             var unitsmap = {map: {move: function(){}}}
