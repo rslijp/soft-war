@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/main.css';
 import './css/maptiles.css';
+import './css/maptiles-v2.css';
 import './css/units.css';
 import './css/hud.css';
 import './css/responsive.css';

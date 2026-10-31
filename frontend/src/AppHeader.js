@@ -1,5 +1,6 @@
 import {Badge, Button, Container, Form, NavDropdown, Navbar} from "react-bootstrap";
 import React, {useEffect, useRef, useState} from "react";
+import {TILESETS, currentTileset, switchTileset} from "./Tileset";
 import {loadUser, logoutUser} from "./api/UserApi";
 import {MessageBus} from "softwar-shared";
 
@@ -11,6 +12,7 @@ function AppHeader() {
     const [user, setUser] = useState(null);
     const [timer, setTimer] = useState(0);
     const [renderIteration, setRenderIteration] = useState(0);
+    const [tileset, setTileset] = useState(currentTileset());
     const stateRef = useRef();
     stateRef.current = {renderIteration: renderIteration};
 
@@ -106,6 +108,9 @@ function AppHeader() {
                         <NavDropdown.Item href={'#/new-game'}>Start a new game</NavDropdown.Item>
                         <NavDropdown.Item href={'#/your-games'}>Continue a game {pendingActions()}</NavDropdown.Item>
                         <NavDropdown.Item href="/public/about">About this game</NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => setTileset(switchTileset())}>
+                            Use {TILESETS[tileset === "v2" ? "classic" : "v2"].toLowerCase()}
+                        </NavDropdown.Item>
                         <NavDropdown.Divider/>
                         <NavDropdown.Item onClick={logout}> <Button variant="danger">Logout</Button></NavDropdown.Item>
                     </NavDropdown>
