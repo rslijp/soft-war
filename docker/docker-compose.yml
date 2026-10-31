@@ -1,0 +1,6 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: softwar-mongo
+    ports:
+      - "27017:27017"
