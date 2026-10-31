@@ -2,7 +2,7 @@
 import {Button, ButtonGroup, ListGroup, Modal} from "react-bootstrap";
 import React, {useState} from "react";
 import {acceptGame, declineGame} from "../api/GameStateApi";
-import {useLoaderData, useRevalidator} from "react-router-dom";
+import {useLoaderData, useRevalidator} from "react-router";
 import {MessageBus} from "softwar-shared";
 import {func} from "prop-types";
 

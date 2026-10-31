@@ -4,7 +4,7 @@ import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import ScrollableViewPort from "../map/ScrollableViewPort";
 import VerticalMapLegend from "../map/VerticalMapLegend";
 import WorldMapView from "../map/WorldMapView";
-import { useLoaderData} from "react-router-dom";
+import { useLoaderData} from "react-router";
 
 let timer = null;
 

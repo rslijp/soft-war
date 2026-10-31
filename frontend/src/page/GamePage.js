@@ -18,7 +18,7 @@ import {TOP_BAR_HEIGHT} from "../Constants";
 import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
 import {saveGame} from "../api/GameStateApi";
-import {useLoaderData} from "react-router-dom";
+import {useLoaderData} from "react-router";
 
 let timer = null;
 
