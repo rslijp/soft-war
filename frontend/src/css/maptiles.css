@@ -14,6 +14,36 @@
     opacity: 0.8;
 }
 
+/* Rounded corners where the discovered area meets the undiscovered (black) part of the map.
+   Each corner is a black quarter-circle mask drawn over the tile. */
+.land-tile {
+    --fog-corner-radius: calc(var(--tile-size) / 2);
+    --fog-nw: none;
+    --fog-ne: none;
+    --fog-sw: none;
+    --fog-se: none;
+    position: relative;
+}
+.land-tile > * {
+    position: relative;
+    z-index: 1;
+}
+.land-tile.fog-corner-nw { --fog-nw: radial-gradient(circle at 100% 100%, transparent calc(var(--fog-corner-radius) - 1px), black var(--fog-corner-radius)); }
+.land-tile.fog-corner-ne { --fog-ne: radial-gradient(circle at 0 100%, transparent calc(var(--fog-corner-radius) - 1px), black var(--fog-corner-radius)); }
+.land-tile.fog-corner-sw { --fog-sw: radial-gradient(circle at 100% 0, transparent calc(var(--fog-corner-radius) - 1px), black var(--fog-corner-radius)); }
+.land-tile.fog-corner-se { --fog-se: radial-gradient(circle at 0 0, transparent calc(var(--fog-corner-radius) - 1px), black var(--fog-corner-radius)); }
+.land-tile.fog-corner-nw::after, .land-tile.fog-corner-ne::after,
+.land-tile.fog-corner-sw::after, .land-tile.fog-corner-se::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--fog-nw), var(--fog-ne), var(--fog-sw), var(--fog-se);
+    background-size: var(--fog-corner-radius) var(--fog-corner-radius);
+    background-position: left top, right top, left bottom, right bottom;
+    background-repeat: no-repeat;
+}
+
 
 .land-tile.land-tile-type-M {
     background-color: gray;
