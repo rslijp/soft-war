@@ -5,7 +5,6 @@ import {humanPlayer} from "../game/human-player.js";
 import {unit} from "../game/unit.mjs";
 import {PLAYER_COLORS} from "../game/trait/player-traits.mjs";
 import {fogOfWar} from "../game/fog-of-war.mjs";
-import {generateCode} from "./random-code-service.mjs";
 
 const saveGame = {
     loadNestedUnits: function(rawunit, carryingUnit) {

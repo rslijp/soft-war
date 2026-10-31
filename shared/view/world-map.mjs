@@ -1,5 +1,3 @@
-import {CITY_NAMES} from "../game/city.mjs";
-import {PLAYER_COLORS} from "../game/trait/player-traits.mjs";
 
 const BASIC_TILES_CLASSES = {
     "S": "sea",

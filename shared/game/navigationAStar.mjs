@@ -1,5 +1,4 @@
 import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
-import {unitsMap} from "./units-map.mjs";
 
 export function navigationAStar(map, unit, fogofwar, flatEarth, avoidUnits) {
     var origin = unit.derivedPosition();

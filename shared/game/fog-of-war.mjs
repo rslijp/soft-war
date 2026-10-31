@@ -64,17 +64,6 @@ export function fogOfWar (data, map) {
         }
         return !empty(data[position.y][position.x]);
     };
-    this.prettyPrint = () => {
-        for(var y=0;y<data.length; y++){
-            var row = "";
-            if(data[y]){
-                for(var x=0;x<(data[y]||[]).length; x++){
-                    row=row+(data[y][x]||0);
-                }
-                console.log(y+":", row);
-            }
-        }
-    }
     this.failSave = (unit) => {
         if(!unit) return;
         if(!this.visible(unit.derivedPosition())){

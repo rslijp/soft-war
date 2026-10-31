@@ -300,13 +300,6 @@ export function aiPlayer(index, id, name, color, units, map) {
         }
     }
 
-    this.unitOrderStep=()=>{
-        const unit = this.selectedUnit;
-        if(unit) {
-            this.updateIntelligence(unit);
-        }
-    };
-
     this.conquerTheWorld=()=>{
         console.log("Thinking...");
 
@@ -473,7 +466,6 @@ export function aiPlayer(index, id, name, color, units, map) {
 
     MessageBus.register("next-unit", this.autoNext, this);
     MessageBus.register("unit-order-attention", this.unitAttention, this);
-    // MessageBus.register("unit-order-step", this.unitOrderStep, this)
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
     MessageBus.register("unit-created", this.registerUnit, this);
     // MessageBus.register("city-defense-destroyed", this.enemyCityConquered, this);

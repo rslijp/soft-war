@@ -92,15 +92,6 @@ export default {
         }
         this.send.apply(this, arguments);
     },
-    sendDebounced: function (name, argument){
-        var name = arguments[0];
-        if (this.verbose) {
-            console.log("Send debounced " + name);
-        }
-        setTimeout(()=>{
-            this.send.apply(this, arguments);
-        },0)
-    },
     send: function() {
         var name = arguments[0];
         var callArguments = Array.from(arguments).slice(1);
