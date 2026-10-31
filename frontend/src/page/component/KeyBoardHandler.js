@@ -82,6 +82,13 @@ function KeyBoardHandler({state}) {
                 MessageBus.sendLockable("special-action", unit, unit.specialAction().method);
             }
             break;
+        case 102: //f
+        case 70: //F
+            var fortifyUnit = state.currentPlayer().selectedUnit;
+            if (fortifyUnit && fortifyUnit.canFortify && fortifyUnit.canFortify()) {
+                MessageBus.sendLockable("special-action", fortifyUnit, "fortify");
+            }
+            break;
         case 109: //m
         case 77: //M
             MessageBus.send("move-to-mode");
