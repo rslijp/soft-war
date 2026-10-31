@@ -22,5 +22,10 @@
     },
     "plugins": [
         "html"
-    ]
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
 }
