@@ -1,18 +1,10 @@
 import {Button, ListGroup, Modal} from "react-bootstrap";
-import {React, useEffect, useRef} from "react";
 import {any, func} from "prop-types";
+import {React} from "react";
+import {useDialogFocus} from "./useDialogFocus";
 
 function FlashMessageDialog({messages, onClose}) {
-    const dialogView = useRef();
-
-    const focusView = () => {
-        if(dialogView.current) dialogView.current.blur();
-        setTimeout(()=>dialogView.current.focus(),0);
-    };
-
-    useEffect(() => {
-        setTimeout(()=>focusView(), 0);
-    }, []);
+    const dialogView = useDialogFocus();
 
     return <Modal  show={true} onHide={onClose}>
         <Modal.Header closeButton>

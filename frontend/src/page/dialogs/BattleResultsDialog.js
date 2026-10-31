@@ -1,9 +1,10 @@
 import {Alert, Button, Modal} from "react-bootstrap";
 import {MessageBus, PLAYER_COLORS} from "softwar-shared";
-import {React, useEffect, useRef} from "react";
 import {any, func} from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {React} from "react";
 import {faCrosshairs} from "@fortawesome/free-solid-svg-icons";
+import {useDialogFocus} from "./useDialogFocus";
 
 const TYPE_TILE_MAP = {
     'C' : 'city',
@@ -24,16 +25,7 @@ const TYPE_TILE_MAP = {
 
 
 function BattleResultsDialog({attacker, defender, result, player, onClose}) {
-    const dialogView = useRef();
-    const focusView = () => {
-        if(dialogView.current) dialogView.current.blur();
-        setTimeout(()=>dialogView.current.focus(),0);
-    };
-
-    useEffect(() => {
-        setTimeout(()=>focusView(), 0);
-    }, []);
-
+    const dialogView = useDialogFocus();
     const position = attacker.derivedPosition();
 
     const renderUnit = (unit) => {
