@@ -141,9 +141,10 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
             if(unit.order && unit.order.queue){
                 const order = unit.order;
                 const key = (pos) => `${pos.y}_${pos.x}`;
-                hudMap[key(order.from)]={className: clazz};
-                hudMap[key(order.to)]={className: clazz};
-                order.queue.forEach(p=>hudMap[key(p)]={className: clazz});
+                // An order with an empty route has no from/to
+                [order.from, order.to, ...order.queue]
+                    .filter(Boolean)
+                    .forEach(p=>hudMap[key(p)]={className: clazz});
             }
         };
         map.intelligence.forEach(cluster=>{
