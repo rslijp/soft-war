@@ -79,7 +79,7 @@ img#logo {
 
 div#menu {
     z-index: 2;
-    display: block;
+    display: flex;
     width: 100%;
     height: var(--menu-height);
     position: fixed;
@@ -98,6 +98,7 @@ div#menu span.brand-name, div#menu a.brand-name {
     line-height: var(--menu-height);
     margin: 0 calc(var(--menu-height) / 6);
     margin-left: var(--menu-height);
+    flex: none;
 }
 
 div#menu span.brand-name, div#menu a.brand-name img {
@@ -107,11 +108,16 @@ div#menu span.brand-name, div#menu a.brand-name img {
 }
 
 div#menu .menu-items {
-    position: inherit;
-    display: inline-block;
+    /* Scroll sideways when the steps don't fit next to the logo and decoration */
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: thin;
     margin: 0;
     padding: 0;
-    height: var(--menu-height);;
+    height: var(--menu-height);
 }
 div#menu .menu-items a {
     /*display: inline-block;*/
@@ -134,10 +140,10 @@ div#menu .menu-item {
     margin: 0;
 }
 div#menu img.end {
-    /*width: var(--menu-height);*/
     height: var(--menu-height);
     background-color: white;
-    float: right;
+    margin-left: auto;
+    flex: none;
 }
 
 div#content {
