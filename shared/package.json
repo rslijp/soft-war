@@ -7,12 +7,14 @@
   "type": "module",
   "scripts": {
     "test": "npx jasmine --config=spec/config/jasmine.json",
-    "eslint": "eslint --ext .js,.mjs ."
+    "eslint": "eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.57.1",
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^17.13.0",
     "jasmine": "^5.1.0"
   },
   "engines": {
