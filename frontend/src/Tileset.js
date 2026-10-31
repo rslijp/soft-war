@@ -1,14 +1,15 @@
-// Which set of map tiles to show: the original tiles or the generated sprite map
-// (css/maptiles-v2.css, made by tools/generate-tileset.py). Remembered per browser.
+// Which set of map tiles to show: the generated sprite map (css/maptiles-v2.css, made by
+// tools/generate-tileset.py, the default) or the original tiles. Remembered per browser.
 const STORAGE_KEY = "softwar-tileset";
+const DEFAULT_TILESET = "v2";
 export const TILESETS = {classic: "Classic tiles", v2: "New tiles"};
 
 export function currentTileset() {
     try {
         const stored = window.localStorage.getItem(STORAGE_KEY);
-        return TILESETS[stored] ? stored : "classic";
+        return TILESETS[stored] ? stored : DEFAULT_TILESET;
     } catch {
-        return "classic";
+        return DEFAULT_TILESET;
     }
 }
 
