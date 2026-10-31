@@ -1,8 +1,5 @@
 import React, {useEffect} from "react";
-import {
-    RouterProvider,
-    createHashRouter,
-} from "react-router-dom";
+import {RouterProvider, createHashRouter} from "react-router";
 import {loadGameState, loadYourGames} from "./api/GameStateApi";
 import AppHeader from "./AppHeader";
 import ContinueGamePage from "./page/ContinueGamePage";
