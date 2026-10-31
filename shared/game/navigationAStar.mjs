@@ -181,4 +181,4 @@ export function navigationAStar(map, unit, fogofwar, flatEarth, avoidUnits) {
 
         return calculate();
     };
-};
+}

@@ -139,4 +139,4 @@ export function city(position, name, producing, production) {
     this.getShortName = () => {
         return this.getName().substr(0,3).toUpperCase();
     }
-};
+}

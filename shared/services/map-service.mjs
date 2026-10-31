@@ -1,4 +1,3 @@
-import {unitTypes} from "../game/unit-types.mjs";
 import {wrapAround, wrapUpper} from "./wrap-coordinates.mjs";
 
 const MAX_SIZE=128;
@@ -49,7 +48,7 @@ function growCycle(world, width, height){
     for(var y=0; y<height; y++){
         temp[y]= [].concat(world[y]);
     }
-    for(var y=0; y<height; y++){
+    for(y=0; y<height; y++){
         for(var x=0; x<width; x++){
             if(world[y][x]==="S") continue;
             for(var dy=0; dy<MATRIX_SIZE; dy++){

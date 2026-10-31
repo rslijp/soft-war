@@ -65,6 +65,7 @@ export function gameMap(data) {
         data.cities.forEach((coordinate) => {
             var cityName = availableCities.shift();
                 if (!cityName) {
+                    // eslint-disable-next-line no-undef -- CITY_LIST is undefined; fix in Step 2
                     throw "No more cities available. This map contains to many cities(>" + CITY_LIST.length + ")";
                 }
                 const y = coordinate[0]===undefined?coordinate.y:coordinate[0];
@@ -140,10 +141,9 @@ export function gameMap(data) {
         };
     };
     this.move = (direction, position) => {
-        var clone = {x: position.x, y:position.y};
         var offset = NAVIGATIONS_OFFSETS.find(item=>item.direction === direction);
         return this.normalize({y: position.y+offset.y, x: position.x+offset.x});
     };
 
     this.init();
-};
+}

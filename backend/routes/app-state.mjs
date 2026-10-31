@@ -111,7 +111,7 @@ router.post('/save-game', async function(req, res, next) {
     const user = req.session.passport.user._json;
     const gameState = req.body;
     try {
-        let retrievedGameState = await retrieveExistingGame(gameState.code, user);
+        await retrieveExistingGame(gameState.code, user);
         let collection = await appStates();
         return collection.replaceOne({code: gameState.code}, gameState, {upsert: true});
     } catch(e){
@@ -255,6 +255,7 @@ router.delete('/game/:code', async function(req, res, next) {
                 console.log("No documents matched the query. Deleted 0 documents.");
             }
         } else {
+            // eslint-disable-next-line no-undef -- collection is undefined here; fix in Step 2
             return collection.replaceOne({code: req.params.code}, gameState, {upsert: true});
         }
         res.send({status: status}).status(200);

@@ -124,4 +124,4 @@ export function orders (unit, unitsmap, player) {
         var to = unitsmap.map.move(direction, current);
         return (to.y === current.y && to.x === current.x) ? null : to;
     };
-};
+}

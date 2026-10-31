@@ -169,7 +169,7 @@ export const playerTraits = {
        for(var i=currentIndex; i<this.units.length; i++){
             if(this.units[i].canMove()) return this.units[i];
        }
-       for(var i=0; i<currentIndex; i++){
+       for(i=0; i<currentIndex; i++){
             if(this.units[i].canMove()) return this.units[i];
        }
        return this.units[currentIndex+1] || this.units[0];

@@ -122,7 +122,7 @@ describe("humanPlayer class", function(){
             spyOn(player.fogOfWar, "remove");
             spyOn(player.fogOfWar, "add");
             //When
-            var result = player.cursorUpdate({y: 4, x: 4});
+            player.cursorUpdate({y: 4, x: 4});
 
             //Then
             expect(player.fogOfWar.remove).toHaveBeenCalled();
@@ -140,7 +140,7 @@ describe("humanPlayer class", function(){
 
             spyOn(player,"jumpToNextUnit");
             //When
-            var result = player.cursorUpdate({y: 4, x: 4});
+            player.cursorUpdate({y: 4, x: 4});
 
             //Then
             expect(player.jumpToNextUnit).toHaveBeenCalledWith(tank);
@@ -156,7 +156,7 @@ describe("humanPlayer class", function(){
 
             spyOn(player,"jumpToNextUnit");
             //When
-            var result = player.cursorUpdate({y: 4, x: 4});
+            player.cursorUpdate({y: 4, x: 4});
 
             //Then
             expect(player.jumpToNextUnit).not.toHaveBeenCalledWith();
@@ -648,10 +648,6 @@ describe("humanPlayer class", function(){
         it("should apply special action on unit", function(){
             //Given
             var infantry = new unit("I", {x: 3, y:3});
-            var units = [
-                infantry,
-                new unit("T", {x: 13, y:12}),
-                new unit("F", {x: 7, y:7})];
             var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.selectedUnit=infantry;
             spyOn(infantry, "fortify");
@@ -665,10 +661,6 @@ describe("humanPlayer class", function(){
          it("should apply update fogOfWar to cope with sight changes", function(){
             //Given
              var infantry = new unit("I", {x: 3, y:3}).initTurn();
-                         var units = [
-                             infantry,
-                             new unit("T", {x: 13, y:12}),
-                             new unit("F", {x: 7, y:7})];
             var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.selectedUnit=infantry;
             spyOn(player.fogOfWar, "remove");
@@ -691,7 +683,7 @@ describe("humanPlayer class", function(){
             spyOn(MessageBus, "send")
 
             //When
-            var result = player.specialAction("fortify");
+            player.specialAction("fortify");
 
             //Then
             expect(tank.fortified).toBeFalsy();
@@ -700,10 +692,6 @@ describe("humanPlayer class", function(){
         it("should proceed with next unit", function(){
             //Given
              var infantry = new unit("I", {x: 3, y:3}).initTurn();
-                         var units = [
-                             infantry,
-                             new unit("T", {x: 13, y:12}),
-                             new unit("F", {x: 7, y:7})];
             var player = new humanPlayer(0, "0", "Name", "Color", [], map);
             player.selectedUnit=infantry;
             spyOn(player, "jumpToNextUnit");
@@ -723,7 +711,7 @@ describe("humanPlayer class", function(){
             var units = [a,b];
 
             //When
-            var player = new humanPlayer(42, "42","Name", "Color",units, map);
+            new humanPlayer(42, "42","Name", "Color",units, map);
 
             //Then
             expect(a.player).toEqual(42);

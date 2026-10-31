@@ -293,4 +293,4 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     MessageBus.register("select-unit", this.selectUnit, this);
     MessageBus.register("give-order", this.giveOrder, this);
     MessageBus.register("clear-order", this.clearOrder, this);
-};
+}

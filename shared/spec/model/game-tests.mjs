@@ -4,7 +4,6 @@ import {humanPlayer} from "../../game/human-player.mjs";
 import {game} from "../../game/game.mjs";
 import MessageBus from "../../services/message-service.mjs";
 import {city} from "../../game/city.mjs";
-import {battle} from "../../game/battle.mjs";
 
 describe("game", function(){
     var map = testAllLandGameMap();
@@ -64,7 +63,7 @@ describe("game", function(){
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
             var player = new humanPlayer(0, "0","Name", "Color", []);
-            var other = new humanPlayer(1, "1","Name", "Color", units, map);
+            new humanPlayer(1, "1","Name", "Color", units, map);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
 
             //When
@@ -556,7 +555,7 @@ describe("game", function(){
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
             var player = new humanPlayer(0, "0","Name", "Color", []);
-            var other = new humanPlayer(1, "1","Name", "Color", units, map);
+            new humanPlayer(1, "1","Name", "Color", units, map);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
             player.selectedUnit=infantry;
             spyOn(player, "specialAction");

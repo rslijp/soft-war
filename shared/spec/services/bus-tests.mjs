@@ -21,8 +21,8 @@ describe("bus class", function(){
             expect(MessageBus.registrations['a']).toBeUndefined();
 
             //When
-            const handle1 = MessageBus.register('a', '1', "contextA").split(':')[1];;
-            const handle2 = MessageBus.register('a', '2', "contextB").split(':')[1];;
+            const handle1 = MessageBus.register('a', '1', "contextA").split(':')[1];
+            const handle2 = MessageBus.register('a', '2', "contextB").split(':')[1];
 
             //Then
             expect(MessageBus.registrations['a']).toEqual([{callback: '1', context: "contextA", handle: handle1, retain: false},{callback: '2', context: "contextB", handle: handle2, retain: false}]);

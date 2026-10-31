@@ -70,4 +70,4 @@ export function fogOfWar (data, map) {
             this.add(unit);
         }
     }
-};
+}

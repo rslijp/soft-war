@@ -174,4 +174,4 @@ export function unit(type, position) {
     if (this.definition().mixin) {
         applyTraitsOn("unit-type", this.definition().mixin, this, ["remark"]);
     }
-};
+}

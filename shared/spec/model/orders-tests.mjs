@@ -311,7 +311,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executeMove(infantry.order);
+            ordersInstance.executeMove(infantry.order);
 
             //Then
             expect(infantry.order.queue).toEqual([{y: 3, x: 3}]);
@@ -323,7 +323,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executeMove(infantry.order);
+            ordersInstance.executeMove(infantry.order);
 
             //Then
             expect(infantry.order).toBeNull();
@@ -350,7 +350,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executePatrol(infantry.order);
+            ordersInstance.executePatrol(infantry.order);
 
             //Then
             expect(infantry.order.index).toEqual(1);
@@ -362,7 +362,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executePatrol(infantry.order);
+            ordersInstance.executePatrol(infantry.order);
 
             //Then
             expect(infantry.order.index).toEqual(2);
@@ -386,7 +386,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executePatrol(infantry.order);
+            ordersInstance.executePatrol(infantry.order);
 
             //Then
             expect(infantry.order.index).toEqual(1);
@@ -465,7 +465,7 @@ describe("orders class", function(){
             spyOn(ordersInstance, "goDirection").and.returnValue("updated position");
             
             //When
-            var result = ordersInstance.executeRoam(infantry.order);
+            ordersInstance.executeRoam(infantry.order);
 
             //Then
             expect(ordersInstance.goDirection).toHaveBeenCalledWith("S")
@@ -479,7 +479,7 @@ describe("orders class", function(){
             spyOn(ordersInstance, "goDirection").and.returnValue("updated position");
 
             //When
-            var result = ordersInstance.executeRoam(infantry.order);
+            ordersInstance.executeRoam(infantry.order);
 
             //Then
             expect(ordersInstance.goDirection).toHaveBeenCalledWith("SE")
@@ -507,7 +507,7 @@ describe("orders class", function(){
             spyOn(ordersInstance, "goDirection").and.returnValue("updated position");
 
             //When
-            var result = ordersInstance.executeRoam(infantry.order);
+            ordersInstance.executeRoam(infantry.order);
 
             //Then
             expect(infantry.order.direction).toEqual("S")
@@ -522,7 +522,7 @@ describe("orders class", function(){
             spyOn(ordersInstance, "goDirection").and.returnValue("updated position");
 
             //When
-            var result = ordersInstance.executeDirection(infantry.order);
+            ordersInstance.executeDirection(infantry.order);
 
             //Then
             expect(ordersInstance.goDirection).toHaveBeenCalledWith("direction")

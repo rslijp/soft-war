@@ -663,7 +663,7 @@ describe("unit class", function(){
              spyOn(MessageBus, "send");
 
             //When
-            var result = friend.attack(foe);
+            friend.attack(foe);
 
             //Then
             expect(MessageBus.send).toHaveBeenCalledWith("battle", friend, foe, {x:4, y:4},true);
@@ -677,7 +677,7 @@ describe("unit class", function(){
              spyOn(MessageBus, "send");
 
             //When
-            var result = friend.attack(foe);
+            friend.attack(foe);
 
             //Then
             expect(MessageBus.send).toHaveBeenCalledWith("battle", friend, foe, {x:4, y:4},true);
@@ -692,7 +692,7 @@ describe("unit class", function(){
              spyOn(MessageBus, "send");
 
             //When
-            var result = friend.attack(foe);
+            friend.attack(foe);
 
             //Then
             expect(friend.movesLeft).toEqual(0);
@@ -708,7 +708,7 @@ describe("unit class", function(){
 
             //When
             try {
-                var result = friend.attack(foe);
+                friend.attack(foe);
                 expect(true).toBeFalsy();
             } catch (e){
                 expect(e).toEqual("Unit can't attack in this turn")

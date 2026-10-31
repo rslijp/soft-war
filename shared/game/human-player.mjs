@@ -135,4 +135,4 @@ export function humanPlayer(index, id, name, color, units, map) {
     MessageBus.register("unit-created", this.flashUnitCreated, this);
     MessageBus.register("unit-created", this.registerUnit, this);
     MessageBus.register("unit-out-of-fuel", this.destroyed, this);
-};
+}

@@ -51,4 +51,4 @@ export function unitCarrousel(units) {
         queue = queue.filter(unit=>unit.order !== null);
     };
     skip();
-};
+}

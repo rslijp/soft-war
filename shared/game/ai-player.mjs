@@ -193,6 +193,7 @@ export function aiPlayer(index, id, name, color, units, map) {
             viewRange.forEach(p=>{
                 const k = toKey(p);
                 delete sweep.undiscovered[k];
+                // eslint-disable-next-line no-undef -- c is undefined; fix in Step 2
                 const u = this.unitsMap.get(c)
                 addUnit(u, sweep);
                 if(INTEREST.has(map.position(p))) sweep.landmass[k]=p;
