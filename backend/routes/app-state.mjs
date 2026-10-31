@@ -13,6 +13,19 @@ async function finishedGameStates(){
     return connection.collection("finished-app-states");
 }
 
+function isValidCode(code){
+    return !!code && code.length <= 16;
+}
+
+async function findGame(code){
+    let collection = await appStates();
+    return collection.findOne({code});
+}
+
+function findPlayer(gameState, user){
+    return gameState.players.find(p => p.id === user.email);
+}
+
 async function saveNewGame(state){
   let collection = await appStates();
   return collection.insertOne(state);
@@ -46,14 +59,13 @@ router.get('/your-games', async function(req, res, next) {
 
 router.get('/game/:code', async function(req, res, next) {
   const user = req.session.passport.user._json;
-  if(!req.params.code || req.params.code.length>16) {
+  if(!isValidCode(req.params.code)) {
     console.log("Code to long", req.params.code);
     res.status("412");
     return;
   }
-  let collection = await appStates();//connection.collection("app-state");
-  let result = await collection.findOne({code: req.params.code});
-  if(!result.players.some(p=>p.id===user.email)){
+  let result = await findGame(req.params.code);
+  if(!findPlayer(result, user)){
       console.log("Not your game");
       res.status("403");
       return;
@@ -83,13 +95,12 @@ async function  retrieveExistingGame(code, user){
     if (code.length > 16) {
         throw {httpCode :412, message: "Code to long "+code};
     }
-    let collection = await appStates();//connection.collection("app-state");
-    let retrievedGameState = await collection.findOne({code});
+    let retrievedGameState = await findGame(code);
     if (!retrievedGameState) {
         throw {httpCode :404, message: "No such game "+code};
     }
 
-    const player = retrievedGameState.players.find(p => p.id === user.email);
+    const player = findPlayer(retrievedGameState, user);
     if (!player) {
         throw {httpCode :403, message: "You don't participate in game "+code};
     }
@@ -157,14 +168,13 @@ router.post('/new-game', async function(req, res, next) {
 
 async function retrieve(req, res, onLoad){
     const user = req.session.passport.user._json;
-    if (!req.params.code || req.params.code.length > 16) {
+    if (!isValidCode(req.params.code)) {
         console.log("Code to long", req.params.code);
         res.status("412");
         return;
     }
-    let collection = await appStates();//connection.collection("app-state");
-    let gameState = await collection.findOne({code: req.params.code});
-    const player = gameState.players.find(p => p.id === user.email);
+    let gameState = await findGame(req.params.code);
+    const player = findPlayer(gameState, user);
     if (!player) {
         console.log("Not your game");
         res.status("403");
