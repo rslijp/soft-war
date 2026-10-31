@@ -14,5 +14,8 @@
   "devDependencies": {
     "eslint": "^8.57.1",
     "jasmine": "^5.1.0"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }
