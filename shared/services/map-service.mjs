@@ -1,4 +1,5 @@
 import {unitTypes} from "../game/unit-types.mjs";
+import {wrapAround, wrapUpper} from "./wrap-coordinates.mjs";
 
 const MAX_SIZE=128;
 
@@ -43,15 +44,6 @@ function growCycle(world, width, height){
         [0.8,1.0,0,8],
         [0.6,0.8,0,6]
     ]
-    function normalizeX(ux) {
-        if (ux >= width) ux -= width;
-        return ux;
-    }
-
-    function normalizeY(uy) {
-        if (uy >= height) uy -= height;
-        return uy;
-    }
 
     const temp = Array(height);
     for(var y=0; y<height; y++){
@@ -62,8 +54,8 @@ function growCycle(world, width, height){
             if(world[y][x]==="S") continue;
             for(var dy=0; dy<MATRIX_SIZE; dy++){
                 for(var dx=0; dx<MATRIX_SIZE; dx++){
-                    const uy = normalizeY(y+dy);
-                    const ux = normalizeX(x+dx);
+                    const uy = wrapUpper(y+dy, height);
+                    const ux = wrapUpper(x+dx, width);
                     const a = Math.random();
                     if(a<matrix[dy][dx]) {
                         temp[uy][ux]="L";
@@ -76,17 +68,6 @@ function growCycle(world, width, height){
 }
 
 function mountains(f, world, width, height) {
-    function normalizeX(ux) {
-        if (ux >= width) ux -= width;
-        if (ux < 0) ux += width;
-        return ux;
-    }
-
-    function normalizeY(uy) {
-        if (uy >= height) uy -= height;
-        if (uy < 0) uy += height;
-        return uy;
-    }
 
     for(var y=0; y<height; y++){
         for(var x=0; x<width; x++){
@@ -94,8 +75,8 @@ function mountains(f, world, width, height) {
             let mountain = true
             for(var dy=-1; dy<=1; dy++){
                 for(var dx=-1; dx<=1; dx++){
-                    const uy = normalizeY(y+dy);
-                    const ux = normalizeX(x+dx);
+                    const uy = wrapAround(y+dy, height);
+                    const ux = wrapAround(x+dx, width);
                     if(world[uy][ux]==="S") mountain=false
                     if(world[uy][ux]==="M") t=t*1.2;
                     if(!mountain) break;
@@ -112,17 +93,6 @@ function mountains(f, world, width, height) {
 function generateCities(number, world, width, height) {
     const cities = [];
     const seen = {}
-    function normalizeX(ux) {
-        if (ux >= width) ux -= width;
-        if (ux < 0) ux += width;
-        return ux;
-    }
-
-    function normalizeY(uy) {
-        if (uy >= height) uy -= height;
-        if (uy < 0) uy += height;
-        return uy;
-    }
 
     let left = number;
     while(left>0) {
@@ -134,8 +104,8 @@ function generateCities(number, world, width, height) {
         let t = 0.1;
         for (var dy = -1; dy <= 1; dy++) {
             for (var dx = -1; dx <= 1; dx++) {
-                const uy = normalizeY(y + dy);
-                const ux = normalizeX(x + dx);
+                const uy = wrapAround(y + dy, height);
+                const ux = wrapAround(x + dx, width);
                 if (world[uy][ux] === "S") t+=0.15;
                 else if (world[uy][ux] === "M") t-=0.05;
                 else if (seen[uy+","+ux]) t-=0.2;

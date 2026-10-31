@@ -1,3 +1,5 @@
+import {wrapUpper} from "../services/wrap-coordinates.mjs";
+
 
 const BASIC_TILES_CLASSES = {
     "S": "sea",
@@ -594,15 +596,6 @@ const LAND_SCAPE_TRANSITION_PHASE2 = [
 
 
 function sweepForTransitions(transitions, world, dimensions) {
-    function normalizeX(ux) {
-        if (ux >= dimensions.width) ux -= dimensions.width;
-        return ux;
-    }
-
-    function normalizeY(uy) {
-        if (uy >= dimensions.height) uy -= dimensions.height;
-        return uy;
-    }
 
     function match(x, y, t) {
         const pattern = t.pattern;
@@ -610,7 +603,7 @@ function sweepForTransitions(transitions, world, dimensions) {
             const row = pattern[py];
             for (var px = 0; px < row.length; px++) {
                 const expected = pattern[py][px];
-                const cell = world[normalizeY(y + py)][normalizeX(x + px)];
+                const cell = world[wrapUpper(y + py, dimensions.height)][wrapUpper(x + px, dimensions.width)];
                 if (expected === '?') continue;
                 if (expected === 'X' && (cell.type === 'L' || cell.type === 'M')) continue;
                 if (expected !== cell.type) return false;
@@ -621,7 +614,7 @@ function sweepForTransitions(transitions, world, dimensions) {
 
     function apply(x, y, t) {
         const shouldApply = t.update.every(u => {
-            const cell = world[normalizeY(y + u.y)][normalizeX(x + u.x)];
+            const cell = world[wrapUpper(y + u.y, dimensions.height)][wrapUpper(x + u.x, dimensions.width)];
             if (!t.change && cell.optimized) return false;
             if (t.change && cell.variation) return false;
             return true;
@@ -629,7 +622,7 @@ function sweepForTransitions(transitions, world, dimensions) {
         if (!shouldApply) return;
         if (t.change && Math.random() > t.change) return;
         t.update.forEach(u => {
-            const cell = world[normalizeY(y + u.y)][normalizeX(x + u.x)];
+            const cell = world[wrapUpper(y + u.y, dimensions.height)][wrapUpper(x + u.x, dimensions.width)];
             cell.detail = u.detail;
             cell.optimized = true;
             if (t.change) cell.variation = true;
