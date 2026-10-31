@@ -1,8 +1,8 @@
 import {testAllLandGameMap} from "../helpers/test-utils.mjs";
 import {unit} from "../../game/unit.mjs";
-import {humanPlayer} from "../../game/human-player.js";
+import {humanPlayer} from "../../game/human-player.mjs";
 import {game} from "../../game/game.mjs";
-import {MessageBus} from "../../index.js";
+import MessageBus from "../../services/message-service.mjs";
 import {city} from "../../game/city.mjs";
 import {battle} from "../../game/battle.mjs";
 

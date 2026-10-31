@@ -1,7 +1,7 @@
 import {unit} from "../../game/unit.mjs";
 import {orders} from "../../game/orders.mjs";
-import {MessageBus} from "../../index.js";
-import {humanPlayer} from "../../game/human-player.js";
+import MessageBus from "../../services/message-service.mjs";
+import {humanPlayer} from "../../game/human-player.mjs";
 
 describe("orders class", function(){
     var unitsmap={move: function(){return true;}, normalize: (pos)=>pos};

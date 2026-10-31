@@ -1,4 +1,4 @@
-import {gameMap} from "../../game/game-map.js";
+import {gameMap} from "../../game/game-map.mjs";
 import {unit} from "../../game/unit.mjs";
 import {navigationAStar} from "../../game/navigationAStar.mjs";
 

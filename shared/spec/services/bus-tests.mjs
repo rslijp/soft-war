@@ -1,4 +1,4 @@
-import {MessageBus} from "../../index.js";
+import MessageBus from "../../services/message-service.mjs";
 
 describe("bus class", function(){
     beforeEach(function(){

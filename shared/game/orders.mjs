@@ -1,5 +1,5 @@
 import MessageBus from "../services/message-service.mjs";
-import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
+import {NAVIGATIONS_OFFSETS} from "./navigation.mjs";
 
 const intersect = (lhs, rhs) => {
     const r = new Set(rhs);

@@ -1,4 +1,4 @@
-import {gameMap} from "../../game/game-map.js";
+import {gameMap} from "../../game/game-map.mjs";
 import {CITY_NAMES} from "../../game/city.mjs";
 
 describe("map class", function(){

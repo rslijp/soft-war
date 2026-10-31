@@ -3,7 +3,7 @@ import {fogOfWar} from "./fog-of-war.mjs";
 import {applyPlayerTraitsOn} from "./trait/player-traits.mjs";
 import {navigationAStar} from "./navigationAStar.mjs";
 import {orders} from "./orders.mjs";
-import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
+import {NAVIGATIONS_OFFSETS} from "./navigation.mjs";
 
 const INTEREST = new Set(['land', 'mountain']);
 const AI_PARAMETERS = [

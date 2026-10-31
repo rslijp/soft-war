@@ -1,6 +1,6 @@
 import {applyTraitsOn} from "./traits-util.mjs";
 import {unitCarrousel} from "../unit-carrousel.mjs";
-import {MessageBus} from "../../index.js";
+import MessageBus from "../../services/message-service.mjs";
 
 export const PLAYER_COLORS = ['orange', 'cyan', 'magenta', 'darkgrey'];
 

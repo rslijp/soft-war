@@ -1,5 +1,5 @@
 import {unit} from "../../game/unit.mjs";
-import {default as MessageBus} from "../../services/message-service.mjs";
+import MessageBus from "../../services/message-service.mjs";
 import {unitTypes} from "../../game/unit-types.mjs";
 
 describe("unit class", function(){

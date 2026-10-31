@@ -1,4 +1,4 @@
-import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
+import {NAVIGATIONS_OFFSETS} from "./navigation.mjs";
 import {city, CITY_NAMES} from "./city.mjs";
 
 export function gameMap(data) {
