@@ -34,7 +34,7 @@ passport.use(new GoogleStrategy({
 
 async function saveProfile(user){
     let collection = await users();
-    return collection.replaceOne({email: user.email}, user, {upsert: true, hint: "user_email"});
+    return collection.replaceOne({email: user.email}, user, {upsert: true});
 }
 
 router.get('/google',
