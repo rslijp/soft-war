@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -22,11 +22,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Jasmine test - shared
+    - name: Jasmine test and eslint - shared
       run: |
         cd shared
         npm install
         npm run test
+        npm run eslint
 
     - name: Eslint - front end
       run: |
@@ -34,3 +35,9 @@ jobs:
         npm install
         npm run eslint
         npm run build
+
+    - name: Eslint - backend
+      run: |
+        cd backend
+        npm install
+        npm run eslint

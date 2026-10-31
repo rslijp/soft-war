@@ -8,7 +8,7 @@ import GameView from "./component/GameView";
 import HorizontalMapLegend from "../map/HorizontalMapLegend";
 import HorizontalScrollBar from "../map/HorizontalScrollBar";
 import KeyBoardHandler from "./component/KeyBoardHandler";
-import MessageBus from "softwar-shared/services/message-service.mjs";
+import {MessageBus} from "softwar-shared";
 import OrderAttentionDialog from "./dialogs/OrderAttentionDialog";
 import OrderConfirmationDialog from "./dialogs/OrderConfirmationDialog";
 import OutOfFuelDialog from "./dialogs/OutOfFuelDialog";
@@ -42,7 +42,6 @@ function GamePage() {
     };
 
     const autoSaveGame = () => {
-        console.log("Auto save");
         saveGame(gameState);
     };
 
@@ -168,7 +167,6 @@ function GamePage() {
         return builder?builder(dialog):null;
     };
 
-    // MessageBus.sendDebounced("update-game-state", gameState, this);
 
     return <>
         {dialog ? renderDialog(dialog) : null}

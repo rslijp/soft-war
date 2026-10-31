@@ -15,7 +15,6 @@ export default {
                     if (this.verbose) {
                         console.log("retaining", name, r.handle);
                     }
-                console.log("retaining", name, r.retain);
                     if (!retained[name]) {
                         retained[name] = [];
                     }
@@ -91,15 +90,6 @@ export default {
             return;
         }
         this.send.apply(this, arguments);
-    },
-    sendDebounced: function (name, argument){
-        var name = arguments[0];
-        if (this.verbose) {
-            console.log("Send debounced " + name);
-        }
-        setTimeout(()=>{
-            this.send.apply(this, arguments);
-        },0)
     },
     send: function() {
         var name = arguments[0];

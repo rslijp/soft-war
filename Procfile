@@ -1,1 +1,1 @@
-web: ls && node --experimental-modules ./bin/www.mjs
+web: node index.mjs

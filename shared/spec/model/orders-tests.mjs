@@ -1,7 +1,7 @@
 import {unit} from "../../game/unit.mjs";
 import {orders} from "../../game/orders.mjs";
-import {MessageBus} from "../../index.js";
-import {humanPlayer} from "../../game/human-player.js";
+import MessageBus from "../../services/message-service.mjs";
+import {humanPlayer} from "../../game/human-player.mjs";
 
 describe("orders class", function(){
     var unitsmap={move: function(){return true;}, normalize: (pos)=>pos};
@@ -311,7 +311,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executeMove(infantry.order);
+            ordersInstance.executeMove(infantry.order);
 
             //Then
             expect(infantry.order.queue).toEqual([{y: 3, x: 3}]);
@@ -323,7 +323,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executeMove(infantry.order);
+            ordersInstance.executeMove(infantry.order);
 
             //Then
             expect(infantry.order).toBeNull();
@@ -350,7 +350,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executePatrol(infantry.order);
+            ordersInstance.executePatrol(infantry.order);
 
             //Then
             expect(infantry.order.index).toEqual(1);
@@ -362,7 +362,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executePatrol(infantry.order);
+            ordersInstance.executePatrol(infantry.order);
 
             //Then
             expect(infantry.order.index).toEqual(2);
@@ -386,7 +386,7 @@ describe("orders class", function(){
             var ordersInstance = new orders(infantry);
 
             //When
-            var result = ordersInstance.executePatrol(infantry.order);
+            ordersInstance.executePatrol(infantry.order);
 
             //Then
             expect(infantry.order.index).toEqual(1);
@@ -465,7 +465,7 @@ describe("orders class", function(){
             spyOn(ordersInstance, "goDirection").and.returnValue("updated position");
             
             //When
-            var result = ordersInstance.executeRoam(infantry.order);
+            ordersInstance.executeRoam(infantry.order);
 
             //Then
             expect(ordersInstance.goDirection).toHaveBeenCalledWith("S")
@@ -479,7 +479,7 @@ describe("orders class", function(){
             spyOn(ordersInstance, "goDirection").and.returnValue("updated position");
 
             //When
-            var result = ordersInstance.executeRoam(infantry.order);
+            ordersInstance.executeRoam(infantry.order);
 
             //Then
             expect(ordersInstance.goDirection).toHaveBeenCalledWith("SE")
@@ -507,7 +507,7 @@ describe("orders class", function(){
             spyOn(ordersInstance, "goDirection").and.returnValue("updated position");
 
             //When
-            var result = ordersInstance.executeRoam(infantry.order);
+            ordersInstance.executeRoam(infantry.order);
 
             //Then
             expect(infantry.order.direction).toEqual("S")
@@ -522,7 +522,7 @@ describe("orders class", function(){
             spyOn(ordersInstance, "goDirection").and.returnValue("updated position");
 
             //When
-            var result = ordersInstance.executeDirection(infantry.order);
+            ordersInstance.executeDirection(infantry.order);
 
             //Then
             expect(ordersInstance.goDirection).toHaveBeenCalledWith("direction")
@@ -542,11 +542,6 @@ describe("orders class", function(){
         });
     });
     describe("goDirection method", function(){
-        //    this.goDirection=function(direction){
-        //        var current = unit.derivedPosition();
-        //        var to = unitsmap.map.goDirection(direction, current);
-        //        return (to.y==current.y && to.x==current.x)?null:step;
-        //    }
         it("should ask map for new coordinates", function(){
             //Given
             var unitsmap = {map: {move: function(){}}}

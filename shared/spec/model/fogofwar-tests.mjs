@@ -67,7 +67,7 @@ describe("fogOffWar class", function(){
         });
         it("should not update the fog of war when unit has died", function(){
                     //Given
-            var fogofwar = new fogOfWar([]), map;
+            var fogofwar = new fogOfWar([]);
             spyOn(fogofwar, "update");
 
             //When

@@ -1,37 +1,14 @@
 import {Alert, Badge, Button, ListGroup, Modal} from "react-bootstrap";
-import {React, useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import {any, func} from "prop-types";
 import {MessageBus} from "softwar-shared";
+import {TYPE_MAP} from "../component/UnitTypesConstants";
 import {unitTypes} from "softwar-shared/game/unit-types.mjs";
-
-const TYPE_MAP = {
-    'I' : 'infantry',
-    'T' : 'tank',
-    'M' : 'truck',
-    'F' : 'fighter',
-    'B' : 'bomber',
-    'H' : 'helicopter',
-    'D' : 'destroyer',
-    'c' : 'cruiser',
-    'A' : 'aircraftcarrier',
-    'S' : 'submarine',
-    'm' : 'missile',
-    't' : 'transport',
-    'b' : 'battleship',
-};
+import {useDialogFocus} from "./useDialogFocus";
 
 function ChangeCityProducion({city, onClose}) {
-    const dialogView = useRef();
+    const dialogView = useDialogFocus();
     const [producing, setProducing] = useState(city.producingType||'');
-
-    const focusView = () => {
-        if(dialogView.current) dialogView.current.blur();
-        setTimeout(()=>dialogView.current.focus(),0);
-    };
-
-    useEffect(() => {
-        setTimeout(()=>focusView(), 0);
-    }, []);
 
     function changeProduction() {
         city.produce(producing);

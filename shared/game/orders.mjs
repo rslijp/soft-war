@@ -1,5 +1,5 @@
 import MessageBus from "../services/message-service.mjs";
-import {NAVIGATIONS_OFFSETS} from "./navigtion.mjs";
+import {NAVIGATIONS_OFFSETS} from "./navigation.mjs";
 
 const intersect = (lhs, rhs) => {
     const r = new Set(rhs);
@@ -124,4 +124,4 @@ export function orders (unit, unitsmap, player) {
         var to = unitsmap.map.move(direction, current);
         return (to.y === current.y && to.x === current.x) ? null : to;
     };
-};
+}

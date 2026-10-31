@@ -1,9 +1,9 @@
 import {unitsMap} from "../../game/units-map.mjs";
 import {unit} from "../../game/unit.mjs";
-import {humanPlayer} from "../../game/human-player.js";
-import {gameMap} from "../../game/game-map.js";
+import {humanPlayer} from "../../game/human-player.mjs";
+import {gameMap} from "../../game/game-map.mjs";
 import {city} from "../../game/city.mjs";
-import {default as MessageBus} from "../../services/message-service.mjs";
+import MessageBus from "../../services/message-service.mjs";
 
 describe("unitsMap", function(){
     var dummyMapRaw = [];
@@ -50,7 +50,7 @@ describe("unitsMap", function(){
 
             //When
             try {
-                var map = new unitsMap([player], dummyMap).data;
+                new unitsMap([player], dummyMap).data;
                 expect(true).toEqual(false)
             } catch (error){
                 //Then
@@ -207,7 +207,7 @@ describe("unitsMap", function(){
             spyOn(map, "collision");
 
             //When
-            var result  = map.move(player.units[0], {y: 4, x:4});
+            map.move(player.units[0], {y: 4, x:4});
             
             //Then
             expect(map.collision).not.toHaveBeenCalled();
@@ -222,7 +222,7 @@ describe("unitsMap", function(){
             spyOn(map, "collision");
 
             //When
-            var result  = map.move(player.units[0], {y: 14, x:14});
+            map.move(player.units[0], {y: 14, x:14});
 
             //Then
             expect(map.collision).not.toHaveBeenCalled();
@@ -253,7 +253,7 @@ describe("unitsMap", function(){
             spyOn(unitInstance,"canMoveOn").and.returnValue(false);
 
             //When
-            var result  = map.move(player.units[0], {y: 4, x:4});
+            map.move(player.units[0], {y: 4, x:4});
 
             //Then
             expect(unitInstance.canMoveOn).toHaveBeenCalledWith('L');
@@ -268,7 +268,7 @@ describe("unitsMap", function(){
             spyOn(unitInstance,"canMove").and.returnValue(false);
 
             //When
-            var result  = map.move(player.units[0], {y: 4, x:4}, false);
+            map.move(player.units[0], {y: 4, x:4}, false);
 
             //Then
             expect(unitInstance.canMove).toHaveBeenCalledWith(false);
@@ -280,7 +280,7 @@ describe("unitsMap", function(){
             var map = new unitsMap([player], dummyMap);
             spyOn(map, "collision");
 
-            var result  = map.move(player.units[0], {y: 4, x:4});
+            map.move(player.units[0], {y: 4, x:4});
             
             //Then
             expect(map.collision).toHaveBeenCalled();
@@ -297,7 +297,7 @@ describe("unitsMap", function(){
             spyOn(map, "enemyNearyBy").and.returnValue(["some", "units"]);
             spyOn(MessageBus, "send");
 
-            var result  = map.move(unitInstance, {y: 2, x:2});
+            map.move(unitInstance, {y: 2, x:2});
 
             expect(map.enemyNearyBy).toHaveBeenCalledWith(unitInstance, unitInstance.sight);
             expect(MessageBus.send).toHaveBeenCalledWith("enemy-spotted", ["some", "units"], unitInstance);
@@ -326,7 +326,7 @@ describe("unitsMap", function(){
             //When
             var transporter = {player: "a", canLoad: function(){return true;}};
             var subject = {player: "a", position: {y: 4, x:4}, embark: function(){}};
-            var result = map.collision(subject, transporter, {x:1, y:1}, "from");
+            map.collision(subject, transporter, {x:1, y:1}, "from");
 
             //Then
             expect(MessageBus.send).toHaveBeenCalledWith("unit-loaded", "from", subject);
@@ -341,7 +341,7 @@ describe("unitsMap", function(){
             //When
             var transporter = {player: "a", canLoad: function(){return true;}};
             var subject = {player: "a", position: "position", embark: function(){}};
-            var result = map.collision(subject, transporter, {x:1, y:1}, "from");
+            map.collision(subject, transporter, {x:1, y:1}, "from");
 
             //Then
             expect(map.remove).toHaveBeenCalledWith("position");
@@ -427,13 +427,11 @@ describe("unitsMap", function(){
             tank.movesLeft=1;
             var player = {units: [tank, city1, city2]};
             var map = new unitsMap([player], dummyMap);
-            // spyOn(map, "collision");
 
             //When
-            var result  = map.move(player.units[0], {y: 4, x:4});
+            map.move(player.units[0], {y: 4, x:4});
 
             //Then
-            // expect(map.collision).not.toHaveBeenCalled();
             expect(city1.nestedUnits.length).toEqual(0);
             expect(city2.nestedUnits.length).toEqual(1);
             expect(city2.nestedUnits[0]).toEqual(tank);
@@ -451,18 +449,13 @@ describe("unitsMap", function(){
             tank.movesLeft=1;
             var player = {units: [tank, city1]};
             var map = new unitsMap([player], dummyMap);
-            // spyOn(map, "collision");
 
             //When
             expect(map.unitAt(3,3)).toEqual(city1);
 
-            var result  = map.move(player.units[0], {y: 4, x:4});
+            map.move(player.units[0], {y: 4, x:4});
 
             //Then
-            // expect(map.collision).not.toHaveBeenCalled();
-            // expect(city1.nestedUnits.length).toEqual(0);
-            // expect(city2.nestedUnits.length).toEqual(1);
-            // expect(city2.nestedUnits[0]).toEqual(tank);
             expect(map.data[3][3]).toEqual(city1);
         });
 
@@ -478,18 +471,13 @@ describe("unitsMap", function(){
             tank.movesLeft=1;
             var player = {units: [tank, city1, city2]};
             var map = new unitsMap([player], dummyMap);
-            // spyOn(map, "collision");
 
             //When
             expect(map.unitAt(3,3)).toEqual(city1);
 
-            var result  = map.move(player.units[0], {y: 4, x:4});
+            map.move(player.units[0], {y: 4, x:4});
 
             //Then
-            // expect(map.collision).not.toHaveBeenCalled();
-            // expect(city1.nestedUnits.length).toEqual(0);
-            // expect(city2.nestedUnits.length).toEqual(1);
-            // expect(city2.nestedUnits[0]).toEqual(tank);
             expect(map.data[3][3]).toEqual(city1);
         });
     });
@@ -549,7 +537,7 @@ describe("unitsMap", function(){
     describe("get method", function(){
         it("should return the unit on the position", function(){
              //Given
-            var unitInstance = new unit("T",{x: 1, y: 1});;
+            var unitInstance = new unit("T",{x: 1, y: 1});
             var player = {units: [unitInstance]};
             var map = new unitsMap([player], dummyMap);
 
@@ -573,7 +561,6 @@ describe("unitsMap", function(){
         });
         it("should handle empty positions", function(){
              //Given
-            var unitInstance = {position: {x: 1, y: 1}, type: "T"};
             var player = {units: [unit]};
             var map = new unitsMap([player]);
 
@@ -654,7 +641,7 @@ describe("unitsMap", function(){
             //Given
             var subject = new unit("T", {y: 3, x:3});
             var player=new humanPlayer(1, "1", "Player", "green", [subject,new unit("T", {y: 4, x:4})], dummyMap);
-            var enemy=new humanPlayer(2, "2", "Computer", "red", [], dummyMap);
+            new humanPlayer(2, "2", "Computer", "red", [], dummyMap);
             var map = new unitsMap([player], dummyMap);
 
             //When

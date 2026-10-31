@@ -163,4 +163,4 @@ export function unitsMap(players, map) {
     MessageBus.register("unit-out-of-fuel", this.destroyed, this);
 
     this.init();
-};
+}

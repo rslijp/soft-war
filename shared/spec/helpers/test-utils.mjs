@@ -1,4 +1,4 @@
-import {gameMap} from "../../game/game-map.js";
+import {gameMap} from "../../game/game-map.mjs";
 
 export function testAllLandGameMap(){
     return new gameMap({

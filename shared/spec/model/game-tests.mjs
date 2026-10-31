@@ -1,10 +1,9 @@
 import {testAllLandGameMap} from "../helpers/test-utils.mjs";
 import {unit} from "../../game/unit.mjs";
-import {humanPlayer} from "../../game/human-player.js";
+import {humanPlayer} from "../../game/human-player.mjs";
 import {game} from "../../game/game.mjs";
-import {MessageBus} from "../../index.js";
+import MessageBus from "../../services/message-service.mjs";
 import {city} from "../../game/city.mjs";
-import {battle} from "../../game/battle.mjs";
 
 describe("game", function(){
     var map = testAllLandGameMap();
@@ -23,10 +22,8 @@ describe("game", function(){
 
            //Then
            expect(gameInstance.unitsMap.map).toEqual("data");
-           // expect(gameInstance.unitsMap.players).toEqual(players);
            expect(gameInstance.statistics.length).toEqual(1);
            expect(gameInstance.statistics[0].player).toEqual(players[0]);
-           // expect(statistics).toHaveBeenCalledWith(players[0]);
        });
        it("should set unitsMap on players", function(){
            //Given
@@ -66,7 +63,7 @@ describe("game", function(){
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
             var player = new humanPlayer(0, "0","Name", "Color", []);
-            var other = new humanPlayer(1, "1","Name", "Color", units, map);
+            new humanPlayer(1, "1","Name", "Color", units, map);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
 
             //When
@@ -263,7 +260,6 @@ describe("game", function(){
             gameInstance.battle(attacker, defender, at);
 
             //Then
-            // expect(Model.Battle).toHaveBeenCalledWith(attacker, defender, [], []);
             expect(battle.fight).toHaveBeenCalled();
         });
         it("should perform an battle and include the modfiers", function(){
@@ -559,7 +555,7 @@ describe("game", function(){
                 new unit("T", {x: 13, y:12}),
                 new unit("F", {x: 7, y:7})];
             var player = new humanPlayer(0, "0","Name", "Color", []);
-            var other = new humanPlayer(1, "1","Name", "Color", units, map);
+            new humanPlayer(1, "1","Name", "Color", units, map);
             var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0},"data", [player]);
             player.selectedUnit=infantry;
             spyOn(player, "specialAction");

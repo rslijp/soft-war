@@ -1,4 +1,4 @@
-import MessageBus from "softwar-shared/services/message-service.mjs";
+import {MessageBus} from "softwar-shared";
 import {any} from "prop-types";
 import {useEffect} from "react";
 
@@ -28,7 +28,6 @@ function KeyBoardHandler({state}) {
     };
 
     const onKeyPress = (key) => {
-        // console.log("onKeyPress", key);
         if (key > 48 && key < 58) {
             return onNumericKeyPressed(key);
         }
@@ -91,8 +90,6 @@ function KeyBoardHandler({state}) {
         case 80: //P
             MessageBus.send("patrol-to-mode");
             break;
-        default:
-            console.log(key);
         }
 
     };

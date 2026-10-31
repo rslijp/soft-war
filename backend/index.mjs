@@ -5,9 +5,7 @@
  */
 
 import app from './app.mjs';
-import debugging from 'debug';
 import http from 'http';
-var debug = debugging('backend:server');
 
 /**
  * Get port from environment and store in Express.

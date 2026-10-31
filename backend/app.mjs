@@ -12,10 +12,7 @@ import {sendTestMail} from "./mailer.mjs";
 
 var app = express();
 
-app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
-// app.use(cors);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -45,7 +42,6 @@ app.use(function(req, res, next) {
             else res.redirect("/public/auth/");
             return;
         }
-        console.log("AUTH PASS",req.path);
     }
     next();
 });

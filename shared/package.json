@@ -6,11 +6,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "npx jasmine --config=spec/config/jasmine.json"
+    "test": "npx jasmine --config=spec/config/jasmine.json",
+    "eslint": "eslint --ext .js,.mjs ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.57.1",
     "jasmine": "^5.1.0"
   }
 }

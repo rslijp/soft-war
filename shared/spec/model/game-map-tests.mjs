@@ -1,4 +1,4 @@
-import {gameMap} from "../../game/game-map.js";
+import {gameMap} from "../../game/game-map.mjs";
 import {CITY_NAMES} from "../../game/city.mjs";
 
 describe("map class", function(){
@@ -56,7 +56,7 @@ describe("map class", function(){
             }
 
             try {
-                var map = new gameMap(data);
+                new gameMap(data);
                 expect("Expected exception").toBeUndefined();
             } catch (e){
                 expect(e).toEqual("Empty map not allowed");
@@ -66,7 +66,7 @@ describe("map class", function(){
             var data = null;
 
             try {
-                var map = new gameMap(data);
+                new gameMap(data);
                 expect("Expected exception").toBeUndefined();
             } catch (e){
                 expect(e).toEqual("Map data undefined");
@@ -76,7 +76,7 @@ describe("map class", function(){
             var data = undefined;
 
             try {
-                var map = new gameMap(data);
+                new gameMap(data);
                 expect("Expected exception").toBeUndefined();
             } catch (e){
                 expect(e).toEqual("Map data undefined");
@@ -97,7 +97,7 @@ describe("map class", function(){
             }
 
             try {
-                var map = new gameMap(data);
+                new gameMap(data);
                 expect("Expected exception").toBeUndefined();
             } catch (e){
                 expect(e).toEqual("Map has inconsistent width");

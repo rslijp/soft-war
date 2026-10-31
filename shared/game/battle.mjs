@@ -47,4 +47,4 @@ export function battle (attacker, defender, attackerBonus, defenderBonus) {
         return results;
     };
     this.init();
-};
+}

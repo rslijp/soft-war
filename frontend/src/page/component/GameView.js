@@ -16,7 +16,6 @@ function GameView({state, range}) {
     useEffect(() => {
         const handles = [
             MessageBus.register("game-view-focus", focusView, this),
-            // MessageBus.register("unit-select", focusOnTile, this),
         ];
         return ()=>{
             MessageBus.revokeByHandles(handles);

@@ -1,6 +1,6 @@
 import {city} from "../../game/city.mjs";
 import {unit} from "../../game/unit.mjs";
-import {MessageBus} from "../../index.js";
+import MessageBus from "../../services/message-service.mjs";
 import {unitTypes} from "../../game/unit-types.mjs";
 
 describe("city class", function(){

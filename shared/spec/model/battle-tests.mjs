@@ -204,7 +204,7 @@ describe("map class", function(){
             spyOn(battleInstance, "dice").and.returnValue(50);
 
             //When
-            var wonby = battleInstance.round();
+            battleInstance.round();
 
             //Then
             expect(battleInstance.defenderTreshold).toEqual(50);

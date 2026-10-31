@@ -2,23 +2,7 @@ import {Badge, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {MessageBus, PLAYER_COLORS} from "softwar-shared";
 import {bool, shape, string} from "prop-types";
 import React from "react";
-
-const TYPE_TILE_MAP = {
-    'C' : 'city',
-    'I' : 'infantry',
-    'T' : 'tank',
-    'M' : 'truck',
-    'F' : 'fighter',
-    'B' : 'bomber',
-    'H' : 'helicopter',
-    'D' : 'destroyer',
-    'c' : 'cruiser',
-    'A' : 'aircraftcarrier',
-    'S' : 'submarine',
-    'm' : 'missile',
-    't' : 'transport',
-    'b' : 'battleship'
-};
+import {TYPE_MAP} from "../page/component/UnitTypesConstants";
 
 function UnitView({unit, selected}) {
     const renderTooltip = (props) => (
@@ -28,7 +12,7 @@ function UnitView({unit, selected}) {
     );
     const additionalStyle = {};
     if (unit.player!==undefined) additionalStyle['backgroundColor'] = PLAYER_COLORS[unit.player];
-    const cssClasses = ["unit-view", TYPE_TILE_MAP[unit.type]];
+    const cssClasses = ["unit-view", TYPE_MAP[unit.type]];
     if(selected) cssClasses.push("selected-unit");
     const remark = unit.remark?unit.remark():null;
     const definition = unit.definition?unit.definition():null;
