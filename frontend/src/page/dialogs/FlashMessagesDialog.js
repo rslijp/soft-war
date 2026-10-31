@@ -1,6 +1,6 @@
 import {Button, ListGroup, Modal} from "react-bootstrap";
 import {any, func} from "prop-types";
-import {React} from "react";
+import React from "react";
 import {useDialogFocus} from "./useDialogFocus";
 
 function FlashMessageDialog({messages, onClose}) {

@@ -1,5 +1,5 @@
 import {Alert, Badge, Button, ListGroup, Modal} from "react-bootstrap";
-import {React, useState} from "react";
+import React, {useState} from "react";
 import {any, func} from "prop-types";
 import {MessageBus} from "softwar-shared";
 import {TYPE_MAP} from "../component/UnitTypesConstants";

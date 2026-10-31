@@ -1,6 +1,6 @@
 import {Button, Modal} from "react-bootstrap";
 import {func, string} from "prop-types";
-import {React} from "react";
+import React from "react";
 import {surrenderGame} from "../../api/GameStateApi";
 
 function SurrenderDialog({code, onClose}) {

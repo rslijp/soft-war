@@ -2,7 +2,7 @@ import {Alert, Button, Modal} from "react-bootstrap";
 import {MessageBus, PLAYER_COLORS} from "softwar-shared";
 import {any, func} from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {React} from "react";
+import React from "react";
 import {faCrosshairs} from "@fortawesome/free-solid-svg-icons";
 import {useDialogFocus} from "./useDialogFocus";
 

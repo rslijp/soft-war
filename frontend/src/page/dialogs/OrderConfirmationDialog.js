@@ -2,7 +2,7 @@ import {Button, Modal} from "react-bootstrap";
 import {any, func} from "prop-types";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {MessageBus} from "softwar-shared";
-import {React} from "react";
+import React from "react";
 import {faCrosshairs} from "@fortawesome/free-solid-svg-icons";
 import {useDialogFocus} from "./useDialogFocus";
 

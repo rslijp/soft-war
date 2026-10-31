@@ -1,4 +1,4 @@
-import MessageBus from "softwar-shared/services/message-service.mjs";
+import {MessageBus} from "softwar-shared";
 import {any} from "prop-types";
 import {useEffect} from "react";
 
