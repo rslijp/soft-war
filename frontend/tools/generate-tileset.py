@@ -213,6 +213,69 @@ def terrain_field(labels, kinds, radius=2):
     return upscale(blur([[1.0 if labels[y][x] in kinds else 0.0 for x in range(SRC)] for y in range(SRC)], radius))
 
 
+# In the original tiles a coastline leaves a tile roughly 18 or 72 pixels along the edge, but
+# not exactly (14 to 22), so neighbouring tiles showed a small step in the beach. The water
+# field is warped near each edge so every crossing lands exactly on one of these positions.
+COAST_SNAP = (18.0, 72.0)
+# the four lake tiles form one 2x2 lake; its shore crosses the inner edges at these positions
+LAKE_SNAP = (38.0, 53.0, 65.0)
+COAST_SNAP_RANGE = 8.0
+COAST_WARP_DEPTH = 30
+
+
+def edge_crossings(values):
+    found = []
+    for i in range(len(values) - 1):
+        a, b = values[i], values[i + 1]
+        if (a - 0.5) * (b - 0.5) < 0:
+            found.append(i + 0.5 + (0.5 - a) / (b - a))
+    return found
+
+
+def edge_warp(values, snap):
+    """Piecewise linear map from an aligned position along the edge to the position to sample."""
+    points = [(0.0, 0.0)]
+    for c in edge_crossings(values):
+        target = min(snap, key=lambda t: abs(t - c))
+        if abs(target - c) <= COAST_SNAP_RANGE and target > points[-1][0] and c > points[-1][1]:
+            points.append((target, c))
+    points.append((float(SIZE), float(SIZE)))
+
+    def warp(t):
+        for (t0, s0), (t1, s1) in zip(points, points[1:]):
+            if t <= t1:
+                return s0 + (s1 - s0) * (t - t0) / (t1 - t0)
+        return t
+    return warp
+
+
+def sample(field, x, y):
+    x, y = min(SIZE - 1.0, max(0.0, x)), min(SIZE - 1.0, max(0.0, y))
+    x0, y0 = int(x), int(y)
+    x1, y1, tx, ty = min(SIZE - 1, x0 + 1), min(SIZE - 1, y0 + 1), x - x0, y - y0
+    top = field[y0][x0] * (1 - tx) + field[y0][x1] * tx
+    bottom = field[y1][x0] * (1 - tx) + field[y1][x1] * tx
+    return top * (1 - ty) + bottom * ty
+
+
+def align_coast(field, snap):
+    north = edge_warp([field[0][x] for x in range(SIZE)], snap)
+    south = edge_warp([field[SIZE - 1][x] for x in range(SIZE)], snap)
+    west = edge_warp([field[y][0] for y in range(SIZE)], snap)
+    east = edge_warp([field[y][SIZE - 1] for y in range(SIZE)], snap)
+    out = [[0.0] * SIZE for _ in range(SIZE)]
+    for y in range(SIZE):
+        for x in range(SIZE):
+            # pixel centres sit at +0.5; the shift fades out towards the middle of the tile
+            cx, cy = x + 0.5, y + 0.5
+            wn, ws = 1 - smoothstep(0, COAST_WARP_DEPTH, y), 1 - smoothstep(0, COAST_WARP_DEPTH, SIZE - 1 - y)
+            ww, we = 1 - smoothstep(0, COAST_WARP_DEPTH, x), 1 - smoothstep(0, COAST_WARP_DEPTH, SIZE - 1 - x)
+            sx = cx + wn * (north(cx) - cx) + ws * (south(cx) - cx)
+            sy = cy + ww * (west(cy) - cy) + we * (east(cy) - cy)
+            out[y][x] = sample(field, sx - 0.5, sy - 0.5)
+    return out
+
+
 # ------------------------------------------------------------------- paint
 
 GRASS_DARK, GRASS_LIGHT = (78, 116, 44), (118, 152, 60)
@@ -281,7 +344,7 @@ def dry_blob(name):
 def render_tile(name, pixels):
     labels = majority([[classify(pixels[y][x], name) for x in range(SRC)] for y in range(SRC)])
     variant = {"grass2": 2, "grass3": 3}.get(name, 1)
-    water = terrain_field(labels, {WATER})
+    water = align_coast(terrain_field(labels, {WATER}), LAKE_SNAP if "lake1" in name else COAST_SNAP)
     lake = terrain_field(labels, {LAKE})
     dry = dry_blob(name) if name in DRY_BLOCK else terrain_field(labels, {DRY}, radius=3)
     rock = terrain_field(labels, {ROCK}, radius=1)
