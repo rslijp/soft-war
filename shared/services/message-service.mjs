@@ -115,6 +115,7 @@ export function createMessageBus() {
 
 const defaultBus = createMessageBus();
 let resolveCurrentBus = () => defaultBus;
+const activeBuses = [];
 
 // A server running several games installs a resolver that returns the bus of the game whose code is
 // running right now (for instance through AsyncLocalStorage, which also follows its timers).
@@ -124,7 +125,23 @@ export function setBusResolver(resolver) {
 }
 
 export function currentBus() {
-    return resolveCurrentBus();
+    return activeBuses.length ? activeBuses[activeBuses.length - 1] : resolveCurrentBus();
+}
+
+// Run game code on a game's own bus: everything it registers or sends goes there.
+export function runWithBus(bus, action) {
+    activeBuses.push(bus);
+    try {
+        return action();
+    } finally {
+        activeBuses.pop();
+    }
+}
+
+// setTimeout for game code: the delayed action runs on the bus that was current when it was scheduled.
+export function later(action, delay) {
+    const bus = currentBus();
+    return setTimeout(() => runWithBus(bus, action), delay);
 }
 
 export default new Proxy({}, {

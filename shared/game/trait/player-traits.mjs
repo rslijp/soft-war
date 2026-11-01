@@ -1,6 +1,6 @@
 import {applyTraitsOn} from "./traits-util.mjs";
 import {unitCarrousel} from "../unit-carrousel.mjs";
-import MessageBus from "../../services/message-service.mjs";
+import MessageBus, {later} from "../../services/message-service.mjs";
 
 export const PLAYER_COLORS = ['orange', 'cyan', 'magenta', 'darkgrey'];
 
@@ -117,7 +117,7 @@ export const playerTraits = {
             }
         }
         if (unit && !unit.canMove() && this.autoNext()) {
-            setTimeout(innerAutoNext, this.stepDelay ? this.stepDelay(this.whereIs(unit), 1500) : 1500);
+            later(innerAutoNext, this.stepDelay ? this.stepDelay(this.whereIs(unit), 1500) : 1500);
         }
     },
     registerUnit: function(city, unit) {

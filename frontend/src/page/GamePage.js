@@ -18,7 +18,6 @@ import {TOP_BAR_HEIGHT} from "../Constants";
 import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
 import {isAiDebugView} from "../AiDebugView";
-import {saveGame} from "../api/GameStateApi";
 import {useLoaderData} from "react-router";
 
 let timer = null;
@@ -41,7 +40,7 @@ function GamePage() {
     const stateRef = useRef();
 
     const gameState  = useLoaderData();
-    gameState.debugView = isAiDebugView();
+    gameState.setDebugView(isAiDebugView());
     const map = gameState.world();
     const dimensions = map.dimensions;
     const position = gameState.position();
@@ -57,10 +56,6 @@ function GamePage() {
         focusOnTile(gameState.position());
     };
 
-    const autoSaveGame = () => {
-        saveGame(gameState).catch(e => console.error("Saving the game failed", e));
-    };
-
     const render = (position)=>{
         if(position) {
             focusOnTile(position);
@@ -69,14 +64,10 @@ function GamePage() {
         setRenderIteration(stateRef.current.renderIteration+1);
     };
 
-    const unitSelected = (unit) => {
-        if(unit) focusOnTile(unit.derivedPosition());
-    };
-
     const focusOnTile = ({x, y}) => {
         // don't follow the AI where the spectator can't see
         const spectator = gameState.spectator();
-        if (spectator !== gameState.currentPlayer() && !spectator.fogOfWar.visible({x, y})) return;
+        if (spectator.index !== gameState.currentPlayerIndex && !spectator.fogOfWar.visible({x, y})) return;
         clearTimeout(timer);
         timer=setTimeout(()=>{
             const state = stateRef.current.state;
@@ -88,37 +79,34 @@ function GamePage() {
         },0);
     };
 
+    // the game itself ends an AI's turn; this is the question for a human
     const endTurn = () => {
-        if(gameState.currentPlayer().type==='AI') {
-            MessageBus.send("next-turn");
-            return;
-        }
         queueDialog({name: 'end-turn', code: gameState.code});
     };
 
     const outOfFuel = (unit) => {
-        if (unit.player != gameState.currentPlayerIndex) {
+        if (unit.player != gameState.viewer) {
             return;
         }
         showDialog({name: 'unit-out-of-fuel', unit: unit});
     };
 
     const orderAttention = (unit, order) => {
-        if (unit.player != gameState.currentPlayerIndex) {
+        if (unit.player != gameState.viewer) {
             return;
         }
         showDialog({name: 'order-attention', unit: unit, order: order});
     };
 
     const confirmOrder = (unit, order) => {
-        if (unit.player != gameState.currentPlayerIndex) {
+        if (unit.player != gameState.viewer) {
             return;
         }
         showDialog({name: 'confirm-order', unit: unit, order: order});
     };
 
     const battleResults = (attacker, defender, result) => {
-        if (attacker.player != gameState.currentPlayerIndex) {
+        if (attacker.player != gameState.viewer) {
             return;
         }
         showDialog({name: 'battle-results', attacker: attacker, defender: defender, result: result});
@@ -126,19 +114,19 @@ function GamePage() {
 
     useEffect(() => {
         const handles = [
-            MessageBus.register("new-turn", newTurn, this),
-            MessageBus.register("next-turn", autoSaveGame, this),
+            // what the game tells this screen (see api/GameConnection.js)
+            MessageBus.register("event:new-turn", newTurn, this),
+            MessageBus.register("event:focus", focusOnTile, this),
+            MessageBus.register("event:battle-results", battleResults, this),
+            MessageBus.register("event:unit-order-attention", orderAttention, this),
+            MessageBus.register("event:confirm-order", confirmOrder, this),
+            MessageBus.register("event:propose-end-turn", endTurn, this),
+            MessageBus.register("event:unit-out-of-fuel", outOfFuel, this),
+            // and what the screen asks itself
             MessageBus.register("screen-update", render, this),
-            MessageBus.register("unit-order-step", unitSelected, this),
             MessageBus.register("cursor-select", focusOnTile, this),
-            MessageBus.register("unit-selected", unitSelected, this),
-            MessageBus.register("battle-results", battleResults, this),
-            MessageBus.register("unit-order-attention", orderAttention, this),
             MessageBus.register("confirm-order", confirmOrder, this),
-
-
             MessageBus.register("propose-end-turn", endTurn, this),
-            MessageBus.register("unit-out-of-fuel", outOfFuel, this),
         ];
         return ()=>{
             MessageBus.revokeByHandles(handles);

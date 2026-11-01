@@ -20,7 +20,7 @@ export function switchAiDebugView(gameState) {
     } catch {
         // storage blocked: the switch only lasts for this page
     }
-    if (gameState) gameState.debugView = next;
+    if (gameState && gameState.setDebugView) gameState.setDebugView(next);
     MessageBus.send("screen-update");
     return next;
 }
