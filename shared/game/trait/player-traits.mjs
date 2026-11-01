@@ -117,7 +117,7 @@ export const playerTraits = {
             }
         }
         if (unit && !unit.canMove() && this.autoNext()) {
-            setTimeout(innerAutoNext, this.stepDelay ? this.stepDelay(unit.derivedPosition(), 1500) : 1500);
+            setTimeout(innerAutoNext, this.stepDelay ? this.stepDelay(this.whereIs(unit), 1500) : 1500);
         }
     },
     registerUnit: function(city, unit) {

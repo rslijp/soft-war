@@ -353,7 +353,7 @@ export function aiPlayer(index, id, name, color, units, map) {
                 }
 
                 this.updateIntelligence(unit);
-                if (this.stepDelay(unit.derivedPosition())) MessageBus.send("screen-update");
+                if (this.stepDelay(this.whereIs(unit))) MessageBus.send("screen-update");
                 this.scheduleConquerTheWorld();
             } else {
                 MessageBus.send("next-unit");
@@ -382,6 +382,12 @@ export function aiPlayer(index, id, name, color, units, map) {
         });
     }
 
+    // Where a unit is, or null when it was destroyed (a destroyed unit has no position any more).
+    this.whereIs = (unit) => {
+        if (!unit || (unit.clazz === "unit" && unit.health <= 0) || (!unit.inside && !unit.position)) return null;
+        return unit.derivedPosition();
+    }
+
     // Pause between steps so a spectator can follow them, but only where the spectator can see.
     this.stepDelay = (position, delay = 250) => {
         const spectator = this.spectator ? this.spectator() : this;
@@ -393,7 +399,7 @@ export function aiPlayer(index, id, name, color, units, map) {
        if(this.conquerHandle) {
             return;
         }
-        const position = this.selectedUnit ? this.selectedUnit.derivedPosition() : null;
+        const position = this.whereIs(this.selectedUnit);
         this.conquerHandle = setTimeout(()=>this.conquerTheWorld(), this.stepDelay(position));
     }
 

@@ -1058,6 +1058,24 @@ describe("game", function(){
             gameInstance.debugView = true;
             expect(ai.stepDelay({x: 12, y: 12})).toEqual(250);
         });
+        it("should keep going after its selected unit was destroyed", function(){
+            //Given: the AI's unit lost a battle, so it has no position any more
+            var human = new humanPlayer(0, "0", "Name", "Color", [new unit("T", {x: 3, y: 3})], map);
+            var tank = new unit("T", {x: 9, y: 9});
+            var ai = new aiPlayer(1, "1", "Name", "Color", [], map);
+            new game({code: "code", name: "name", turn: 1, currentPlayer: 1}, map, [human, ai]);
+            clearTimeout(ai.conquerHandle);
+            ai.conquerHandle = null;
+            ai.selectedUnit = tank;
+            tank.health = 0;
+            tank.position = null;
+
+            //When/Then
+            expect(ai.whereIs(tank)).toBeNull();
+            expect(() => ai.scheduleConquerTheWorld()).not.toThrow();
+            expect(ai.conquerHandle).toBeTruthy();
+            clearTimeout(ai.conquerHandle);
+        });
     });
     describe("newTurn method", function(){
         afterEach(function(){
