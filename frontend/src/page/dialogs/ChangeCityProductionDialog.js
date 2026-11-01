@@ -34,7 +34,7 @@ function ChangeCityProducion({city, onClose}) {
 
     return <Modal  show={true} >
         <Modal.Header closeButton>
-            <Modal.Title>Aircraft lost</Modal.Title>
+            <Modal.Title>City production</Modal.Title>
         </Modal.Header>
         <Modal.Body className={"unit-dialog"}>
             <span className={"dialog-space"}>Change the production of {city.name} ({position.y}, {position.x}). It is currently producing <u>{production ? (production.name + " " + city.production + "/" + production.costs) : null}</u></span>

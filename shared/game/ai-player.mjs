@@ -265,7 +265,8 @@ export function aiPlayer(index, id, name, color, units, map) {
             }
         };
 
-        const transports = Object.values(sweep.friendlyUnits).filter(u=>u.type==='t' && this.embarking[u.id]<=2);
+        // a unit seen earlier this turn can be gone by now (moved on or destroyed)
+        const transports = Object.values(sweep.friendlyUnits).filter(u=>u && u.type==='t' && this.embarking[u.id]<=2);
         let path = loadSpot("load") ||
             plan("attack",sweep.enemies, n=>n.derivedPosition(), false) ||
             plan("load",transports, n=>n.derivedPosition(), false) ||
