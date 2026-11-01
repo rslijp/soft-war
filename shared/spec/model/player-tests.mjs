@@ -145,7 +145,7 @@ describe("humanPlayer class", function(){
             //Then
             expect(player.jumpToNextUnit).toHaveBeenCalledWith(tank);
         });
-        it("should proceed to next unit when move failed", function(){
+        it("should also proceed to next unit when the move was an attack", function(){
             //Given
             var tank = new unit("T", {y: 3, x:3});
             var units = [tank];
@@ -158,8 +158,8 @@ describe("humanPlayer class", function(){
             //When
             player.cursorUpdate({y: 4, x: 4});
 
-            //Then
-            expect(player.jumpToNextUnit).not.toHaveBeenCalledWith();
+            //Then: an attack uses a move but isn't a successful move; jumpToNextUnit checks the moves left
+            expect(player.jumpToNextUnit).toHaveBeenCalledWith(tank);
         });
         it("should ask to clear the order when manual move is made on a unit with an order", function(){
             //Given

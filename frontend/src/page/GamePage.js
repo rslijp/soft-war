@@ -25,6 +25,17 @@ let timer = null;
 
 function GamePage() {
     const [dialog, setDialog] = useState(null);
+    // the dialog on screen right now (also before React rendered it) and the ones waiting for it
+    const dialogRef = useRef(null);
+    const pendingDialogs = useRef([]);
+    const showDialog = (next) => {
+        dialogRef.current = next;
+        setDialog(next);
+    };
+    const queueDialog = (next) => {
+        if (dialogRef.current) pendingDialogs.current.push(next);
+        else showDialog(next);
+    };
     const [state, setState] = useState('initializing');
     const [renderIteration, setRenderIteration] = useState(0);
     const stateRef = useRef();
@@ -39,7 +50,10 @@ function GamePage() {
     stateRef.current = {state: state, viewPort: viewPort, renderIteration: renderIteration};
 
     const newTurn = (messages) => {
-        setDialog({name: 'messages', messages: messages, hide: true});
+        // a new turn may propose to end it right away; then that waits until the messages are read
+        const current = dialogRef.current;
+        pendingDialogs.current = current && current.name === 'end-turn' ? [current] : [];
+        showDialog({name: 'messages', messages: messages, hide: true});
         focusOnTile(gameState.position());
     };
 
@@ -79,35 +93,35 @@ function GamePage() {
             MessageBus.send("next-turn");
             return;
         }
-        setDialog({name: 'end-turn', code: gameState.code});
+        queueDialog({name: 'end-turn', code: gameState.code});
     };
 
     const outOfFuel = (unit) => {
         if (unit.player != gameState.currentPlayerIndex) {
             return;
         }
-        setDialog({name: 'unit-out-of-fuel', unit: unit});
+        showDialog({name: 'unit-out-of-fuel', unit: unit});
     };
 
     const orderAttention = (unit, order) => {
         if (unit.player != gameState.currentPlayerIndex) {
             return;
         }
-        setDialog({name: 'order-attention', unit: unit, order: order});
+        showDialog({name: 'order-attention', unit: unit, order: order});
     };
 
     const confirmOrder = (unit, order) => {
         if (unit.player != gameState.currentPlayerIndex) {
             return;
         }
-        setDialog({name: 'confirm-order', unit: unit, order: order});
+        showDialog({name: 'confirm-order', unit: unit, order: order});
     };
 
     const battleResults = (attacker, defender, result) => {
         if (attacker.player != gameState.currentPlayerIndex) {
             return;
         }
-        setDialog({name: 'battle-results', attacker: attacker, defender: defender, result: result});
+        showDialog({name: 'battle-results', attacker: attacker, defender: defender, result: result});
     };
 
     useEffect(() => {
@@ -154,8 +168,11 @@ function GamePage() {
 
     const renderDialog=(dialog)=>{
         const close = ()=>{
-            setDialog(null);
-            MessageBus.send("game-view-focus");
+            // e.g. ending the turn can already have opened the next turn's messages
+            if (dialogRef.current !== dialog) return;
+            const next = pendingDialogs.current.shift() || null;
+            showDialog(next);
+            if (!next) MessageBus.send("game-view-focus");
         };
         if(gameState.currentPlayer().type==='AI') return;
         const dialogs = {
@@ -186,7 +203,7 @@ function GamePage() {
             grid={grid}
             margin={{north: TOP_BAR_HEIGHT, south: TOP_BAR_HEIGHT}}
         />
-        <GameUnitBar gameState={gameState} openDialog={setDialog}/>
+        <GameUnitBar gameState={gameState} openDialog={showDialog}/>
     </>;
 }
 
