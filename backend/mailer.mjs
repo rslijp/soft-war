@@ -61,6 +61,18 @@ export function lostEmail(emails, name) {
     }));
 }
 
+// It's someone's turn and they don't have the game open.
+export function yourTurnMail(email, name, code) {
+    sgMail.send(decorateImage({
+        to: email,
+        from: 'gamemaster@softcause.nl',
+        subject: 'Your turn in the SoftWar ' + name,
+        text: 'It is your turn in the game {{name}}. Play at https://game.softcause.com/#/game/{{code}}',
+        html: 'It is your turn in the game <strong>{{name}}</strong>. <a href="https://game.softcause.com/#/game/{{code}}">Play your turn</a>',
+        substitutions: {name: name, code: code}
+    })).catch(e => console.error("Your-turn mail failed", e.message));
+}
+
 export function pendingMail(email, name, pending){
     sgMail.send(decorateImage({
         to: email,

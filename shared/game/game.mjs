@@ -186,10 +186,14 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     };
 
     this.nextTurn = function() {
-        this.currentPlayerIndex += 1;
-        if (this.currentPlayerIndex === this.players.length) {
-            this.turn += 1;
-            this.currentPlayerIndex = 0;
+        // players who lost or surrendered don't get a turn any more
+        for (let tries = 0; tries < this.players.length; tries++) {
+            this.currentPlayerIndex += 1;
+            if (this.currentPlayerIndex === this.players.length) {
+                this.turn += 1;
+                this.currentPlayerIndex = 0;
+            }
+            if (!this.currentPlayer().hasLost()) break;
         }
         var currentPlayer = this.currentPlayer();
         currentPlayer.initTurn();

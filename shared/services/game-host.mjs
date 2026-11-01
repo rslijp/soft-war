@@ -13,6 +13,8 @@ const LOCKABLE = new Set(["cursor-direction", "cursor-select", "special-action",
 export function gameHost(createGame, {onTurnEnded, debugView = () => false} = {}) {
     const bus = createMessageBus();
     const game = runWithBus(bus, createGame);
+    // a game saved while the player to move had surrendered continues with the next player
+    if (game.currentPlayer().hasLost()) runWithBus(bus, () => bus.send("next-turn"));
     const screens = new Set();
     let flushScheduled = false;
 
