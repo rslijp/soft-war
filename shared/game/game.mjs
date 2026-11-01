@@ -3,6 +3,7 @@ import {statistics} from "./statistics.mjs";
 import {unitsMap} from "./units-map.mjs";
 import {orders} from "./orders.mjs";
 import {battle} from "./battle.mjs";
+import {NAVIGATIONS_OFFSETS} from "./navigation.mjs";
 
 export function game ({code, name, turn, currentPlayer}, map, players) {
     this.turn = turn||1;
@@ -87,6 +88,19 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         var unit = currentPlayer.selectedUnit;
         if (unit && action) {
             var order = {action: action, queue: path, direction:direction};
+            // A patrol goes back and forth over its route, so the route must include where the unit
+            // stands now: otherwise an aircraft never gets back to the city or carrier it refuels at.
+            const start = unit.derivedPosition();
+            if (action === 'patrol' && path && path.length && !(path[0].x === start.x && path[0].y === start.y)) {
+                const first = path[0];
+                const offset = NAVIGATIONS_OFFSETS.find(o => {
+                    const to = map.normalize({y: start.y + o.y, x: start.x + o.x});
+                    return to.x === first.x && to.y === first.y;
+                });
+                path = [{y: start.y, x: start.x, direction: offset ? offset.direction : first.direction}, ...path];
+                order.queue = path;
+                order.index = 1;
+            }
             if (path) {
                 order.from = path[0];
                 order.to = path[path.length - 1];

@@ -157,6 +157,52 @@ describe("playing a game through the host, like a screen", function() {
         expect(me.got("propose-end-turn").length).toEqual(0);
     });
 
+    it("should let go of my unit (Escape)", function() {
+        //When
+        me.command("select-unit", null);
+        tick();
+
+        //Then
+        expect(selected()).toBeNull();
+    });
+
+    it("should bring a patrolling fighter back to its city to refuel", function() {
+        //Given: a fighter in my city, patrolling to a tile a few steps out
+        host.stop();
+        game.state.players[0].units.push({type: "F", y: game.city.y, x: game.city.x});
+        host = gameHost(() => deserializeGameState(game.state));
+        me = playAs(host, 0);
+        me.command("new-turn", ["welcome"]);
+        tick();
+        const fighter = me.model.world().unitAt(game.city).nestedUnits.find(u => u.type === "F");
+        me.command("select-unit", unitRef(fighter));
+        tick();
+        const step = game.land[0];
+        const target = me.model.world().normalize({x: game.city.x + 4 * step.x, y: game.city.y + 4 * step.y});
+        const route = new navigationAStar(me.model.world().gameMap, selected(), me.model.spectator().fogOfWar, false).route(target, true);
+        if (!route || !route.route) return pending("no route on this map");
+
+        //When
+        me.command("give-order", "patrol", route.route, null, true);
+        tick(3000);
+
+        //Then: the patrol starts at the city
+        const engineFighter = host.game.player(0).units.find(u => u.type === "F");
+        expect(engineFighter.order.queue[0]).toEqual(jasmine.objectContaining({x: game.city.x, y: game.city.y}));
+
+        // and over several turns the fighter keeps flying (it would run out of fuel otherwise)
+        for (let turn = 0; turn < 5; turn++) {
+            for (let i = 0; i < 6; i++) {
+                me.command("next-unit", true);
+                tick(3000);
+            }
+            me.command("next-turn");
+            tick(5000);
+        }
+        expect(engineFighter.health).toBeGreaterThan(0);
+        expect(host.game.player(0).units).toContain(engineFighter);
+    });
+
     it("should hand the turn to the AI and back, with a unit selected again", function() {
         //When
         me.forget();
