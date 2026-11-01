@@ -52,7 +52,7 @@ export function orders (unit, unitsmap, player) {
         var self = this;
         setTimeout(() => {
             self.executeOrders();
-        }, 250);
+        }, player.stepDelay ? player.stepDelay(unit.derivedPosition()) : 250);
         return false;
     };
     function cloneOrder(order) {

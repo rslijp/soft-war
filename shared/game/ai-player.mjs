@@ -353,7 +353,7 @@ export function aiPlayer(index, id, name, color, units, map) {
                 }
 
                 this.updateIntelligence(unit);
-                MessageBus.send("screen-update");
+                if (this.stepDelay(unit.derivedPosition())) MessageBus.send("screen-update");
                 this.scheduleConquerTheWorld();
             } else {
                 MessageBus.send("next-unit");
@@ -382,11 +382,19 @@ export function aiPlayer(index, id, name, color, units, map) {
         });
     }
 
-    this.scheduleConquerTheWorld = (unit) => {
+    // Pause between steps so a spectator can follow them, but only where the spectator can see.
+    this.stepDelay = (position, delay = 250) => {
+        const spectator = this.spectator ? this.spectator() : this;
+        if (spectator === this) return delay;
+        return position && spectator.fogOfWar.visible(position) ? delay : 0;
+    }
+
+    this.scheduleConquerTheWorld = () => {
        if(this.conquerHandle) {
             return;
         }
-        this.conquerHandle = setTimeout(()=>this.conquerTheWorld(), 250);
+        const position = this.selectedUnit ? this.selectedUnit.derivedPosition() : null;
+        this.conquerHandle = setTimeout(()=>this.conquerTheWorld(), this.stepDelay(position));
     }
 
     this.autoNext=()=>{
