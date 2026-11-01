@@ -101,14 +101,13 @@ export const playerTraits = {
             return false;
         }
         this.fogOfWar.remove(unit);
-        var succes = this.unitsMap.move(unit, to);
+        this.unitsMap.move(unit, to);
         if(unit.isAlive()){
             this.fogOfWar.add(unit);
             this.position = unit.derivedPosition();
         }
-        if (succes) {
-            this.jumpToNextUnit(unit);
-        }
+        // also after an attack: it isn't a move, but it does use one, so it can be the unit's last
+        this.jumpToNextUnit(unit);
         return true;
     },
     jumpToNextUnit: function(unit) {

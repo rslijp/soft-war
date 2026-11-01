@@ -1058,4 +1058,45 @@ describe("game", function(){
             expect(ai.stepDelay({x: 12, y: 12})).toEqual(250);
         });
     });
+    describe("newTurn method", function(){
+        afterEach(function(){
+            MessageBus.clear();
+        });
+        it("should start with the unit initTurn selected instead of proposing the end of the turn", function(){
+            //Given
+            var tank = new unit("T", {x: 3, y: 3});
+            var player = new humanPlayer(0, "0", "Name", "Color", [tank], map);
+            var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0}, map, [player]);
+            player.autoNextFlag = true;
+            player.initTurn();
+            var proposed = jasmine.createSpy("propose-end-turn");
+            MessageBus.register("propose-end-turn", proposed);
+
+            //When
+            gameInstance.newTurn();
+
+            //Then
+            expect(player.selectedUnit).toBe(tank);
+            expect(gameInstance.proposedEndOfTurn).toBeFalsy();
+            expect(proposed).not.toHaveBeenCalled();
+        });
+        it("should propose the end of the turn when no unit can move", function(){
+            //Given
+            var tank = new unit("T", {x: 3, y: 3});
+            var player = new humanPlayer(0, "0", "Name", "Color", [tank], map);
+            var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0}, map, [player]);
+            player.autoNextFlag = true;
+            player.initTurn();
+            tank.movesLeft = 0;
+            var proposed = jasmine.createSpy("propose-end-turn");
+            MessageBus.register("propose-end-turn", proposed);
+
+            //When
+            gameInstance.newTurn();
+
+            //Then
+            expect(gameInstance.proposedEndOfTurn).toBeTruthy();
+            expect(proposed).toHaveBeenCalled();
+        });
+    });
 });

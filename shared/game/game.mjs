@@ -200,7 +200,18 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         const currentPlayer = this.currentPlayer();
         this.proposedEndOfTurn = false;
         if(currentPlayer.autoNext()){
-            MessageBus.send("next-unit");
+            const first = currentPlayer.selectedUnit;
+            // initTurn already took the first unit from the carrousel: start with it instead of
+            // skipping to the next one, which ended the turn right away for a single unit
+            if(currentPlayer.type !== 'AI' && first && first.canMove()) {
+                currentPlayer.position = first.derivedPosition();
+                MessageBus.send("screen-update", currentPlayer.position);
+                MessageBus.send("unit-selected", first);
+                this.executeOrders(first);
+                MessageBus.send("next-unit-updated", first);
+            } else {
+                MessageBus.send("next-unit");
+            }
         }
     }
 
