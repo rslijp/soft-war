@@ -101,7 +101,7 @@ function AppHeader() {
                             label={<>auto <span className={"responsive-hide"}> play</span></>}
                             checked={gameState.currentPlayer().autoNextFlag}
                             onChange={()=>{
-                                gameState.currentPlayer().toggleAutoNext();
+                                MessageBus.send("auto-next");
                                 render();
                             }}
                         />

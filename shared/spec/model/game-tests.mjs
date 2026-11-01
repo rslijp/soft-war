@@ -2,6 +2,7 @@ import {testAllLandGameMap} from "../helpers/test-utils.mjs";
 import {unit} from "../../game/unit.mjs";
 import {humanPlayer} from "../../game/human-player.mjs";
 import {aiPlayer} from "../../game/ai-player.mjs";
+import {unitRef} from "../../services/commands.mjs";
 import {game} from "../../game/game.mjs";
 import MessageBus from "../../services/message-service.mjs";
 import {city} from "../../game/city.mjs";
@@ -1097,6 +1098,69 @@ describe("game", function(){
             //Then
             expect(gameInstance.proposedEndOfTurn).toBeTruthy();
             expect(proposed).toHaveBeenCalled();
+        });
+    });
+    describe("commands with unit references", function(){
+        afterEach(function(){
+            MessageBus.clear();
+        });
+        const setup = () => {
+            var tank = new unit("T", {x: 3, y: 3});
+            var player = new humanPlayer(0, "0", "Name", "Color", [tank], map);
+            var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0}, map, [player]);
+            return {tank, player, gameInstance};
+        };
+        it("should resolve a reference to the unit at its position", function(){
+            //Given
+            var {tank, gameInstance} = setup();
+
+            //When/Then
+            expect(gameInstance.resolveUnit(unitRef(tank))).toBe(tank);
+            expect(gameInstance.resolveUnit({clazz: "unit", player: 0, id: 99, at: {x: 3, y: 3}})).toBeNull();
+            expect(gameInstance.resolveUnit({clazz: "unit", player: 0, id: tank.id, at: {x: 9, y: 9}})).toBeNull();
+            expect(gameInstance.resolveUnit(null)).toBeNull();
+        });
+        it("should resolve a unit loaded in a city", function(){
+            //Given
+            var {tank, gameInstance} = setup();
+            var tiel = new city({x: 3, y: 3}, "Tiel");
+            gameInstance.unitsMap.get = () => tiel;
+            tiel.nestedUnits = [tank];
+
+            //When/Then
+            expect(gameInstance.resolveUnit({clazz: "unit", player: 0, id: tank.id, at: {x: 3, y: 3}})).toBe(tank);
+            expect(gameInstance.resolveUnit({clazz: "city", player: tiel.player, id: tiel.id, at: {x: 3, y: 3}})).toBe(tiel);
+        });
+        it("should select the referenced unit on select-unit", function(){
+            //Given
+            var {tank, player, gameInstance} = setup();
+            spyOn(gameInstance, "selectUnit");
+
+            //When
+            MessageBus.send("select-unit", unitRef(tank));
+
+            //Then
+            expect(gameInstance.selectUnit).toHaveBeenCalledWith(tank);
+            expect(player).toBeDefined();
+        });
+        it("should only change the production of the current player's own city", function(){
+            //Given
+            var {gameInstance} = setup();
+            var own = new city({x: 5, y: 5}, "Tiel");
+            own.player = 0;
+            var foreign = new city({x: 6, y: 6}, "Ede");
+            foreign.player = 1;
+            spyOn(own, "produce");
+            spyOn(foreign, "produce");
+            gameInstance.resolveUnit = (ref) => ref.id === "Tiel" ? own : foreign;
+
+            //When
+            MessageBus.send("change-production", {clazz: "city", player: 0, id: "Tiel", at: {x: 5, y: 5}}, "F");
+            MessageBus.send("change-production", {clazz: "city", player: 1, id: "Ede", at: {x: 6, y: 6}}, "F");
+
+            //Then
+            expect(own.produce).toHaveBeenCalledWith("F");
+            expect(foreign.produce).not.toHaveBeenCalled();
         });
     });
 });

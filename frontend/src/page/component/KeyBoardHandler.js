@@ -1,4 +1,4 @@
-import {MessageBus} from "softwar-shared";
+import {MessageBus, unitRef} from "softwar-shared";
 import {any} from "prop-types";
 import {useEffect} from "react";
 
@@ -21,7 +21,7 @@ function KeyBoardHandler({state}) {
         var index = key - 49;
         var selected = selectedUnit.nestedUnits[index];
         if (selected) {
-            state.selectUnit(selected);
+            MessageBus.send("select-unit", unitRef(selected));
         }
 
     };
@@ -78,14 +78,14 @@ function KeyBoardHandler({state}) {
         case 83: //S
             var unit = state.currentPlayer().selectedUnit;
             if (unit && unit.specialAction) {
-                MessageBus.sendLockable("special-action", unit, unit.specialAction().method);
+                MessageBus.sendLockable("special-action", unitRef(unit), unit.specialAction().method);
             }
             break;
         case 102: //f
         case 70: //F
             var fortifyUnit = state.currentPlayer().selectedUnit;
             if (fortifyUnit && fortifyUnit.canFortify && fortifyUnit.canFortify()) {
-                MessageBus.sendLockable("special-action", fortifyUnit, "fortify");
+                MessageBus.sendLockable("special-action", unitRef(fortifyUnit), "fortify");
             }
             break;
         case 109: //m

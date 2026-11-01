@@ -1,8 +1,8 @@
 import {Badge, Overlay} from "react-bootstrap";
+import {MessageBus, unitRef} from "softwar-shared";
 import React, {useRef, useState} from "react";
 import Button from 'react-bootstrap/Button';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {MessageBus} from "softwar-shared";
 import {TILE_SIZE} from "../../Constants";
 import {TYPE_MAP} from "./UnitTypesConstants";
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -22,7 +22,7 @@ function GameUnitNestedUnitsToolTip({unit}) {
         return <div className={"nested-unit-slots"} style={{"width": unit.capacity*TILE_SIZE+unit.capacity+(unit.capacity-1)*2}}>
             {slots.map((s, i) => <div key={i} className={"nested-unit-slot"}>{
                 s ? <div className={"unit-view " + TYPE_MAP[s.type]}
-                    onClick={() => MessageBus.send("select-unit", s)}
+                    onClick={() => MessageBus.send("select-unit", unitRef(s))}
                 /> : null}
             </div>)}
         </div>;

@@ -288,6 +288,23 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         }
     };
 
+    // A unit or city from a command's unitRef (see services/commands.mjs): whatever stands at the
+    // position, or a unit loaded in it, with the same player and id. Units themselves pass through.
+    this.resolveUnit = (ref) => {
+        if (!ref || ref.derivedPosition) return ref || null;
+        const top = this.unitsMap.get(ref.at);
+        if (!top) return null;
+        const matches = (u) => u.clazz === ref.clazz && u.id === ref.id && u.player === ref.player;
+        return [top, ...(top.nestedUnits || [])].find(matches) || null;
+    };
+
+    this.changeProduction = (ref, unitType) => {
+        const city = this.resolveUnit(ref);
+        if (!city || city.clazz !== 'city' || city.player !== this.currentPlayerIndex) return;
+        city.produce(unitType);
+        MessageBus.send("infobar-update");
+    };
+
     this.onUnitUpdated = ()=>{
         const player = this.currentPlayer();
         if(player.onUnitUpdated) player.onUnitUpdated();
@@ -310,13 +327,14 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     MessageBus.register("city-under-siege", this.cityUnderSiege, this);
     MessageBus.register("next-turn", this.nextTurn, this);
     MessageBus.register("city-defense-destroyed", this.cityConquered, this);
-    MessageBus.register("special-action", this.specialAction, this);
+    MessageBus.register("special-action", (ref, action) => this.specialAction(this.resolveUnit(ref), action), this);
     MessageBus.register("next-unit", this.nextUnit, this);
     MessageBus.register("auto-next", this.toggleAutoNext, this);
     MessageBus.register("execute-orders", this.executeOrders, this);
     MessageBus.register("end-turn", this.endTurn, this);
     MessageBus.register("game-state-changed", this.winOrLoose, this);
-    MessageBus.register("select-unit", this.selectUnit, this);
+    MessageBus.register("select-unit", (ref) => this.selectUnit(this.resolveUnit(ref)), this);
+    MessageBus.register("change-production", this.changeProduction, this);
     MessageBus.register("give-order", this.giveOrder, this);
     MessageBus.register("clear-order", this.clearOrder, this);
 }

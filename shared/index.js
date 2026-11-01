@@ -5,3 +5,4 @@ export {CITY_NAMES} from "./game/city.mjs"
 export {default as MessageBus} from "./services/message-service.mjs";
 export {PLAYER_COLORS} from "./game/trait/player-traits.mjs"
 export {deserializeGameState} from "./services/save-game.mjs";
+export {COMMANDS, SCREEN_TOPICS, unitRef} from "./services/commands.mjs";
