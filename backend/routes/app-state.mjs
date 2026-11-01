@@ -58,22 +58,6 @@ router.get('/your-games', async function(req, res, next) {
   res.send(projection).status(200);
 });
 
-router.get('/game/:code', async function(req, res, next) {
-  const user = req.session.passport.user._json;
-  if(!isValidCode(req.params.code)) {
-    console.log("Code to long", req.params.code);
-    res.sendStatus(412);
-    return;
-  }
-  let result = await findGame(req.params.code);
-  if(!findPlayer(result, user)){
-      console.log("Not your game");
-      res.sendStatus(403);
-      return;
-  }
-  res.send(result).status(200);
-});
-
 router.get('/user', async function(req, res){
     const user = {...req.session.passport.user._json};
     let collection = await appStates();
@@ -107,22 +91,6 @@ async function  retrieveExistingGame(code, user){
     }
     return retrievedGameState;
 }
-
-router.post('/save-game', async function(req, res, next) {
-    const user = req.session.passport.user._json;
-    const gameState = req.body;
-    try {
-        await retrieveExistingGame(gameState.code, user);
-        let collection = await appStates();
-        await collection.replaceOne({code: gameState.code}, gameState, {upsert: true});
-        // always answer: a request left open holds one of the browser's few connections to
-        // this server, and after a handful of saves the next ones never got through
-        res.send({saved: true});
-    } catch(e){
-        console.error("ERROR", e.message || e);
-        res.status(e.httpCode || 500).send({error: e.message || "Save failed"});
-    }
-});
 
 router.post('/new-game', async function(req, res, next) {
   const {type, dimensions, name, players} = req.body;
