@@ -61,13 +61,13 @@ router.get('/game/:code', async function(req, res, next) {
   const user = req.session.passport.user._json;
   if(!isValidCode(req.params.code)) {
     console.log("Code to long", req.params.code);
-    res.status("412");
+    res.sendStatus(412);
     return;
   }
   let result = await findGame(req.params.code);
   if(!findPlayer(result, user)){
       console.log("Not your game");
-      res.status("403");
+      res.sendStatus(403);
       return;
   }
   res.send(result).status(200);
@@ -113,11 +113,13 @@ router.post('/save-game', async function(req, res, next) {
     try {
         await retrieveExistingGame(gameState.code, user);
         let collection = await appStates();
-        return collection.replaceOne({code: gameState.code}, gameState, {upsert: true});
+        await collection.replaceOne({code: gameState.code}, gameState, {upsert: true});
+        // always answer: a request left open holds one of the browser's few connections to
+        // this server, and after a handful of saves the next ones never got through
+        res.send({saved: true});
     } catch(e){
-        console.log(e);
-        console.error("ERROR",e.messages);
-        res.status(e.httpCode);
+        console.error("ERROR", e.message || e);
+        res.status(e.httpCode || 500).send({error: e.message || "Save failed"});
     }
 });
 
@@ -127,24 +129,24 @@ router.post('/new-game', async function(req, res, next) {
     let collection = await appStates();
     if(await collection.count({player: { id: user.email}})>10) {
     console.log("MAX OPEN GAMES");
-    res.status("412");
+    res.sendStatus(412);
     return;
   }
 
   if(!name ||  !type || !dimensions) {
     console.log("MISSING PARAMS");
-    res.status("412");
+    res.sendStatus(412);
     return;
   }
   if(name.length>64){
-      res.status("412");
+      res.sendStatus(412);
       return;
   }
   const [width, height] = dimensions.split('x');
   const world = generateMap(type, width, height)
   if(!world) {
     console.log("MAP FAILED");
-    res.status("412");
+    res.sendStatus(412);
     return;
   }
 
@@ -170,14 +172,14 @@ async function retrieve(req, res, onLoad){
     const user = req.session.passport.user._json;
     if (!isValidCode(req.params.code)) {
         console.log("Code to long", req.params.code);
-        res.status("412");
+        res.sendStatus(412);
         return;
     }
     let gameState = await findGame(req.params.code);
     const player = findPlayer(gameState, user);
     if (!player) {
         console.log("Not your game");
-        res.status("403");
+        res.sendStatus(403);
         return;
     }
     onLoad(gameState, player);
@@ -190,7 +192,7 @@ router.delete('/pending-game/:code', async function(req, res, next) {
     await retrieve(req, res, async (state, player)=>{
         if(player.status !== 'pending'){
             console.log("Already accepted");
-            res.status("412");
+            res.sendStatus(412);
             return;
         }
         player.status='declined';
@@ -213,7 +215,7 @@ router.put('/pending-game/:code', async function(req, res, next) {
     await retrieve(req, res, async (state, player)=>{
         if(player.status !== 'pending'){
             console.log("Already accepted");
-            res.status("412");
+            res.sendStatus(412);
             return;
         }
         player.status='accepted';
@@ -261,7 +263,7 @@ router.delete('/game/:code', async function(req, res, next) {
         res.send({status: status}).status(200);
     } catch (e){
         console.error(e.message);
-        res.status(e.httpCode);
+        res.sendStatus(e.httpCode || 500);
     }
 });
 

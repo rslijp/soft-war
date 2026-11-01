@@ -58,7 +58,7 @@ function GamePage() {
     };
 
     const autoSaveGame = () => {
-        saveGame(gameState);
+        saveGame(gameState).catch(e => console.error("Saving the game failed", e));
     };
 
     const render = (position)=>{
