@@ -14,33 +14,49 @@
     opacity: 0.8;
 }
 
-/* Rounded corners where the discovered area meets the undiscovered (black) part of the map.
-   Each corner is a black quarter-circle mask drawn over the tile. */
+/* Frayed edge where the discovered area meets the undiscovered (black) part of the map.
+   Every layer is a black, partly transparent image drawn over the tile; they come from
+   tools/generate-fog.py and join seamlessly with the layers of the neighbouring tiles. */
 .land-tile {
-    --fog-corner-radius: calc(var(--tile-size) / 2);
-    --fog-nw: none;
-    --fog-ne: none;
-    --fog-sw: none;
-    --fog-se: none;
+    --fog-edge-n: none;
+    --fog-edge-e: none;
+    --fog-edge-s: none;
+    --fog-edge-w: none;
+    --fog-corner-nw: none;
+    --fog-corner-ne: none;
+    --fog-corner-sw: none;
+    --fog-corner-se: none;
+    --fog-outer-nw: none;
+    --fog-outer-ne: none;
+    --fog-outer-sw: none;
+    --fog-outer-se: none;
     position: relative;
 }
 .land-tile > * {
     position: relative;
     z-index: 1;
 }
-.land-tile.fog-corner-nw { --fog-nw: radial-gradient(circle at 100% 100%, transparent calc(var(--fog-corner-radius) - 1px), black var(--fog-corner-radius)); }
-.land-tile.fog-corner-ne { --fog-ne: radial-gradient(circle at 0 100%, transparent calc(var(--fog-corner-radius) - 1px), black var(--fog-corner-radius)); }
-.land-tile.fog-corner-sw { --fog-sw: radial-gradient(circle at 100% 0, transparent calc(var(--fog-corner-radius) - 1px), black var(--fog-corner-radius)); }
-.land-tile.fog-corner-se { --fog-se: radial-gradient(circle at 0 0, transparent calc(var(--fog-corner-radius) - 1px), black var(--fog-corner-radius)); }
-.land-tile.fog-corner-nw::after, .land-tile.fog-corner-ne::after,
-.land-tile.fog-corner-sw::after, .land-tile.fog-corner-se::after {
+.land-tile.fog-edge-n { --fog-edge-n: url("/content/fog/edge-n.png"); }
+.land-tile.fog-edge-e { --fog-edge-e: url("/content/fog/edge-e.png"); }
+.land-tile.fog-edge-s { --fog-edge-s: url("/content/fog/edge-s.png"); }
+.land-tile.fog-edge-w { --fog-edge-w: url("/content/fog/edge-w.png"); }
+.land-tile.fog-corner-nw { --fog-corner-nw: url("/content/fog/corner-nw.png"); }
+.land-tile.fog-corner-ne { --fog-corner-ne: url("/content/fog/corner-ne.png"); }
+.land-tile.fog-corner-sw { --fog-corner-sw: url("/content/fog/corner-sw.png"); }
+.land-tile.fog-corner-se { --fog-corner-se: url("/content/fog/corner-se.png"); }
+.land-tile.fog-outer-nw { --fog-outer-nw: url("/content/fog/outer-nw.png"); }
+.land-tile.fog-outer-ne { --fog-outer-ne: url("/content/fog/outer-ne.png"); }
+.land-tile.fog-outer-sw { --fog-outer-sw: url("/content/fog/outer-sw.png"); }
+.land-tile.fog-outer-se { --fog-outer-se: url("/content/fog/outer-se.png"); }
+.land-tile.fog-border::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: var(--fog-nw), var(--fog-ne), var(--fog-sw), var(--fog-se);
-    background-size: var(--fog-corner-radius) var(--fog-corner-radius);
-    background-position: left top, right top, left bottom, right bottom;
+    background-image: var(--fog-edge-n), var(--fog-edge-e), var(--fog-edge-s), var(--fog-edge-w),
+        var(--fog-corner-nw), var(--fog-corner-ne), var(--fog-corner-sw), var(--fog-corner-se),
+        var(--fog-outer-nw), var(--fog-outer-ne), var(--fog-outer-sw), var(--fog-outer-se);
+    background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 

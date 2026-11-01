@@ -176,14 +176,26 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
 
     // Round the corners of the discovered area: a corner is rounded when both
     // neighbours along it and the diagonal one are still undiscovered.
-    function fogCorners(position){
+    function fogBorder(position){
         const undiscovered = (dy, dx) => !fogOfWar.discovered(map.normalize({y: position.y+dy, x: position.x+dx}));
-        const corners = [];
-        if (undiscovered(-1, 0) && undiscovered(0, -1) && undiscovered(-1, -1)) corners.push("fog-corner-nw");
-        if (undiscovered(-1, 0) && undiscovered(0, 1) && undiscovered(-1, 1)) corners.push("fog-corner-ne");
-        if (undiscovered(1, 0) && undiscovered(0, -1) && undiscovered(1, -1)) corners.push("fog-corner-sw");
-        if (undiscovered(1, 0) && undiscovered(0, 1) && undiscovered(1, 1)) corners.push("fog-corner-se");
-        return corners;
+        const n = undiscovered(-1, 0), e = undiscovered(0, 1), s = undiscovered(1, 0), w = undiscovered(0, -1);
+        const layers = [];
+        if (n) layers.push("fog-edge-n");
+        if (e) layers.push("fog-edge-e");
+        if (s) layers.push("fog-edge-s");
+        if (w) layers.push("fog-edge-w");
+        // two undiscovered sides round off the corner between them
+        if (n && w && undiscovered(-1, -1)) layers.push("fog-corner-nw");
+        if (n && e && undiscovered(-1, 1)) layers.push("fog-corner-ne");
+        if (s && w && undiscovered(1, -1)) layers.push("fog-corner-sw");
+        if (s && e && undiscovered(1, 1)) layers.push("fog-corner-se");
+        // only the diagonal neighbour is undiscovered: the fray continues around its corner
+        if (!n && !w && undiscovered(-1, -1)) layers.push("fog-outer-nw");
+        if (!n && !e && undiscovered(-1, 1)) layers.push("fog-outer-ne");
+        if (!s && !w && undiscovered(1, -1)) layers.push("fog-outer-sw");
+        if (!s && !e && undiscovered(1, 1)) layers.push("fog-outer-se");
+        if (layers.length) layers.push("fog-border");
+        return layers;
     }
 
     function cell(key, x, y, entry){
@@ -199,7 +211,7 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         const clazzes = ["land-tile"];
         if (!fogOfWar || fogOfWar.discovered(position)) {
             clazzes.push("land-tile-type-" + detail);
-            if (fogOfWar) clazzes.push(...fogCorners(position));
+            if (fogOfWar) clazzes.push(...fogBorder(position));
         }
         if(fogOfWar && !fogOfWar.visible(position)){
             if(unit && unit.clazz==='city' && fogOfWar.discovered(position)) unit=new city(unit.derivedPosition(), unit.getName());
