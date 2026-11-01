@@ -9,26 +9,20 @@ import {navigationAStar} from "softwar-shared/game/navigationAStar.mjs";
 function WorldMapView({map, range, selectedUnit, fogOfWar}) {
     const [state, setState] = useState({mode: 'regular', path: null});
     const dimensions = map.dimensions;
+    // the bus handlers below are registered once, so they read the latest values through this ref
     const stateRef = useRef();
-    stateRef.current = {mode: state.mode, path: state.path};
+    stateRef.current = {mode: state.mode, path: state.path, selectedUnit};
 
-    function moveToMode(){
-        const state = stateRef.current.mode;
-        if(selectedUnit && state!=='move-to'){
-            setState({...state, mode: 'move-to'});
+    function toggleMode(mode){
+        const current = stateRef.current;
+        if(current.selectedUnit && current.mode!==mode){
+            setState({mode: mode, path: null});
         } else {
-            setState({...state, mode: 'regular'});
+            setState({mode: 'regular', path: null});
         }
     }
-
-    function patrolToMode(){
-        const state = stateRef.current.mode;
-        if(selectedUnit && state!=='patrol-to'){
-            setState({...state, mode: 'patrol-to'});
-        } else {
-            setState({...state, mode: 'regular'});
-        }
-    }
+    const moveToMode = () => toggleMode('move-to');
+    const patrolToMode = () => toggleMode('patrol-to');
 
 
     useEffect(() => {
