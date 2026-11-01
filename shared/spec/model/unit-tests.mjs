@@ -605,7 +605,22 @@ describe("unit class", function(){
             tank.disembark("to");
 
             //Then
-            expect(tank.move).toHaveBeenCalledWith("to")
+            expect(tank.move).toHaveBeenCalledWith("to", undefined)
+        });
+        it("should leave on a blitz even without moves left, and really be out", function(){
+            //Given: the tank attacked out of the transport with its last move and won
+            var transport =  new unit("t", {x: 5, y:6});
+            var tank =  new unit("T", {x: 4, y:8}).initTurn();
+            transport.load(tank);
+            tank.movesLeft = 0;
+
+            //When
+            tank.disembark({x: 6, y: 6}, true);
+
+            //Then
+            expect(transport.nestedUnits).not.toContain(tank);
+            expect(tank.inside).toBeNull();
+            expect(tank.position).toEqual({x: 6, y: 6});
         });
     });
     describe("isOn method", function(){

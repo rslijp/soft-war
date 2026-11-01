@@ -21,9 +21,20 @@ const saveGame = {
         });
         return units;
     },
-    loadUnits: function(rawunits) {
+    loadUnits: function(rawunits, map) {
         let units = [];
+        const seen = new Set();
         rawunits.forEach((rawunit) => {
+            // a destroyed unit isn't part of the game any more
+            if (rawunit.health !== undefined && rawunit.health !== null && rawunit.health <= 0) return;
+            // Older saves could hold the same unit twice; outside a city two units can't share a tile,
+            // so an identical second entry there is that duplicate. (In a city, identical units are normal.)
+            const key = JSON.stringify(rawunit);
+            if (!map.cityAt(rawunit.y, rawunit.x) && seen.has(key)) {
+                console.warn("Skipped a duplicate unit at", rawunit.y, rawunit.x);
+                return;
+            }
+            seen.add(key);
             const mainUnit = new unit(rawunit.type, {y: rawunit.y, x: rawunit.x});
             if(rawunit.health!==undefined) mainUnit.health=rawunit.health;
             if(rawunit.fortified!==undefined) mainUnit.fortified=rawunit.fortified;
@@ -49,7 +60,7 @@ const saveGame = {
         return cities;
     },
     load: function(rawUnits, rawCities, map) {
-        return this.loadUnits(rawUnits).concat(this.loadCities(rawCities, map));
+        return this.loadUnits(rawUnits, map).concat(this.loadCities(rawCities, map));
     }
 };
 
@@ -99,6 +110,8 @@ export function serializeGameState(game){
             player.units.filter(u=>u.clazz==='unit'&&!u.inside).forEach(u=>{
                 units.push(u)
             });
+            // each unit once, and only the ones still alive
+            const saved = [...new Set(units)].filter(u => !(u.health <= 0));
             return {
                 "id" : player.id,
                 "name" : player.name,
@@ -116,7 +129,7 @@ export function serializeGameState(game){
                     }
                 }),
                 "embarking": player.embarking?player.embarking:undefined,
-                "units": units.map(u=>{
+                "units": saved.map(u=>{
                     const pos = u.derivedPosition();
                     const unit = {
                         "y" : pos.y,

@@ -441,4 +441,6 @@ export function aiPlayer(index, id, name, color, units, map) {
     MessageBus.register("unit-order-attention", this.unitAttention, this);
     MessageBus.register("enemy-spotted", this.enemySpotted, this);
     MessageBus.register("unit-created", this.registerUnit, this);
+    // like a human player: a destroyed unit leaves the AI's list (it stayed there, without a position)
+    MessageBus.register("unit-destroyed", this.destroyed, this);
 }

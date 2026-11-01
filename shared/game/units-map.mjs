@@ -49,7 +49,7 @@ export function unitsMap(players, map) {
             unit = this.remove(position);
             unit.move(to, blitz);
         } else {
-            unit.disembark(to);
+            unit.disembark(to, blitz);
         }
         this.add(unit);
         var foes = this.enemyNearyBy(unit, unit.sight);
