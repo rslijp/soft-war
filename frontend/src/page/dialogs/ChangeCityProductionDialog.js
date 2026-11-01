@@ -1,7 +1,7 @@
 import {Alert, Badge, Button, ListGroup, Modal} from "react-bootstrap";
+import {MessageBus, unitRef} from "softwar-shared";
 import React, {useState} from "react";
 import {any, func} from "prop-types";
-import {MessageBus} from "softwar-shared";
 import {TYPE_MAP} from "../component/UnitTypesConstants";
 import {unitTypes} from "softwar-shared/game/unit-types.mjs";
 import {useDialogFocus} from "./useDialogFocus";
@@ -11,8 +11,7 @@ function ChangeCityProducion({city, onClose}) {
     const [producing, setProducing] = useState(city.producingType||'');
 
     function changeProduction() {
-        city.produce(producing);
-        MessageBus.send("infobar-update");
+        MessageBus.send("change-production", unitRef(city), producing);
         onClose();
     }
 

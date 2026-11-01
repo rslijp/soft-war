@@ -1,10 +1,10 @@
 import {ButtonGroup, Overlay} from "react-bootstrap";
+import {MessageBus, unitRef} from "softwar-shared";
 import React, {useRef, useState} from "react";
 import {faBolt, faCancel, faMapLocationDot, faPersonMilitaryRifle} from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import GameUnitNestedUnitsToolTip from "./GameUnitNestedUnitsToolTip";
-import {MessageBus} from "softwar-shared";
 import {SPECIAL_MAP} from "./UnitTypesConstants";
 import Tooltip from 'react-bootstrap/Tooltip';
 import {any} from "prop-types";
@@ -22,10 +22,7 @@ function GameUnitActionsToolTip({unit, selectedUnit}) {
             variant={"outline-secondary"}
             size={"xs"}
             title={action.label}
-            onClick={() => {
-                unit[action.method]();
-                MessageBus.send("screen-update", unit.derivedPosition());
-            }}><FontAwesomeIcon icon={SPECIAL_MAP[action.method]}/></Button>;
+            onClick={() => MessageBus.send("special-action", unitRef(unit), action.method)}><FontAwesomeIcon icon={SPECIAL_MAP[action.method]}/></Button>;
     };
 
     function slotNodes () {
