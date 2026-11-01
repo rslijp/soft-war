@@ -3,9 +3,6 @@ import {any} from "prop-types";
 import {useEffect} from "react";
 
 function KeyBoardHandler({state}) {
-    const currentPlayer = state.currentPlayer();
-    const selectedUnit = currentPlayer.selectedUnit;
-
     useEffect(() => {
         const handles = [
             MessageBus.register("keyboard-key-pressed", onKeyPress, this),
@@ -15,8 +12,10 @@ function KeyBoardHandler({state}) {
         };
     }, []);
 
+    // registered once: always look up the selected unit at the moment the key is pressed
     const onNumericKeyPressed = (key) => {
-        if (!selectedUnit) {
+        const selectedUnit = state.currentPlayer().selectedUnit;
+        if (!selectedUnit || !selectedUnit.nestedUnits) {
             return;
         }
         var index = key - 49;
