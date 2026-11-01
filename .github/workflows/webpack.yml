@@ -36,8 +36,9 @@ jobs:
         npm run eslint
         npm run build
 
-    - name: Eslint - backend
+    - name: Test and eslint - backend
       run: |
         cd backend
         npm install
+        npm test
         npm run eslint

@@ -50,6 +50,49 @@ export function screenConnection(sendCommand) {
 
 let running = null;
 
+// The game page calls this when it shows the running game; the returned function when it goes away.
+// Then the local game stops, or the connection to the server hangs up. (Waiting a moment lets
+// React's development mode unmount and mount the page again without hanging up.)
+export function watchGame() {
+    const game = running;
+    if (!game) return () => {};
+    game.pages = (game.pages || 0) + 1;
+    return () => {
+        game.pages -= 1;
+        setTimeout(() => {
+            if (game.pages === 0 && running === game) {
+                running.stop();
+                running = null;
+            }
+        }, 0);
+    };
+}
+
+// A game that runs on the server: commands go up the WebSocket, its messages come down.
+export function remoteGame(code) {
+    if (running) running.stop();
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const socket = new WebSocket(`${protocol}//${window.location.host}/api/game-socket?code=${encodeURIComponent(code)}`);
+    const pending = [];
+    const connection = screenConnection((name, args) => {
+        const message = JSON.stringify({type: "command", name, args});
+        if (socket.readyState === WebSocket.OPEN) socket.send(message);
+        else pending.push(message);
+    });
+    socket.addEventListener("open", () => pending.splice(0).forEach(m => socket.send(m)));
+    socket.addEventListener("message", (event) => connection.receive(JSON.parse(event.data)));
+    const failed = new Promise((resolve, reject) => socket.addEventListener("close", (event) => {
+        // 4xxx: the server refused (no such game, not your game); otherwise the connection broke
+        MessageBus.send("event:connection-closed", event.code, event.reason);
+        reject(new Error(event.reason || "The connection to the game was closed"));
+    }));
+    running = {stop: () => {
+        connection.close();
+        socket.close();
+    }};
+    return Promise.race([connection.ready, failed]).then(gameView => ({gameView}));
+}
+
 // A game that runs in this browser (against the AI, or the dev game): the same host the server
 // uses, with the messages copied as JSON so they are exactly what a network would carry.
 export function localGame(createEngineGame, {onTurnEnded} = {}) {
