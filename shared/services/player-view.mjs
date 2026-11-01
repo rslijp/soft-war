@@ -114,7 +114,9 @@ export function playerView(game, viewer, {intelligence = false} = {}) {
     });
 
     const current = game.currentPlayer();
-    const selected = current.index === viewer && current.selectedUnit && current.selectedUnit.health > 0 ? current.selectedUnit : null;
+    // a selected city has no health; a selected unit must still be alive
+    const chosen = current.selectedUnit;
+    const selected = current.index === viewer && chosen && (chosen.clazz !== "unit" || chosen.health > 0) ? chosen : null;
     return {
         code: game.code,
         name: game.name,

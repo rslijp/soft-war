@@ -90,7 +90,9 @@ export function humanPlayer(index, id, name, color, units, map) {
             return;
         }
         var position = unit.derivedPosition();
-        this.flash({variant: 'warning', text: "The " + unit.definition().name + " at (" + position.y + ", " + position.x + ") was attacked and received " + damage + " points of damage"});
+        // a city under siege is defended by a small object of its own, without a definition
+        var name = unit.definition ? unit.definition().name : "city of " + unit.getName();
+        this.flash({variant: 'warning', text: "The " + name + " at (" + position.y + ", " + position.x + ") was attacked and received " + damage + " points of damage"});
     };
     this.flashUnitCreationSuspended = function(city, definition) {
         if (city.player != self.index) {
