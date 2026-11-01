@@ -1,4 +1,5 @@
 import {MessageBus, decorateMap, deserializeGameState} from "softwar-shared";
+import {DEV_GAME_CODE} from "./DevGameLoader";
 import {apiFetch} from "./Api";
 import {serializeGameState} from "softwar-shared/services/save-game.mjs";
 
@@ -25,6 +26,8 @@ export function newGame(type, dimensions, name, players) {
 }
 
 export function saveGame(gameState) {
+    // the dev game only lives in the browser
+    if(gameState.code === DEV_GAME_CODE) return Promise.resolve();
     return apiFetch("POST",`/api/app-state/save-game`, serializeGameState(gameState));
 }
 
