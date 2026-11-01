@@ -14,7 +14,8 @@ function GameView({state, range}) {
 
     const focusView = () => {
         if(gameView.current) gameView.current.blur();
-        setTimeout(()=>gameView.current.focus(),0);
+        // preventScroll: focusing must not scroll the map's frame, which pushed the coordinates under the top bar
+        setTimeout(()=>gameView.current.focus({preventScroll: true}),0);
     };
 
     useEffect(() => {

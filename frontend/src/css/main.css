@@ -64,6 +64,8 @@ body {
 
 .map-view-port {
     overflow: hidden;
+    /* clip can't be scrolled at all, not even by focusing something inside it */
+    overflow: clip;
 }
 
 .map-view-port > .map-view-port-top, .map-view-port > .map-view-port-main,.map-view-port > .map-view-port-bottom {
