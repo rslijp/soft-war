@@ -7,7 +7,7 @@ function GameView({state, range}) {
     const currentPlayer = state.currentPlayer();
     // during an AI turn the map shows what the (human) spectator can see, see AiDebugView
     const spectator = state.spectator();
-    const ownView = spectator === currentPlayer;
+    const ownView = spectator.index === currentPlayer.index;
     const selectedUnit = ownView ? currentPlayer.selectedUnit : null;
     const world = state.world();
     const gameView = useRef();

@@ -19,7 +19,7 @@ import {TYPE_MAP} from "./UnitTypesConstants";
 function GameUnitBar({gameState, openDialog}) {
     const currentPlayer = gameState.currentPlayer();
     // the AI's unit is only shown in the debug view, see AiDebugView
-    const selectedUnit = gameState.spectator() === currentPlayer ? currentPlayer.selectedUnit : null;
+    const selectedUnit = gameState.spectator().index === currentPlayer.index ? currentPlayer.selectedUnit : null;
 
     const onKeyPress = (e) => {
         var key = e.charCode === 0 ? e.keyCode : e.charCode;

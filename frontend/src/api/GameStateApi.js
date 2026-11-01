@@ -1,15 +1,19 @@
-import {MessageBus, decorateMap, deserializeGameState} from "softwar-shared";
+import {MessageBus, deserializeGameState} from "softwar-shared";
 import {DEV_GAME_CODE} from "./DevGameLoader";
 import {apiFetch} from "./Api";
+import {localGame} from "./GameConnection";
 import {serializeGameState} from "softwar-shared/services/save-game.mjs";
 
 export function loadGameState(code) {
     return apiFetch("GET",`/api/app-state/game/${code}`).then(r => {
         MessageBus.clear();
-        const gameState = deserializeGameState(r);
-        decorateMap(gameState.world());
-        MessageBus.send("update-game-state", gameState);
-        return gameState;
+        // the game runs in this browser and is saved every time a turn ends
+        return localGame(() => deserializeGameState(r), {
+            onTurnEnded: game => saveGame(game).catch(e => console.error("Saving the game failed", e))
+        });
+    }).then(({gameView}) => {
+        MessageBus.send("update-game-state", gameView);
+        return gameView;
     });
 }
 

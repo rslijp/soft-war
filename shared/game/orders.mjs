@@ -1,4 +1,4 @@
-import MessageBus from "../services/message-service.mjs";
+import MessageBus, {later} from "../services/message-service.mjs";
 import {NAVIGATIONS_OFFSETS} from "./navigation.mjs";
 
 const intersect = (lhs, rhs) => {
@@ -50,7 +50,7 @@ export function orders (unit, unitsmap, player) {
     };
     this.nextOrder = () => {
         var self = this;
-        setTimeout(() => {
+        later(() => {
             self.executeOrders();
         }, player.stepDelay ? player.stepDelay(player.whereIs(unit)) : 250);
         return false;

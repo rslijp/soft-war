@@ -1,5 +1,6 @@
-import {MessageBus, decorateMap, deserializeGameState, generateMap} from "softwar-shared";
+import {MessageBus, deserializeGameState, generateMap} from "softwar-shared";
 import {generatePlayerList} from "softwar-shared/services/map-service.mjs";
+import {localGame} from "./GameConnection";
 
 export const DEV_GAME_CODE = "dev-game";
 
@@ -22,15 +23,16 @@ export function devGameLoader({request}) {
         }
     }
     MessageBus.clear();
-    const gameState = deserializeGameState({
+    const state = {
         code: DEV_GAME_CODE,
         name: "Dev game",
         turn: 1,
         currentPlayer: 0,
         players: players,
         map: world
+    };
+    return localGame(() => deserializeGameState(state)).then(({gameView}) => {
+        MessageBus.send("update-game-state", gameView);
+        return gameView;
     });
-    decorateMap(gameState.world());
-    MessageBus.send("update-game-state", gameState);
-    return gameState;
 }

@@ -27,6 +27,17 @@ describe("the boundary between the screen and the game engine", function() {
         expect(unknown).toEqual([]);
     });
 
+    it("should only listen to screen topics, commands and the game's events", function() {
+        const known = new Set([...Object.keys(COMMANDS), ...SCREEN_TOPICS]);
+        const unknown = [];
+        files.forEach(({file, text}) => {
+            for (const match of text.matchAll(/MessageBus\.register\(\s*"([a-z:-]+)"/g)) {
+                if (!known.has(match[1]) && !match[1].startsWith("event:")) unknown.push(path.basename(file) + ": " + match[1]);
+            }
+        });
+        expect(unknown).toEqual([]);
+    });
+
     it("should not change the game directly from the frontend", function() {
         const direct = [];
         files.forEach(({file, text}) => {

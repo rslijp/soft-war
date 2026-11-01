@@ -1,4 +1,4 @@
-import MessageBus from "../services/message-service.mjs";
+import MessageBus, {later} from "../services/message-service.mjs";
 import {fogOfWar} from "./fog-of-war.mjs";
 import {applyPlayerTraitsOn} from "./trait/player-traits.mjs";
 import {navigationAStar} from "./navigationAStar.mjs";
@@ -400,7 +400,7 @@ export function aiPlayer(index, id, name, color, units, map) {
             return;
         }
         const position = this.whereIs(this.selectedUnit);
-        this.conquerHandle = setTimeout(()=>this.conquerTheWorld(), this.stepDelay(position));
+        this.conquerHandle = later(()=>this.conquerTheWorld(), this.stepDelay(position));
     }
 
     this.autoNext=()=>{
