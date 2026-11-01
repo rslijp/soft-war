@@ -19,6 +19,7 @@ import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
 import {isAiDebugView} from "../AiDebugView";
 import {useLoaderData} from "react-router";
+import {watchGame} from "../api/GameConnection";
 
 let timer = null;
 
@@ -132,6 +133,8 @@ function GamePage() {
             MessageBus.revokeByHandles(handles);
         };
     }, []);
+
+    useEffect(() => watchGame(), []);
 
 
     useEffect(() => {

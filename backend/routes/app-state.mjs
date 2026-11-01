@@ -3,6 +3,7 @@ import connection from '../connections.mjs';
 import express from 'express';
 import {generateCode} from "softwar-shared/services/random-code-service.mjs"
 import {winnerEmail, lostEmail, pendingMail, allAccepted, oneDeclined} from "../mailer.mjs";
+import {games} from "../games.mjs";
 const router = express.Router();
 
 async function appStates(){
@@ -186,9 +187,7 @@ async function retrieve(req, res, onLoad){
 }
 
 router.delete('/pending-game/:code', async function(req, res, next) {
-
-
-
+    await games.close(req.params.code);
     await retrieve(req, res, async (state, player)=>{
         if(player.status !== 'pending'){
             console.log("Already accepted");
@@ -212,6 +211,7 @@ router.delete('/pending-game/:code', async function(req, res, next) {
 
 
 router.put('/pending-game/:code', async function(req, res, next) {
+    await games.close(req.params.code);
     await retrieve(req, res, async (state, player)=>{
         if(player.status !== 'pending'){
             console.log("Already accepted");
@@ -232,6 +232,7 @@ router.put('/pending-game/:code', async function(req, res, next) {
 router.delete('/game/:code', async function(req, res, next) {
     const user = req.session.passport.user._json;
     try {
+        await games.close(req.params.code);
         const gameState = await retrieveExistingGame(req.params.code, user);
 
         const activePlayers = gameState.players.filter(p => p.status === 'active');

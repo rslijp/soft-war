@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 
-import app from './app.mjs';
+import app, {sessionParser} from './app.mjs';
+import {games} from './games.mjs';
 import http from 'http';
 
 /**
@@ -19,6 +20,17 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/**
+ * Games run on the server; the players' screens connect over a WebSocket.
+ */
+
+games.attach(server, (request) => new Promise(resolve => {
+  sessionParser(request, {}, () => {
+    const user = request.session && request.session.passport && request.session.passport.user;
+    resolve(user && user._json ? user._json.email : null);
+  });
+}));
 
 /**
  * Listen on provided port, on all network interfaces.
