@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {any, number, shape} from "prop-types";
 import {MessageBus} from "softwar-shared";
+import {NAVIGATIONS_OFFSETS} from "softwar-shared/game/navigation.mjs";
 import {TILE_SIZE} from "../Constants";
 import UnitView from "./UnitView";
 import {city} from "softwar-shared/game/city.mjs";
@@ -63,10 +64,11 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
             }
             return selectedUnit.canMoveOn(world[pos.y][pos.x].type);
         };
+        // a tile the unit can step to: a short line from the unit and a ring to click
         const hudPoint = (pos, dy , dx, direction) => {
             const dp = map.normalize({y: pos.y+dy,x: pos.x+dx});
             if(allowed(dp)) hudMap[`${dp.y}_${dp.x}`] = {
-                className: "hud-move-"+direction,
+                className: "hud-step hud-in-"+direction,
                 action: (e) => {
                     MessageBus.sendLockable("cursor-direction", direction);
                     e.stopPropagation();
@@ -76,15 +78,31 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
 
         };
 
+        // the direction of one step between two neighbouring tiles (the map wraps around)
+        const directionBetween = (from, to) => {
+            const wrap = (d, size) => d > 1 ? d - size : d < -1 ? d + size : d;
+            const dy = wrap(to.y - from.y, dimensions.height);
+            const dx = wrap(to.x - from.x, dimensions.width);
+            const offset = NAVIGATIONS_OFFSETS.find(o => o.y === dy && o.x === dx);
+            return offset ? offset.direction : null;
+        };
+
+        // a route: a line through the centres of the tiles, a dot on every step and a ring at the end
         const hudPath = (path, action) => {
             path.forEach((pos,i)=>{
+                const classes = ["hud-path"];
+                if (i === 0 && selectedUnit.isOn(pos)) classes.push("hud-start");
+                const cameFrom = i > 0 ? path[i-1].direction : directionBetween(selectedUnit.derivedPosition(), pos);
+                if (cameFrom && cameFrom !== "X") classes.push("hud-in-" + cameFrom);
                 if(i!==path.length-1) {
+                    classes.push("hud-out-" + pos.direction);
                     hudMap[`${pos.y}_${pos.x}`] = {
-                        className: "hud-move-" + pos.direction
+                        className: classes.join(" ")
                     };
                 } else {
+                    classes.push("hud-end");
                     hudMap[`${pos.y}_${pos.x}`] = {
-                        className: "hud-move-X"
+                        className: classes.join(" ")
                     };
                     if(action){
                         hudMap[`${pos.y}_${pos.x}`].action = (e) => {
@@ -221,7 +239,7 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
     function viewport(range, world) {
         const deltaX = range.deltaX;
         const deltaY = range.deltaY;
-        return <table  className={"world-map"} style={{width: `${deltaX*TILE_SIZE}px`, height: `${deltaY*TILE_SIZE}px`}}>
+        return <table  className={"world-map world-map-mode-" + state.mode} style={{width: `${deltaX*TILE_SIZE}px`, height: `${deltaY*TILE_SIZE}px`}}>
             <tbody>
                 {[...Array(deltaY)].map((_, y) => {
                     let ly = (range.startY + y) % dimensions.height;
@@ -239,7 +257,15 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         </table>;
     }
 
-    return viewport(normalizedRange(range), map.world);
+    const orderBanner = {
+        'move-to': <>Move order <span>Click a destination · M to cancel</span></>,
+        'patrol-to': <>Patrol order <span>Click the far end of the route · P to cancel</span></>
+    }[state.mode];
+
+    return <>
+        {orderBanner && selectedUnit ? <div className={"order-mode-banner"} role={"status"}>{orderBanner}</div> : null}
+        {viewport(normalizedRange(range), map.world)}
+    </>;
 }
 
 WorldMapView.propTypes = {

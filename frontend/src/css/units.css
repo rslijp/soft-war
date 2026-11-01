@@ -17,9 +17,7 @@
 }
 
 
-.unit-view.selected-unit {
-    box-shadow: 0px 0px 5px 5px lightblue;
-}
+/* .selected-unit: see hud.css */
 
 .unit-view.city {
     background-image: url("/content/units/45x45/city.png");

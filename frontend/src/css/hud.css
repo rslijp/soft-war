@@ -47,48 +47,150 @@
     z-index: 999;
 }
 
-.hud-action:hover {
-    box-shadow: 0px 0px 5px 5px #ffc107;
-}
-
-.hud-action.hud-move-NW {
-    background-image: url("/content/hud/arrow-up-left.png");
-}
-
-.hud-action.hud-move-N {
-    background-image: url("/content/hud/arrow-up.png");
-}
-
-.hud-action.hud-move-NE {
-    background-image: url("/content/hud/arrow-up-right.png");
-}
-
-.hud-action.hud-move-W {
-    background-image: url("/content/hud/arrow-left.png");
-}
-
-.hud-action.hud-move-E {
-    background-image: url("/content/hud/arrow-right.png");
-}
-
-.hud-action.hud-move-SW {
-    background-image: url("/content/hud/arrow-down-left.png");
-}
-
-.hud-action.hud-move-S {
-    background-image: url("/content/hud/arrow-down.png");
-}
-
-.hud-action.hud-move-SE {
-    background-image: url("/content/hud/arrow-down-right.png");
-}
-
-.hud-action.hud-move-X {
-    background-image: url("/content/hud/finish-x.png");
-}
-
-.unit-remark {
+/* Movement: a route is a red line through the centres of the tiles with a dot on every step
+   and a ring at its end; the tiles a unit can step to show a short line and a ring to click.
+   ::before is the segment towards the next tile, ::after the one back to where the route came from. */
+.hud-action {
+    --hud-red: #E5402F;
+    --hud-outline: rgba(17, 20, 15, 0.55);
+    --hud-half: calc(var(--tile-size) / 2 + 1px);
+    --hud-diagonal: calc(var(--tile-size) * 0.7072 + 1px);
     position: relative;
-    top: -10px;
-    left: -20px;
+    margin: 0 auto;
+}
+
+.hud-path::before, .hud-path::after, .hud-step::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 4px;
+    background: var(--hud-red);
+    box-shadow: 0 0 0 1px var(--hud-outline);
+    transform-origin: 0 50%;
+    pointer-events: none;
+}
+.hud-path::before {
+    display: none;
+    width: var(--out-length);
+    transform: translateY(-50%) rotate(var(--out-angle));
+}
+.hud-path::after, .hud-step::after {
+    display: none;
+    width: var(--in-length);
+    transform: translateY(-50%) rotate(var(--in-angle));
+}
+.hud-path[class*="hud-out-"]::before, .hud-path[class*="hud-in-"]::after, .hud-step::after {
+    display: block;
+}
+
+/* a dot on every step, a ring at the end; none on the unit's own tile */
+.hud-path {
+    background: radial-gradient(circle, var(--hud-red) 0 5px, var(--hud-outline) 5px 6.5px, transparent 7px);
+}
+.hud-path.hud-start {
+    background: none;
+}
+.hud-path.hud-end {
+    background: radial-gradient(circle, transparent 0 7px, var(--hud-red) 7px 11px, var(--hud-outline) 11px 12.5px, transparent 13px),
+        radial-gradient(circle, var(--hud-red) 0 3px, transparent 3.5px);
+}
+.hud-path.hud-end:hover {
+    cursor: pointer;
+    background: radial-gradient(circle, var(--hud-red) 0 11px, var(--hud-outline) 11px 12.5px, transparent 13px);
+}
+
+/* the steps a unit can take right now: a thinner line from the unit and a ring */
+.hud-step {
+    cursor: pointer;
+    background: radial-gradient(circle, transparent 0 5px, var(--hud-red) 5px 8px, var(--hud-outline) 8px 9.5px, transparent 10px);
+}
+.hud-step::after {
+    height: 3px;
+    opacity: 0.75;
+}
+.hud-step:hover {
+    background: radial-gradient(circle, var(--hud-red) 0 8px, var(--hud-outline) 8px 9.5px, transparent 10px);
+}
+.hud-step:hover::after {
+    opacity: 1;
+}
+
+.hud-out-E  { --out-angle: 0deg;   --out-length: var(--hud-half); }
+.hud-out-SE { --out-angle: 45deg;  --out-length: var(--hud-diagonal); }
+.hud-out-S  { --out-angle: 90deg;  --out-length: var(--hud-half); }
+.hud-out-SW { --out-angle: 135deg; --out-length: var(--hud-diagonal); }
+.hud-out-W  { --out-angle: 180deg; --out-length: var(--hud-half); }
+.hud-out-NW { --out-angle: 225deg; --out-length: var(--hud-diagonal); }
+.hud-out-N  { --out-angle: 270deg; --out-length: var(--hud-half); }
+.hud-out-NE { --out-angle: 315deg; --out-length: var(--hud-diagonal); }
+
+/* hud-in-X: the route came in travelling X, so the segment points back the other way */
+.hud-in-E  { --in-angle: 180deg; --in-length: var(--hud-half); }
+.hud-in-SE { --in-angle: 225deg; --in-length: var(--hud-diagonal); }
+.hud-in-S  { --in-angle: 270deg; --in-length: var(--hud-half); }
+.hud-in-SW { --in-angle: 315deg; --in-length: var(--hud-diagonal); }
+.hud-in-W  { --in-angle: 0deg;   --in-length: var(--hud-half); }
+.hud-in-NW { --in-angle: 45deg;  --in-length: var(--hud-diagonal); }
+.hud-in-N  { --in-angle: 90deg;  --in-length: var(--hud-half); }
+.hud-in-NE { --in-angle: 135deg; --in-length: var(--hud-diagonal); }
+
+/* the selected unit: an orange ring that breathes */
+.unit-view.selected-unit {
+    box-shadow: 0 0 0 2px #F2A23A, 0 0 0 4px rgba(17, 20, 15, 0.6);
+    animation: selected-unit-pulse 1.6s ease-in-out infinite;
+}
+@keyframes selected-unit-pulse {
+    50% { box-shadow: 0 0 0 2px #F2A23A, 0 0 0 4px rgba(17, 20, 15, 0.6), 0 0 0 9px rgba(242, 162, 58, 0.35); }
+}
+
+/* giving a move or patrol order: the unit pulses red, the map gets a crosshair and a banner says so */
+.world-map-mode-move-to, .world-map-mode-patrol-to {
+    cursor: crosshair;
+}
+.world-map-mode-move-to .unit-view.selected-unit, .world-map-mode-patrol-to .unit-view.selected-unit {
+    box-shadow: 0 0 0 2px #E5402F, 0 0 0 4px rgba(17, 20, 15, 0.6);
+    animation: order-mode-pulse 0.9s ease-in-out infinite;
+}
+@keyframes order-mode-pulse {
+    50% { box-shadow: 0 0 0 2px #E5402F, 0 0 0 4px rgba(17, 20, 15, 0.6), 0 0 0 10px rgba(229, 64, 47, 0.35); }
+}
+.order-mode-banner {
+    position: fixed;
+    z-index: 50;
+    top: calc(var(--top-bar-height) + var(--legend-size) + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 16px;
+    background: #11140F;
+    border: 1px solid #E5402F;
+    color: #ECE6D3;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+}
+.order-mode-banner span {
+    margin-left: 12px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: none;
+    color: #A4AC95;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .unit-view.selected-unit, .world-map-mode-move-to .unit-view.selected-unit, .world-map-mode-patrol-to .unit-view.selected-unit {
+        animation: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .order-mode-banner span {
+        display: none;
+    }
 }
