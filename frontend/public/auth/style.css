@@ -418,3 +418,30 @@ h1 {
         gap: 40px;
     }
 }
+
+/* the generated map from /login.js */
+.recon-window {
+    position: relative;
+}
+
+.login-map {
+    display: grid;
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+.login-map .land-tile {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-map .unit-view.city {
+    border-radius: 0;
+    background-color: rgba(236, 230, 211, 0.85);
+    background-size: cover;
+}

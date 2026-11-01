@@ -32,10 +32,14 @@ const ERROR_PAGES = [
 ];
 
 const config = {
-    entry: "./src/index.js",
+    entry: {
+        main: "./src/index.js",
+        // the map on the sign-in page (public/auth)
+        login: "./src/login.js"
+    },
     watch: false,
     output: {
-        filename: "main.js",
+        filename: "[name].js",
         path: path.resolve(__dirname, "..", "backend", "public"),
     },
     module: {
@@ -59,6 +63,7 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "public", "index.html"),
+            chunks: ["main"]
         }),
         new CopyWebpackPlugin({
             patterns: [

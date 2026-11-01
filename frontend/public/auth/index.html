@@ -45,7 +45,8 @@
             <span>SECTOR 12·18</span>
             <span>RECON — <em>LIVE</em></span>
         </div>
-        <div class="recon-window">
+        <!-- /login.js replaces the drawn sector with a generated map in the real tiles -->
+        <div class="recon-window" id="login-map">
             <!-- two copies of the same 8x6 sector stacked, scrolled by one copy height: an endless map -->
             <div class="recon-map" aria-hidden="true">
                 <div class="sector">
@@ -77,5 +78,6 @@
     <span>Powered by SoftCause</span>
     <span>A tribute to Empire</span>
 </footer>
+<script src="/login.js" defer></script>
 </body>
 </html>
