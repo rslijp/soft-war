@@ -1,6 +1,6 @@
 // The map on the sign-in page (public/auth): a freshly generated world in the real map tiles,
 // slowly scrolling inside the recon panel. Plain DOM, no React, to keep this bundle small.
-import './css/maptiles-v2.css';
+import './css/tileset.css';
 import './css/units.css';
 import {decorateMap, deserializeGameState, generateMap} from "softwar-shared";
 
@@ -16,7 +16,6 @@ function start(container) {
 
     container.style.setProperty("--tile-size", TILE + "px");
     container.style.setProperty("--unit-size", (TILE - 2) + "px");
-    document.documentElement.classList.add("tileset-v2");
 
     // one tile more than fits in each direction, so the edge never shows while sliding
     const columns = Math.ceil(container.clientWidth / TILE) + 1;
