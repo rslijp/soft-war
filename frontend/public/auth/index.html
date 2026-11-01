@@ -4,25 +4,78 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoftWar · Sign in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@800;900&family=Space+Mono:wght@400;700&family=Big+Shoulders+Stencil:wght@900&display=swap">
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div id="menu">
-    <a class="brand-name" href="#challenge"><img src="content/logo_square.png" alt="SoftCause"/></a>
-    <div class="menu-items">
+<header class="bar">
+    <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b><i class="olive"></i><i class="olive"></i><b></b><i class="olive"></i></span>
+        <span class="wordmark">SOFTWAR</span>
+    </a>
+    <nav>
+        <a href="/public/about">Field manual</a>
+        <span>1–4 commanders</span>
+    </nav>
+</header>
 
-    </div>
-    <img class="end" src="style/decoration.png">
-</div>
-<div id="content">
-    <img id="logo" src="style/logo.png"/>
-    <div id="pages">
-        <h1><span class="fa fa-lock"></span>Game SoftCause</h1>
-        <img src="content/explosion.png" style="max-width: 300px"/>
-        <p>Welcome to the SoftWare a tribute to an old game mamed "Empire"</p>
-        <a href="/auth/google" class="btn-login"> SignIn with Google</a>
-        <p>Curious about this game. You can read more on it <a class="menu-item" href="/public/about">here</a></p>
-    </div>
-</div>
+<main>
+    <section class="briefing">
+        <div class="kicker">// Operation briefing</div>
+        <h1>SOFT<br>WAR</h1>
+        <div class="dissolve" aria-hidden="true">
+            <i></i><i></i><i></i><i class="olive"></i><i></i><i></i><i></i><i></i><i class="olive"></i><i></i><i></i><i></i>
+            <i class="o9"></i><i></i><i class="o8 olive"></i><i></i><i class="o7"></i><i class="o9"></i><b></b><i class="o6"></i>
+            <i class="o8"></i><b></b><i class="o5"></i><b></b><i class="o4 olive"></i><b></b><i class="o3"></i>
+        </div>
+        <p>Build cities, raise armies, take the world. A turn-based tribute to the classic <strong>Empire</strong>, played against friends or the machine.</p>
+        <div class="actions">
+            <a class="cta" href="/auth/google">Sign in with Google
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+            <a class="ghost" href="/public/about">Read the field manual</a>
+        </div>
+        <div class="fineprint">Sign-in is handled by Google. Your games are kept under your account.</div>
+    </section>
+
+    <section class="recon brackets" aria-label="Map reconnaissance">
+        <div class="recon-head">
+            <span>SECTOR 12·18</span>
+            <span>RECON — <em>LIVE</em></span>
+        </div>
+        <div class="recon-window">
+            <!-- two copies of the same 8x6 sector stacked, scrolled by one copy height: an endless map -->
+            <div class="recon-map" aria-hidden="true">
+                <div class="sector">
+                    <i class="s"></i><i class="s"></i><i class="s"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="s"></i><i class="s"></i>
+                    <i class="s"></i><i class="s"></i><i class="g"></i><i class="g"></i><i class="g unit">T</i><i class="g"></i><i class="g"></i><i class="s"></i>
+                    <i class="s"></i><i class="g"></i><i class="g"></i><i class="g city"></i><i class="g"></i><i class="g"></i><i class="s"></i><i class="s"></i>
+                    <i class="s"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="m"></i><i class="s"></i><i class="s"></i>
+                    <i class="s"></i><i class="s"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="s"></i><i class="s enemy">D</i><i class="s"></i>
+                    <i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i>
+                </div>
+                <div class="sector">
+                    <i class="s"></i><i class="s"></i><i class="s"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="s"></i><i class="s"></i>
+                    <i class="s"></i><i class="s"></i><i class="g"></i><i class="g"></i><i class="g unit">T</i><i class="g"></i><i class="g"></i><i class="s"></i>
+                    <i class="s"></i><i class="g"></i><i class="g"></i><i class="g city"></i><i class="g"></i><i class="g"></i><i class="s"></i><i class="s"></i>
+                    <i class="s"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="m"></i><i class="s"></i><i class="s"></i>
+                    <i class="s"></i><i class="s"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="s"></i><i class="s enemy">D</i><i class="s"></i>
+                    <i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i>
+                </div>
+            </div>
+        </div>
+        <div class="recon-foot">
+            <span>STATUS ▸ AWAITING COMMANDER<em class="blink">_</em></span>
+            <span class="turn">TURN 01</span>
+        </div>
+    </section>
+</main>
+
+<footer class="bar">
+    <span>Powered by SoftCause</span>
+    <span>A tribute to Empire</span>
+</footer>
 </body>
 </html>

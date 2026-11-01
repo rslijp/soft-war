@@ -85,7 +85,11 @@ function AppHeader() {
 
     return  <Navbar bg="dark" data-bs-theme="dark" className={"top-bar ustify-content-between"} onKeyPress={(e) => onKeyPress(e)} tabIndex={999}>
         <Container fluid>
-            <Navbar.Brand href="#/">{state !== "ready" ? "..." : userName(user)}</Navbar.Brand>
+            <Navbar.Brand href="#/">
+                <span className={"fc-wordmark"}>SOFTWAR</span>
+                <span className={"fc-divider"} aria-hidden={"true"}></span>
+                {state !== "ready" ? "..." : userName(user)}
+            </Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
                 {gameState?

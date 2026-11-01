@@ -5,6 +5,7 @@ import './css/maptiles-v2.css';
 import './css/units.css';
 import './css/hud.css';
 import './css/responsive.css';
+import './css/field-command.css';
 import React from "react";
 import SoftWarApp from "./SoftWarApp";
 import { createRoot } from "react-dom/client";
