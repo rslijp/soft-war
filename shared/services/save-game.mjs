@@ -130,7 +130,10 @@ export function serializeGameState(game){
                     if(u.order){
                         unit.order={
                             action: u.order.action,
+                            from: u.order.from,
+                            to: u.order.to,
                             queue: u.order.queue,
+                            index: u.order.index,
                             reverse: u.order.reverse,
                             direction: u.order.direction
                         };
