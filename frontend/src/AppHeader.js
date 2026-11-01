@@ -54,8 +54,7 @@ function AppHeader() {
     useEffect(() => {
         const handles = [
             MessageBus.register("update-game-state",setGameState , this, true),
-            MessageBus.register("new-turn", render, this, true),
-            MessageBus.register("next-turn", render, this, true),
+            // every new snapshot of the game comes with a screen-update
             MessageBus.register("screen-update", render, this, true),
         ];
         return ()=>{
