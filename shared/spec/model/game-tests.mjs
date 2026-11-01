@@ -1058,6 +1058,21 @@ describe("game", function(){
             gameInstance.debugView = true;
             expect(ai.stepDelay({x: 12, y: 12})).toEqual(250);
         });
+        it("should take a destroyed unit off its list", function(){
+            //Given
+            var human = new humanPlayer(0, "0", "Name", "Color", [], map);
+            var ai = new aiPlayer(1, "1", "Name", "Color", [], map);
+            new game({code: "code", name: "name", turn: 1, currentPlayer: 0}, map, [human, ai]);
+            var tank = new unit("T", {x: 9, y: 9});
+            tank.player = 1;
+            ai.units.push(tank);
+
+            //When
+            MessageBus.send("unit-destroyed", tank, human);
+
+            //Then
+            expect(ai.units).not.toContain(tank);
+        });
         it("should keep going after its selected unit was destroyed", function(){
             //Given: the AI's unit lost a battle, so it has no position any more
             var human = new humanPlayer(0, "0", "Name", "Color", [new unit("T", {x: 3, y: 3})], map);

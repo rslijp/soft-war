@@ -88,12 +88,14 @@ export function unit(type, position) {
         }
         return true;
     };
-    this.disembark = (to) => {
+    // blitz: the free move after winning a battle, also out of a city or transport with no moves left
+    this.disembark = (to, blitz) => {
         var transport = this.inside;
         if (transport) {
-            transport.unload(this);
+            if (blitz) transport.internalUnload(this);
+            else transport.unload(this);
             this.position = transport.position;
-            this.move(to);
+            this.move(to, blitz);
         }
     };
     this.embark = (transport ,blitz) => {
