@@ -17,6 +17,7 @@ import SurrenderDialog from "./dialogs/SurrenderDialog";
 import {TOP_BAR_HEIGHT} from "../Constants";
 import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
+import {gameSounds} from "../sound/director";
 import {isAiDebugView} from "../AiDebugView";
 import {useLoaderData} from "react-router";
 import {watchGame} from "../api/GameConnection";
@@ -142,6 +143,7 @@ function GamePage() {
     }, []);
 
     useEffect(() => watchGame(), []);
+    useEffect(() => gameSounds(gameState), []);
 
 
     useEffect(() => {

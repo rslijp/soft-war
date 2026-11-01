@@ -116,6 +116,8 @@ export function GameView(map) {
             unit.nestedUnits.forEach(n => index(n, false));
         };
         next.units.map(u => new ViewUnit(u)).forEach(u => index(u, true));
+        // goes up with every snapshot, so a screen can tell a new snapshot from a redraw
+        this.version = (this.version || 0) + 1;
         this.code = next.code;
         this.name = next.name;
         this.turn = next.turn;
@@ -125,6 +127,8 @@ export function GameView(map) {
         return this;
     };
 
+    // every unit and city this screen knows of, also the ones inside cities and transports
+    this.units = () => [...unitsByRef.values()];
     this.findUnit = (ref) => ref ? unitsByRef.get(`${ref.clazz}:${ref.player}:${ref.id}`) || null : null;
     this.player = (index) => playerOf(index);
     this.currentPlayer = () => playerOf(snapshot.currentPlayer);

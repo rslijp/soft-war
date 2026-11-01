@@ -10,7 +10,15 @@ import ErrorPage from "./page/ErrorPage";
 import GamePage from "./page/GamePage";
 import PendingGamePage from "./page/PendingGamePage";
 import {devGameLoader} from "./api/DevGameLoader";
+import {installAudioUnlock} from "./sound/audio";
+import {installClickSounds} from "./sound/director";
+import {installMusic} from "./sound/music";
 import {localDemoLoader} from "./api/DemoLoader";
+
+// sound starts on the first click or key press (browsers don't allow it before)
+installAudioUnlock();
+installMusic();
+installClickSounds();
 
 const router = createHashRouter([
     {

@@ -1,5 +1,6 @@
 import {Badge, Button, Container, Form, NavDropdown, Navbar} from "react-bootstrap";
 import React, {useEffect, useRef, useState} from "react";
+import {changeSoundSettings, soundSettings} from "./sound/audio";
 import {isAiDebugView, switchAiDebugView} from "./AiDebugView";
 import {loadUser, logoutUser} from "./api/UserApi";
 import {MessageBus} from "softwar-shared";
@@ -13,6 +14,7 @@ function AppHeader() {
     const [timer, setTimer] = useState(0);
     const [renderIteration, setRenderIteration] = useState(0);
     const [aiDebugView, setAiDebugView] = useState(isAiDebugView());
+    const [sound, setSound] = useState(soundSettings());
     const stateRef = useRef();
     stateRef.current = {renderIteration: renderIteration};
 
@@ -115,6 +117,12 @@ function AppHeader() {
                         {gameState && gameState.onDebugView ? <NavDropdown.Item onClick={() => setAiDebugView(switchAiDebugView(gameState))}>
                             {aiDebugView ? "Show AI turns from your side" : "Show AI turns in full (debug)"}
                         </NavDropdown.Item> : null}
+                        <NavDropdown.Item onClick={() => setSound(changeSoundSettings({music: !sound.music}))}>
+                            {sound.music ? "Music off" : "Music on"}
+                        </NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => setSound(changeSoundSettings({effects: !sound.effects}))}>
+                            {sound.effects ? "Sound effects off" : "Sound effects on"}
+                        </NavDropdown.Item>
                         <NavDropdown.Divider/>
                         <NavDropdown.Item onClick={logout}> <Button variant="danger">Logout</Button></NavDropdown.Item>
                     </NavDropdown>
