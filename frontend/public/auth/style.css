@@ -1,219 +1,447 @@
+/* Sign-in page in the "Field Command" look (see src/css/field-command.css for the game) */
 :root {
-    --text-color: #E8E5DE;
-    --main-color: black;
-    --menu-background-color: var(--main-color);
-    --menu-height: 60px;
+    --ink: #11140F;
+    --field: #1A1F17;
+    --rule: #343C2E;
+    --paper: #ECE6D3;
+    --body: #C9C4B2;
+    --muted: #A4AC95;
+    --signal: #F2A23A;
+    --signal-hover: #FFC370;
+    --olive: #6B7A45;
+    --sky: #7FB2E0;
+    --sea: #1F3A66;
+    --sea-2: #22406F;
+    --land: #5E7A35;
+    --land-2: #66833A;
+    --rock: #6E6A5E;
+    --display: 'Outfit', sans-serif;
+    --mono: 'Space Mono', monospace;
+    --stencil: 'Big Shoulders Stencil', sans-serif;
 }
 
-html {
-    width:100%;
-    height:100%;
-    background:url(style/background.jpg) repeat;
+* {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
-    padding: 0;
-    font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
+    min-height: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
 }
-
-h1, h2, h3, h4, h5 {
-    font-weight: normal;
-    border-bottom: 1px solid black;
-}
-
 
 body {
-    width:100%;
-    height:100%;
-    margin: 0;
-    padding: 0;
-    font-weight: lighter;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-p {
-    width: inherit;
+a {
+    color: var(--signal);
 }
 
-@keyframes fade-out {
-    0% {opacity: 1; }
-    99% {opacity: 0; }
-    100% {opacity: 0; z-index: -1;}
+a:hover {
+    color: var(--signal-hover);
 }
 
-@keyframes appear {
-    0% {opacity: 0; }
-    99% {opacity: 0; }
-    100% {opacity: 1; z-index: 0;}
-}
-
-@keyframes appear-from-top {
-    from {top: calc(0px - var(--menu-height));}
-    to {top: 0;}
-}
-
-
-
-img#logo {
-    z-index: inherit;
-    position: absolute;
-    top: 250px;
-    left: 100px;
-    width: 300px;
-    /*height: 368px;*/
-    margin-top: -184px; /* Half the height */
-    /*margin-left: -250px; !* Half the width *!*/
-    opacity: 0;
-    animation: fade-out 2s 1 linear forwards;
-}
-
-@media screen and (max-width: 800px) {
-    img#logo {
-        position: absolute;
-        top: 100px;
-        left: 50%;
-        width: 250px;
-        height: 184px;
-        margin-top: -92px; /* Half the height */
-        margin-left: -125px; /* Half the width */
-    }
-}
-
-
-div#menu {
-    z-index: 2;
-    display: block;
-    width: 100%;
-    height: var(--menu-height);
-    position: fixed;
-    background-color: var(--menu-background-color);
-    animation-name: appear-from-top;
-    animation-duration: 2s;
-    color: var(--text-color);
-}
-
-div#menu span.brand-name, div#menu a.brand-name {
-    display: inline-block;
-    font-size: 40px;
-    /*text-transform: uppercase;*/
-    font-weight: bolder;
-    font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
-    line-height: var(--menu-height);
-    margin: 0 calc(var(--menu-height) / 6);
-    margin-left: var(--menu-height);
-}
-
-div#menu span.brand-name, div#menu a.brand-name img {
-    margin-top: calc(var(--menu-height) / 6);
-    height: calc(var(--menu-height) / 6 * 4);
-    background: white;
-}
-
-div#menu .menu-items {
-    position: inherit;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    height: var(--menu-height);;
-}
-div#menu .menu-items a {
-    /*display: inline-block;*/
+.bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px 32px;
+    padding: 18px 40px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    line-height: var(--menu-height);
-    margin: 0 calc(var(--menu-height) / 6);
+    color: var(--muted);
+}
+
+header.bar {
+    border-bottom: 1px solid var(--rule);
+}
+
+footer.bar {
+    border-top: 1px solid var(--rule);
+    padding: 16px 40px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+}
+
+.bar nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+}
+
+.bar nav a {
+    color: var(--muted);
     text-decoration: none;
 }
 
-
-div#menu a.menu-item:hover {
-    text-decoration: underline;
-    filter: brightness(120%);
+.bar nav a:hover {
+    color: var(--paper);
 }
 
-div#menu .menu-item {
-    display: inline-block;
-    line-height: var(--menu-height);
-    color: var(--text-color);
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.brand-mark {
+    display: grid;
+    grid-template-columns: repeat(3, 6px);
+    gap: 2px;
+}
+
+.brand-mark i, .brand-mark b {
+    width: 6px;
+    height: 6px;
+    background: var(--signal);
+}
+
+.brand-mark i.olive {
+    background: var(--olive);
+}
+
+.brand-mark b {
+    background: transparent;
+}
+
+.wordmark {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 0.14em;
+    color: var(--paper);
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 64px 40px;
+}
+
+/* ---------------------------------------------------------------- briefing */
+
+.briefing {
+    flex: 1 1 440px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.kicker {
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: var(--signal);
+    text-transform: uppercase;
+}
+
+h1 {
     margin: 0;
-}
-div#menu img.end {
-    /*width: var(--menu-height);*/
-    height: var(--menu-height);
-    background-color: white;
-    float: right;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(72px, 10vw, 156px);
+    line-height: 0.86;
+    letter-spacing: 0.01em;
 }
 
-div#content {
+.dissolve {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: -18px;
+}
+
+.dissolve i, .dissolve b {
+    width: 14px;
+    height: 14px;
+    background: var(--signal);
+}
+
+.dissolve i.olive {
+    background: var(--olive);
+}
+
+.dissolve b {
+    background: transparent;
+}
+
+.dissolve .o9 { opacity: 0.9; }
+.dissolve .o8 { opacity: 0.8; }
+.dissolve .o7 { opacity: 0.7; }
+.dissolve .o6 { opacity: 0.6; }
+.dissolve .o5 { opacity: 0.5; }
+.dissolve .o4 { opacity: 0.4; }
+.dissolve .o3 { opacity: 0.3; }
+
+.briefing p {
+    margin: 0;
+    max-width: 480px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--body);
+}
+
+.briefing p strong {
+    font-weight: 400;
+    color: var(--paper);
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+}
+
+.cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 52px;
+    padding: 0 26px;
+    background: var(--signal);
+    color: var(--ink);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.cta:hover {
+    background: var(--signal-hover);
+    color: var(--ink);
+}
+
+.ghost {
+    display: inline-flex;
+    align-items: center;
+    min-height: 52px;
+    padding: 0 22px;
+    border: 1px solid var(--rule);
+    color: var(--paper);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.ghost:hover {
+    background: var(--field);
+    color: var(--paper);
+}
+
+.fineprint {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+}
+
+/* ------------------------------------------------------------------- recon */
+
+.brackets {
+    position: relative;
+}
+
+.brackets::before, .brackets::after {
+    content: "";
     position: absolute;
-    top: var(--menu-height);
+    width: 14px;
+    height: 14px;
+    border-color: var(--signal);
+    border-style: solid;
+    pointer-events: none;
+    z-index: 1;
 }
 
-div#pages {
-    z-index: -1;
-    animation: appear 2s 1 linear forwards;
-    /*position: fixed;*/
-    margin: 0 var(--menu-height);
+.brackets::before {
+    top: -1px;
+    left: -1px;
+    border-width: 2px 0 0 2px;
 }
 
-dl dt {
-    font-weight: bold;
-    float: left;
-    width: 80px;
+.brackets::after {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 2px 2px 0;
 }
 
-table.pattern {
-    border-collapse: separate;
-    border-spacing:0
+.recon {
+    flex: 1 1 400px;
+    min-width: 0;
+    max-width: 560px;
+    border: 1px solid var(--rule);
+    background: var(--field);
 }
 
-table.pattern td {
-    padding: 0px;
-    height: 45px;
-    width: 45px;
+.recon-head, .recon-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
 }
 
-table.pattern td.grass {
-    background-color: green;
-    background-image: url("content/grass1.png");
+.recon-head {
+    border-bottom: 1px solid var(--rule);
 }
 
-
-table.pattern td.sea {
-    background-color: blue;
-    background-image: url("content/sea.png");
+.recon-foot {
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    align-items: center;
+    color: var(--paper);
 }
 
-table.pattern td.grass-w-sea {
-    background-color: blue;
-    background-image: url("content/grass-w-sea.png");
-    border: 1px solid red;
+.recon em {
+    font-style: normal;
+    color: var(--signal);
 }
 
-
-.inline {
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
+.recon .turn {
+    font-family: var(--stencil);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 0.06em;
+    color: var(--signal);
 }
 
+.blink {
+    animation: blink 1.1s steps(1) infinite;
+}
 
-@media screen and (max-width: 800px) {
-    .responsive-hide {
-        display: none !important;
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* the window shows one sector; the map holds two identical sectors and slides by one */
+.recon-window {
+    margin: 16px;
+    aspect-ratio: 8 / 6;
+    overflow: hidden;
+}
+
+.recon-map {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    animation: recon-scroll 24s linear infinite;
+}
+
+@keyframes recon-scroll {
+    from { transform: translateY(0); }
+    to { transform: translateY(calc(-50% - 1px)); }
+}
+
+.sector {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 2px;
+}
+
+.sector i {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--stencil);
+    font-weight: 900;
+    font-style: normal;
+    font-size: 18px;
+    color: var(--ink);
+}
+
+.sector i.s { background-color: var(--sea); }
+.sector i.s:nth-child(even) { background-color: var(--sea-2); }
+.sector i.g { background-color: var(--land); }
+.sector i.g:nth-child(even) { background-color: var(--land-2); }
+.sector i.m { background-color: var(--rock); }
+
+.sector i.city::after {
+    content: "";
+    width: 46%;
+    height: 46%;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    box-sizing: border-box;
+}
+
+.sector i.unit {
+    box-shadow: inset 0 0 0 2px var(--signal);
+    background-image: linear-gradient(var(--signal), var(--signal));
+    background-size: 58% 58%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.sector i.enemy {
+    background-image: linear-gradient(var(--sky), var(--sky));
+    background-size: 58% 58%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .recon-map, .blink {
+        animation: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .bar, footer.bar {
+        padding-left: 16px;
+        padding-right: 16px;
     }
 
-    #pages {
-        margin-left: 10px !important;
-        margin-right: 10px !important;
-    }
-
-    :root {
-        --menu-height: 40px;
+    main {
+        padding: 40px 16px;
+        gap: 40px;
     }
 }
 
-.btn-login {
-    display: inline-block;
-    background-color: green;
-    color: white;
-    padding: 10px;
-    font-size: large;
-    maring: 10px;
+/* the generated map from /login.js */
+.recon-window {
+    position: relative;
+}
+
+.login-map {
+    display: grid;
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+.login-map .land-tile {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-map .unit-view.city {
+    border-radius: 0;
+    background-color: rgba(236, 230, 211, 0.85);
+    background-size: cover;
 }

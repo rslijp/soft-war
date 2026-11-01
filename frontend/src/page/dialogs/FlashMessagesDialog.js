@@ -8,7 +8,7 @@ function FlashMessageDialog({messages, onClose}) {
 
     return <Modal  show={true} onHide={onClose}>
         <Modal.Header closeButton>
-            <Modal.Title>Flash messaged</Modal.Title>
+            <Modal.Title>Dispatch</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <ListGroup>
@@ -26,7 +26,7 @@ function FlashMessageDialog({messages, onClose}) {
         </Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={onClose} ref={dialogView} >
-                Close
+                Acknowledge
             </Button>
         </Modal.Footer>
     </Modal>;
