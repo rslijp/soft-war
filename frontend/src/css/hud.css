@@ -47,74 +47,110 @@
     z-index: 999;
 }
 
-/* Movement: a route is a red line through the centres of the tiles with a dot on every step
-   and a ring at its end; the tiles a unit can step to show a short line and a ring to click.
-   ::before is the segment towards the next tile, ::after the one back to where the route came from. */
+/* Movement.
+   - A route (a move or patrol order, or the one being chosen) is a line through the centres of the
+     tiles with a dot on every step and a ring at its end: signal orange for a move, a dashed blue line
+     for a patrol. ::before is the segment towards the next tile, ::after the one back.
+   - The tiles a unit can step to right now show a red arrow, so a step never looks like a route. */
 .hud-action {
     --hud-red: #E5402F;
+    --hud-route: #F2A23A;
     --hud-outline: rgba(17, 20, 15, 0.55);
     --hud-half: calc(var(--tile-size) / 2 + 1px);
     --hud-diagonal: calc(var(--tile-size) * 0.7072 + 1px);
     position: relative;
     margin: 0 auto;
 }
+.hud-route-patrol {
+    --hud-route: #5BB8E8;
+}
 
-.hud-path::before, .hud-path::after, .hud-step::after {
+.hud-path::before, .hud-path::after {
     content: "";
     position: absolute;
     left: 50%;
     top: 50%;
     height: 4px;
-    background: var(--hud-red);
+    background: var(--hud-route);
     box-shadow: 0 0 0 1px var(--hud-outline);
     transform-origin: 0 50%;
     pointer-events: none;
+}
+.hud-route-patrol::before, .hud-route-patrol::after {
+    background: repeating-linear-gradient(90deg, var(--hud-route) 0 6px, transparent 6px 10px);
+    box-shadow: none;
 }
 .hud-path::before {
     display: none;
     width: var(--out-length);
     transform: translateY(-50%) rotate(var(--out-angle));
 }
-.hud-path::after, .hud-step::after {
+.hud-path::after {
     display: none;
     width: var(--in-length);
     transform: translateY(-50%) rotate(var(--in-angle));
 }
-.hud-path[class*="hud-out-"]::before, .hud-path[class*="hud-in-"]::after, .hud-step::after {
+.hud-path[class*="hud-out-"]::before, .hud-path[class*="hud-in-"]::after {
     display: block;
 }
 
 /* a dot on every step, a ring at the end; none on the unit's own tile */
 .hud-path {
-    background: radial-gradient(circle, var(--hud-red) 0 5px, var(--hud-outline) 5px 6.5px, transparent 7px);
+    background: radial-gradient(circle, var(--hud-route) 0 5px, var(--hud-outline) 5px 6.5px, transparent 7px);
 }
 .hud-path.hud-start {
     background: none;
 }
 .hud-path.hud-end {
-    background: radial-gradient(circle, transparent 0 7px, var(--hud-red) 7px 11px, var(--hud-outline) 11px 12.5px, transparent 13px),
-        radial-gradient(circle, var(--hud-red) 0 3px, transparent 3.5px);
+    background: radial-gradient(circle, transparent 0 7px, var(--hud-route) 7px 11px, var(--hud-outline) 11px 12.5px, transparent 13px),
+        radial-gradient(circle, var(--hud-route) 0 3px, transparent 3.5px);
 }
 .hud-path.hud-end:hover {
     cursor: pointer;
-    background: radial-gradient(circle, var(--hud-red) 0 11px, var(--hud-outline) 11px 12.5px, transparent 13px);
+    background: radial-gradient(circle, var(--hud-route) 0 11px, var(--hud-outline) 11px 12.5px, transparent 13px);
 }
 
-/* the steps a unit can take right now: a thinner line from the unit and a ring */
+/* the steps a unit can take right now: a red arrow pointing where it would go */
 .hud-step {
     cursor: pointer;
-    background: radial-gradient(circle, transparent 0 5px, var(--hud-red) 5px 8px, var(--hud-outline) 8px 9.5px, transparent 10px);
+}
+.hud-step::before, .hud-step::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    pointer-events: none;
+    filter: drop-shadow(0 0 1px var(--hud-outline));
+}
+.hud-step::before {
+    width: 16px;
+    height: 4px;
+    background: var(--hud-red);
+    transform: translate(-50%, -50%) rotate(var(--arrow-angle)) translateX(-2px);
 }
 .hud-step::after {
-    height: 3px;
-    opacity: 0.75;
+    width: 10px;
+    height: 10px;
+    border-right: 4px solid var(--hud-red);
+    border-bottom: 4px solid var(--hud-red);
+    box-sizing: border-box;
+    transform: translate(-50%, -50%) rotate(var(--arrow-angle)) translateX(4px) rotate(-45deg);
+}
+.hud-step {
+    opacity: 0.8;
 }
 .hud-step:hover {
-    background: radial-gradient(circle, var(--hud-red) 0 8px, var(--hud-outline) 8px 9.5px, transparent 10px);
-}
-.hud-step:hover::after {
     opacity: 1;
+    background: radial-gradient(circle, rgba(229, 64, 47, 0.25) 0 14px, transparent 15px);
 }
+.hud-arrow-E  { --arrow-angle: 0deg; }
+.hud-arrow-SE { --arrow-angle: 45deg; }
+.hud-arrow-S  { --arrow-angle: 90deg; }
+.hud-arrow-SW { --arrow-angle: 135deg; }
+.hud-arrow-W  { --arrow-angle: 180deg; }
+.hud-arrow-NW { --arrow-angle: 225deg; }
+.hud-arrow-N  { --arrow-angle: 270deg; }
+.hud-arrow-NE { --arrow-angle: 315deg; }
 
 .hud-out-E  { --out-angle: 0deg;   --out-length: var(--hud-half); }
 .hud-out-SE { --out-angle: 45deg;  --out-length: var(--hud-diagonal); }

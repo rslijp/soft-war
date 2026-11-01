@@ -32,7 +32,12 @@ function GameView({state, range}) {
         MessageBus.sendLockable("keyboard-key-pressed", key);
     };
 
-    return <div ref={gameView} onKeyPress={(e) => onKeyPress(e)} tabIndex={0}>
+    // Escape only arrives as keydown (not as keypress)
+    const onKeyDown = (e) => {
+        if (e.key === "Escape") MessageBus.send("escape-pressed");
+    };
+
+    return <div ref={gameView} onKeyPress={(e) => onKeyPress(e)} onKeyDown={onKeyDown} tabIndex={0}>
         <WorldMapView map={ownView ? world : {...world, intelligence: null}} range={range} selectedUnit={selectedUnit} fogOfWar={spectator.fogOfWar}/>
     </div>;
 }

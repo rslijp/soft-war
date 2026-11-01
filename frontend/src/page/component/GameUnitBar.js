@@ -1,7 +1,9 @@
 import {Button, ButtonGroup, Container, Navbar} from "react-bootstrap";
+import {MessageBus, unitRef} from "softwar-shared";
 import {any, func} from "prop-types";
 import {
     faChevronRight,
+    faCity,
     faCrosshairs,
     faFlag,
     faForwardStep,
@@ -10,7 +12,6 @@ import {
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import GameUnitActionsToolTip from "./GameUnitActionsToolTip";
 import GameUnitNestedUnitsToolTip from "./GameUnitNestedUnitsToolTip";
-import {MessageBus} from "softwar-shared";
 import React from "react";
 import {TYPE_MAP} from "./UnitTypesConstants";
 
@@ -68,6 +69,13 @@ function GameUnitBar({gameState, openDialog}) {
             </ButtonGroup>
         </Navbar.Text>;
     };
+    // the city a unit is in, if it is one of ours
+    const homeCity = (unit) => {
+        if (unit.clazz !== 'unit') return null;
+        const holder = gameState.world().unitAt(unit.derivedPosition());
+        return holder && holder.clazz === 'city' && holder.player === unit.player ? holder : null;
+    };
+
     const unitBar = (unit) => {
         if (!unit) return noUnitBar();
         const ownUnit = unit.player===currentPlayer.index;
@@ -85,6 +93,11 @@ function GameUnitBar({gameState, openDialog}) {
             <div className={"unit-view "+TYPE_MAP[unit.type]}/>
             {unit.clazz === 'city' ? cityUnit(unit) : regularUnit(unit)}
             {ownUnit && unit.clazz === 'unit'? <GameUnitActionsToolTip unit={unit} selectedUnit={selectedUnit}/>:null}
+            {ownUnit && homeCity(unit) ?
+                <Button className="bottom-bar-space" title={"Select the city " + homeCity(unit).getName() + " (0)"} variant={"outline-secondary"} size={"xs"}
+                    onClick={() => MessageBus.send("select-unit", unitRef(homeCity(unit)))}>
+                    <FontAwesomeIcon icon={faCity}/>
+                </Button> : null}
         </Navbar.Text>;
     };
 

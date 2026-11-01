@@ -26,10 +26,20 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
     const patrolToMode = () => toggleMode('patrol-to');
 
 
+    // Escape: first cancel the order being given, then let go of the selected unit
+    function escape(){
+        if(stateRef.current.mode !== 'regular') {
+            setState({mode: 'regular', path: null});
+        } else if(stateRef.current.selectedUnit) {
+            MessageBus.send("select-unit", null);
+        }
+    }
+
     useEffect(() => {
         const handles = [
             MessageBus.register("move-to-mode", moveToMode, this),
-            MessageBus.register("patrol-to-mode", patrolToMode, this)
+            MessageBus.register("patrol-to-mode", patrolToMode, this),
+            MessageBus.register("escape-pressed", escape, this)
         ];
         return ()=>{
             MessageBus.revokeByHandles(handles);
@@ -68,7 +78,7 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         const hudPoint = (pos, dy , dx, direction) => {
             const dp = map.normalize({y: pos.y+dy,x: pos.x+dx});
             if(allowed(dp)) hudMap[`${dp.y}_${dp.x}`] = {
-                className: "hud-step hud-in-"+direction,
+                className: "hud-step hud-arrow-"+direction,
                 action: (e) => {
                     MessageBus.sendLockable("cursor-direction", direction);
                     e.stopPropagation();
@@ -88,9 +98,10 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         };
 
         // a route: a line through the centres of the tiles, a dot on every step and a ring at the end
-        const hudPath = (path, action) => {
+        // kind: "move" or "patrol", which look different; action: the order a click on the end gives
+        const hudPath = (path, action, kind = action) => {
             path.forEach((pos,i)=>{
-                const classes = ["hud-path"];
+                const classes = ["hud-path", "hud-route-" + (kind || "move")];
                 if (i === 0 && selectedUnit.isOn(pos)) classes.push("hud-start");
                 const cameFrom = i > 0 ? path[i-1].direction : directionBetween(selectedUnit.derivedPosition(), pos);
                 if (cameFrom && cameFrom !== "X") classes.push("hud-in-" + cameFrom);
@@ -119,9 +130,9 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         if(state.mode === 'regular') {
             if(selectedUnit.order){
                 if(selectedUnit.order.action==='move') {
-                    hudPath(selectedUnit.order.queue);
+                    hudPath(selectedUnit.order.queue, null, selectedUnit.order.action);
                 } else if(selectedUnit.order.action==='patrol') {
-                    hudPath(selectedUnit.order.queue);
+                    hudPath(selectedUnit.order.queue, null, selectedUnit.order.action);
                 }
             } else if(selectedUnit.canMove()){
                 hudPoint(pos, -1, -1, "NW");

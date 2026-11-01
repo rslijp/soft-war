@@ -22,7 +22,7 @@ export const COMMANDS = {
 
 // Topics a screen sends only to itself (dialogs, focus, redraws); the engine doesn't listen to them.
 export const SCREEN_TOPICS = [
-    "confirm-order", "game-view-focus", "infobar-update", "keyboard-key-pressed", "move-to-mode",
+    "confirm-order", "escape-pressed", "game-view-focus", "infobar-update", "keyboard-key-pressed", "move-to-mode",
     "patrol-to-mode", "propose-end-turn", "refresh-badge", "screen-update", "update-game-state"
 ];
 

@@ -26,7 +26,20 @@ function KeyBoardHandler({state}) {
 
     };
 
+    // 0: from a unit in one of your cities to that city
+    const selectHomeCity = () => {
+        const unit = state.currentPlayer().selectedUnit;
+        if (!unit || unit.clazz !== 'unit') return;
+        const holder = state.world().unitAt(unit.derivedPosition());
+        if (holder && holder.clazz === 'city' && holder.player === unit.player) {
+            MessageBus.send("select-unit", unitRef(holder));
+        }
+    };
+
     const onKeyPress = (key) => {
+        if (key === 48) {
+            return selectHomeCity();
+        }
         if (key > 48 && key < 58) {
             return onNumericKeyPressed(key);
         }

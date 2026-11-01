@@ -111,7 +111,8 @@ function AppHeader() {
                         <NavDropdown.Item href={'#/new-game'}>Start a new game</NavDropdown.Item>
                         <NavDropdown.Item href={'#/your-games'}>Continue a game {pendingActions()}</NavDropdown.Item>
                         <NavDropdown.Item href="/public/about">About this game</NavDropdown.Item>
-                        {gameState ? <NavDropdown.Item onClick={() => setAiDebugView(switchAiDebugView(gameState))}>
+                        {/* only a game running in this browser (the dev game) can show the AI's own view */}
+                        {gameState && gameState.onDebugView ? <NavDropdown.Item onClick={() => setAiDebugView(switchAiDebugView(gameState))}>
                             {aiDebugView ? "Show AI turns from your side" : "Show AI turns in full (debug)"}
                         </NavDropdown.Item> : null}
                         <NavDropdown.Divider/>
