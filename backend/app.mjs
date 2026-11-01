@@ -27,7 +27,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-if(process.env.NODE_ENV === 'production') {
+// In production every visitor is sent to https; the proxy in front (Heroku, Caddy, nginx) tells us
+// how they came in. Without such a proxy set FORCE_HTTPS=false, or this would redirect forever.
+if(process.env.NODE_ENV === 'production' && process.env.FORCE_HTTPS !== 'false') {
     app.use((req, res, next) => {
         if (req.header('x-forwarded-proto') !== 'https')
             res.redirect(`https://${req.header('host')}${req.url}`)

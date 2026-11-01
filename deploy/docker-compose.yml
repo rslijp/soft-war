@@ -1,0 +1,61 @@
+# Hosting SoftWar with stock images only: nothing to build. The node container runs the code from this
+# repository (mounted as /app); start.sh installs and builds what changed, then starts the server.
+#
+#   cd deploy
+#   docker compose up -d                      # the game on port 3000 (APP_PORT), behind your own proxy
+#   docker compose --profile https up -d      # with Caddy in front: HTTPS on DOMAIN, certificates included
+#
+# Configuration comes from ../backend/.env (see ../backend/.env.example), injected as environment
+# variables. See README.md in this folder.
+
+services:
+  app:
+    image: node:24-bookworm-slim
+    working_dir: /app
+    command: sh /app/deploy/start.sh
+    # run as your own user, so the files it writes in the repository (node_modules, the build) are yours
+    user: "${UID:-1000}:${GID:-1000}"
+    env_file: ../backend/.env
+    environment:
+      # the database below; remove this line to use the ATLAS_URI from .env (e.g. MongoDB Atlas)
+      ATLAS_URI: mongodb://mongo:27017
+      NODE_ENV: production
+      HOME: /tmp
+      PORT: 3000
+    volumes:
+      - ..:/app
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo-data:/data/db
+    # only reachable by the app (no port on the host); see README.md for backups
+    restart: unless-stopped
+
+  # Optional: HTTPS with automatic Let's Encrypt certificates. Point DOMAIN's DNS at this server and
+  # open ports 80 and 443; then start with: docker compose --profile https up -d
+  caddy:
+    image: caddy:2
+    profiles: ["https"]
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+  caddy-data:
+  caddy-config:

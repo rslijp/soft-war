@@ -1,0 +1,6 @@
+# HTTPS for the game: Caddy gets and renews the certificate for DOMAIN by itself, and passes
+# X-Forwarded-Proto on, so the backend knows the visitor came in over https. WebSockets just work.
+{$DOMAIN} {
+    encode gzip
+    reverse_proxy app:3000
+}
