@@ -243,7 +243,10 @@ function WorldMapView({map, range, selectedUnit, fogOfWar}) {
         }
         return <td key={key} className={clazzes.join(" ")} onMouseOver={()=>onMouseOver(position)} onClick={unit?null:()=>MessageBus.send("cursor-select", position)}>
             {unit?<UnitView unit={unit} selected={selected}/>:null}
-            {hud?<div className={(unit?"hud-action with-unit ":"hud-action ")+hud.className} onClick={hud.action}></div>:null}
+            {hud?<div className={(unit?"hud-action with-unit ":"hud-action ")+hud.className} onClick={hud.action}>
+                {/* a route's dot or ring is an element of its own, so it lies on top of the line */}
+                {hud.className.includes("hud-path") ? <span className={"hud-dot"}/> : null}
+            </div>:null}
         </td>;
     }
 
