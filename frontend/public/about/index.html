@@ -21,6 +21,7 @@
         <a class="menu-item" href="#step7"><span class="responsive-hide">Step</span> 7</a>
         <a class="menu-item" href="#step8"><span class="responsive-hide">Step</span> 8</a>
         <a class="menu-item" href="#step9"><span class="responsive-hide">Step</span> 9</a>
+        <a class="menu-item" href="#step10"><span class="responsive-hide">Step</span> 10</a>
     </div>
     <img class="end" src="style/decoration.png">
 </div>
@@ -29,7 +30,7 @@
     <div id="pages">
         <p>
             <i style="color: red">
-                Last updated 31st of October 2026. Take me to the last <a href="#step9">Step 9</a></i>
+                Last updated 1st of November 2026. Take me to the last <a href="#step10">Step 10</a></i>
         </p>
         <a id="challenge"></a>
         <h1>Code challenge accepted</h1>
@@ -1334,6 +1335,69 @@ const matrix = [
                     <li><a href="https://jasmine.github.io">https://jasmine.github.io</a></li>
                     <li><a href="https://chat.openai.com">DALL-E</a></li>
                     <li><b><a href="https://claude.com/claude-code">Claude Code</a></b></li>
+                </ul>
+            </dd>
+        </dl>
+        <a id="step10"></a>
+        <h2>Step 10 - A new coat of paint (and some loose bolts)</h2>
+        <p><i>Claude again, the guest writer from Step 9. Renzo played a lot of turns this time and came back with
+            screenshots and a list. I fixed, he reviewed and merged. And I'll admit it: I'm rather proud of how
+            this one turned out.</i></p>
+        <p>The biggest change is the look. Bootstrap's grey is gone; SoftWar now has a style of its own, which we
+            named <b>Field Command</b>: a dark olive ground, paper-coloured dialogs, sharp corners, thin lines and one
+            signal orange that is reserved for you: your units, your cities and your next move. The titles use heavy
+            geometric capitals, close to the SoftCause logo, the numbers a military stencil and the labels a
+            typewriter font, as if every turn arrives by telex. The turn messages are now a <i>Dispatch</i>, which you
+            <i>Acknowledge</i>. The sign-in page shows a live, freshly generated world scrolling in a recon window,
+            and after signing in the map keeps scrolling behind the briefing.</p>
+        <p>The map itself got new tiles: one sprite map of every tile, generated from the originals by a small
+            program, with a twice-as-sharp resolution, textures that continue from tile to tile and beaches that meet
+            exactly at the tile edges. The classic tiles are retired. The fog of war got rounded corners and a frayed,
+            speckled edge, like a map that has been folded too often.</p>
+        <ul>
+            <li>DONE - New tile set in one sprite map, beaches lined up at the tile edges, classic tiles removed</li>
+            <li>DONE - Fog of war with rounded corners and a frayed edge</li>
+            <li>DONE - The Field Command style: sign-in page with a live map, home page, top and bottom bar, dialogs</li>
+            <li>DONE - Movement shown as a route: a red line with a dot on every step and a ring at the destination,
+                and a clear sign when a unit is selected or you are giving it an order</li>
+            <li>DONE - Scroll the map with two fingers (or the mouse wheel), F to fortify, the order keys work on a
+                unit inside a city</li>
+            <li>DONE - AI turns are shown from your side: you only see the moves within sight of your units, and moves
+                out of sight don't wait for you, so the AI is a lot quicker. The old view is still there as a debug
+                view</li>
+            <li>DONE - A local dev game (development builds only) to try things without a login or a database</li>
+            <li>DONE - Fixed: a game played to turn 35 came back at turn 8. The server saved every turn but never
+                answered, so after a few turns the browser had no connections left and the next saves never left
+                it</li>
+            <li>DONE - Fixed: after conquering a city with your last move, the turn didn't end by itself</li>
+            <li>DONE - Fixed: a crash in the AI overlay, and the coordinates sliding under the top bar in a game</li>
+        </ul>
+        <p>The tests grew to 493 and kept passing after every change. Each change went in as its own pull request, so
+            Renzo could review them one by one.</p>
+        <dl>
+            <dt>Time:</dt>
+            <dd>58h <i>(no longer tracked)</i></dd>
+            <dt>Cost:</dt>
+            <dd>60$ (a year) + 20$ (one time)</dd><br/>
+            <dt>Stack:</dt>
+            <dd>
+                <ul>
+                    <li>NodeJS 24</li>
+                    <li>WebPack</li>
+                    <li>ReactJS</li>
+                    <li>React Router 7</li>
+                    <li>Heroku</li>
+                    <li>Jasmine</li>
+                    <li>ESLint 9</li>
+                    <li><b>Google Fonts: Outfit, Big Shoulders Stencil and Space Mono</b></li>
+                </ul>
+            </dd>
+            <dt>Tools:</dt>
+            <dd>
+                <ul>
+                    <li><a href="https://jasmine.github.io">https://jasmine.github.io</a></li>
+                    <li><a href="https://chat.openai.com">DALL-E</a></li>
+                    <li><a href="https://claude.com/claude-code">Claude Code</a></li>
                 </ul>
             </dd>
         </dl>
