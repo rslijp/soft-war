@@ -23,6 +23,20 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
         return this.currentPlayer().position || backup || {x: 0, y:0};
     };
     this.statistics=[];
+    // when set, the AI players are watched through their own eyes (fog, intelligence and all)
+    this.debugView = false;
+
+    // The player whose view is shown: the current player when human, otherwise the last human
+    // player before it. AI moves outside that player's sight are not shown and not slowed down.
+    this.spectator = () => {
+        const current = this.currentPlayer();
+        if (this.debugView || current.type !== 'AI') return current;
+        for (let i = 1; i < this.players.length; i++) {
+            const player = this.player((this.currentPlayerIndex - i + this.players.length) % this.players.length);
+            if (player.type !== 'AI') return player;
+        }
+        return current;
+    };
 
     this.setPosition = (newposition) => {
         var currentPlayer = this.currentPlayer();
@@ -271,6 +285,7 @@ export function game ({code, name, turn, currentPlayer}, map, players) {
     this.init= () => {
         players.forEach((player) => {
             player.unitsMap = this.unitsMap;
+            player.spectator = this.spectator;
             this.statistics.push(new statistics(player));
         });
     }

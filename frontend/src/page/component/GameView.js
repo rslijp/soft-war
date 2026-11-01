@@ -5,7 +5,11 @@ import WorldMapView from "../../map/WorldMapView";
 
 function GameView({state, range}) {
     const currentPlayer = state.currentPlayer();
-    const selectedUnit = currentPlayer.selectedUnit;
+    // during an AI turn the map shows what the (human) spectator can see, see AiDebugView
+    const spectator = state.spectator();
+    const ownView = spectator === currentPlayer;
+    const selectedUnit = ownView ? currentPlayer.selectedUnit : null;
+    const world = state.world();
     const gameView = useRef();
 
     const focusView = () => {
@@ -28,7 +32,7 @@ function GameView({state, range}) {
     };
 
     return <div ref={gameView} onKeyPress={(e) => onKeyPress(e)} tabIndex={0}>
-        <WorldMapView map={state.world()} range={range} selectedUnit={selectedUnit} fogOfWar={currentPlayer.fogOfWar}/>
+        <WorldMapView map={ownView ? world : {...world, intelligence: null}} range={range} selectedUnit={selectedUnit} fogOfWar={spectator.fogOfWar}/>
     </div>;
 }
 

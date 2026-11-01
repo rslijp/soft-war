@@ -1,6 +1,7 @@
 import {testAllLandGameMap} from "../helpers/test-utils.mjs";
 import {unit} from "../../game/unit.mjs";
 import {humanPlayer} from "../../game/human-player.mjs";
+import {aiPlayer} from "../../game/ai-player.mjs";
 import {game} from "../../game/game.mjs";
 import MessageBus from "../../services/message-service.mjs";
 import {city} from "../../game/city.mjs";
@@ -1005,5 +1006,56 @@ describe("game", function(){
             expect(other.hasLost()).toBeTruthy();
         });
         
+    });
+    describe("spectator method", function(){
+        afterEach(function(){
+            MessageBus.clear();
+        });
+        const newGame = (currentPlayer, types) => {
+            const players = types.map((type, i) => type === 'AI' ?
+                new aiPlayer(i, "" + i, "Name", "Color", [], map) :
+                new humanPlayer(i, "" + i, "Name", "Color", [], map));
+            return new game({code: "code", name: "name", turn: 1, currentPlayer: currentPlayer}, map, players);
+        };
+        it("should be the current player when human", function(){
+            //Given
+            var gameInstance = newGame(1, ['Human', 'Human', 'AI']);
+
+            //When/Then
+            expect(gameInstance.spectator()).toBe(gameInstance.player(1));
+        });
+        it("should be the last human player before the AI", function(){
+            //Given
+            var gameInstance = newGame(0, ['AI', 'Human', 'AI']);
+
+            //When/Then
+            expect(gameInstance.spectator()).toBe(gameInstance.player(1));
+        });
+        it("should be the AI itself in the debug view", function(){
+            //Given
+            var gameInstance = newGame(2, ['Human', 'AI', 'AI']);
+            gameInstance.debugView = true;
+
+            //When/Then
+            expect(gameInstance.spectator()).toBe(gameInstance.player(2));
+        });
+    });
+    describe("AI step delay", function(){
+        afterEach(function(){
+            MessageBus.clear();
+        });
+        it("should only pause where the spectator can see", function(){
+            //Given
+            var human = new humanPlayer(0, "0", "Name", "Color", [new unit("T", {x: 3, y: 3})], map);
+            var ai = new aiPlayer(1, "1", "Name", "Color", [], map);
+            var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 1}, map, [human, ai]);
+
+            //When/Then
+            expect(ai.stepDelay({x: 4, y: 3})).toEqual(250);
+            expect(ai.stepDelay({x: 12, y: 12})).toEqual(0);
+            expect(ai.stepDelay({x: 4, y: 3}, 1500)).toEqual(1500);
+            gameInstance.debugView = true;
+            expect(ai.stepDelay({x: 12, y: 12})).toEqual(250);
+        });
     });
 });

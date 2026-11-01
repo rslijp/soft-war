@@ -17,6 +17,7 @@ import SurrenderDialog from "./dialogs/SurrenderDialog";
 import {TOP_BAR_HEIGHT} from "../Constants";
 import VerticalMapLegend from "../map/VerticalMapLegend";
 import VerticalScrollBar from "../map/VerticalScrollBar";
+import {isAiDebugView} from "../AiDebugView";
 import {saveGame} from "../api/GameStateApi";
 import {useLoaderData} from "react-router";
 
@@ -29,6 +30,7 @@ function GamePage() {
     const stateRef = useRef();
 
     const gameState  = useLoaderData();
+    gameState.debugView = isAiDebugView();
     const map = gameState.world();
     const dimensions = map.dimensions;
     const position = gameState.position();
@@ -58,6 +60,9 @@ function GamePage() {
     };
 
     const focusOnTile = ({x, y}) => {
+        // don't follow the AI where the spectator can't see
+        const spectator = gameState.spectator();
+        if (spectator !== gameState.currentPlayer() && !spectator.fogOfWar.visible({x, y})) return;
         clearTimeout(timer);
         timer=setTimeout(()=>{
             const state = stateRef.current.state;
