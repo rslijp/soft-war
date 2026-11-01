@@ -1,3 +1,4 @@
+import {DEV_MODE, applyCssConstants} from "./Constants";
 import React, {useEffect} from "react";
 import {RouterProvider, createHashRouter} from "react-router";
 import {loadGameState, loadYourGames} from "./api/GameStateApi";
@@ -8,8 +9,8 @@ import DemoPage from "./page/DemoPage";
 import ErrorPage from "./page/ErrorPage";
 import GamePage from "./page/GamePage";
 import PendingGamePage from "./page/PendingGamePage";
-import {applyCssConstants} from "./Constants";
 import {applyTileset} from "./Tileset";
+import {devGameLoader} from "./api/DevGameLoader";
 import {localDemoLoader} from "./api/DemoLoader";
 
 const router = createHashRouter([
@@ -40,7 +41,14 @@ const router = createHashRouter([
         element: <GamePage/>,
         loader: (context)=>loadGameState(context.params.code),
         errorElement: <ErrorPage />
-    }
+    },
+    // a local game without backend, see DevGameLoader
+    ...(DEV_MODE ? [{
+        path: "dev-game",
+        element: <GamePage/>,
+        loader: devGameLoader,
+        errorElement: <ErrorPage />
+    }] : [])
 ]);
 
 function SoftWarApp() {
