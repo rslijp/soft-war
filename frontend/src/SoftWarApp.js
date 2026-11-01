@@ -9,7 +9,6 @@ import DemoPage from "./page/DemoPage";
 import ErrorPage from "./page/ErrorPage";
 import GamePage from "./page/GamePage";
 import PendingGamePage from "./page/PendingGamePage";
-import {applyTileset} from "./Tileset";
 import {devGameLoader} from "./api/DevGameLoader";
 import {localDemoLoader} from "./api/DemoLoader";
 
@@ -54,7 +53,6 @@ const router = createHashRouter([
 function SoftWarApp() {
     useEffect(() => {
         applyCssConstants();
-        applyTileset();
     }, []);
 
     return <>
