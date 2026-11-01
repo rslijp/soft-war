@@ -48,21 +48,19 @@
 }
 
 /* Movement.
-   - A route (a move or patrol order, or the one being chosen) is a line through the centres of the
-     tiles with a dot on every step and a ring at its end: signal orange for a move, a dashed blue line
-     for a patrol. ::before is the segment towards the next tile, ::after the one back.
-   - The tiles a unit can step to right now show a red arrow, so a step never looks like a route. */
+   - A route (a move or patrol order, or the one being chosen) is a red line with black edges through
+     the centres of the tiles, with a dot on every step and a ring at its end; a patrol's line is dashed.
+     ::before is the segment towards the next tile, ::after the one back.
+   - The tiles a unit can step to right now show a red arrow. */
 .hud-action {
     --hud-red: #E5402F;
-    --hud-route: #F2A23A;
+    --hud-route: #E5402F;
     --hud-outline: rgba(17, 20, 15, 0.55);
+    --hud-edge: #11140F;
     --hud-half: calc(var(--tile-size) / 2 + 1px);
     --hud-diagonal: calc(var(--tile-size) * 0.7072 + 1px);
     position: relative;
     margin: 0 auto;
-}
-.hud-route-patrol {
-    --hud-route: #5BB8E8;
 }
 
 .hud-path::before, .hud-path::after {
@@ -72,11 +70,13 @@
     top: 50%;
     height: 4px;
     background: var(--hud-route);
+    /* black edges along the sides only, so the pieces of the line join without a seam */
+    box-shadow: 0 1.5px 0 var(--hud-edge), 0 -1.5px 0 var(--hud-edge);
     transform-origin: 0 50%;
     pointer-events: none;
 }
 .hud-route-patrol::before, .hud-route-patrol::after {
-    background: repeating-linear-gradient(90deg, var(--hud-route) 0 6px, transparent 6px 10px);
+    background: repeating-linear-gradient(90deg, var(--hud-route) 0 7px, var(--hud-edge) 7px 11px);
 }
 .hud-path::before {
     display: none;
@@ -102,7 +102,7 @@
     height: 12px;
     border-radius: 50%;
     background: var(--hud-route);
-    box-shadow: 0 0 0 1.5px var(--hud-outline);
+    box-shadow: 0 0 0 1.5px var(--hud-edge);
     transform: translate(-50%, -50%);
     pointer-events: none;
 }
@@ -115,6 +115,7 @@
     background: radial-gradient(circle, var(--hud-route) 0 3px, transparent 3.5px);
     border: 4px solid var(--hud-route);
     box-sizing: border-box;
+    box-shadow: 0 0 0 1.5px var(--hud-edge), inset 0 0 0 1.5px var(--hud-edge);
 }
 .hud-path.hud-end:hover {
     cursor: pointer;
