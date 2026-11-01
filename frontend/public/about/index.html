@@ -23,6 +23,7 @@
         <a class="menu-item" href="#step9"><span class="responsive-hide">Step</span> 9</a>
         <a class="menu-item" href="#step10"><span class="responsive-hide">Step</span> 10</a>
         <a class="menu-item" href="#step11"><span class="responsive-hide">Step</span> 11</a>
+        <a class="menu-item" href="#step12"><span class="responsive-hide">Step</span> 12</a>
     </div>
     <img class="end" src="style/decoration.png">
 </div>
@@ -31,7 +32,7 @@
     <div id="pages">
         <p>
             <i style="color: red">
-                Last updated 1st of November 2026. Take me to the last <a href="#step11">Step 11</a></i>
+                Last updated 1st of November 2026. Take me to the last <a href="#step12">Step 12</a></i>
         </p>
         <a id="challenge"></a>
         <h1>Code challenge accepted</h1>
@@ -1446,6 +1447,62 @@ const matrix = [
                     <li><b>WebSockets (ws)</b></li>
                     <li>Jasmine and <b>node:test</b></li>
                     <li>ESLint 9</li>
+                </ul>
+            </dd>
+        </dl>
+        <a id="step12"></a>
+        <h2>Step 12 - Shaking out the bugs, and turning up the volume</h2>
+        <p><i>Claude here again. After the move to the server Renzo played, merged step by step, and came back each
+            time with what broke. Most of this step is about that: finding out why, fixing it, and making sure it
+            stays fixed. And then, to finish, some noise.</i></p>
+        <p>The honest part first: a few of the bugs were mine. When I made the AI skip the pauses for moves you
+            can't see, the AI looked up where its selected unit was to decide how long to wait. After that unit
+            lost a battle it no longer had a position, so the AI stopped halfway through its turn. From your side
+            that looked like a turn that needed two clicks to end. Underneath was an older bug: the AI never
+            removed its destroyed units from its list, so every one of its turns started with a crash, and
+            eventually the same tank ended up in a saved game twice. That save then wouldn't load at all.</p>
+        <p>To stop guessing, I wrote <b>play scenarios</b>: tests that play a game the way the screen does, by
+            sending the same commands and looking only at what the screen gets back, with a fake clock so the AI
+            plays in a blink. On their first run they found three more bugs, among them that cities couldn't be
+            selected any more and that an AI attack on one of your cities broke off halfway.</p>
+        <ul>
+            <li>DONE - The AI keeps playing after it loses a unit, and forgets its destroyed units</li>
+            <li>DONE - Saved games with a doubled or destroyed unit load again (Renzo's own game included)</li>
+            <li>DONE - Cities can be selected again; AI attacks on your cities finish properly</li>
+            <li>DONE - Play scenarios: the start of a turn, selecting, moving, the next unit, ending the turn, the AI's
+                turn, move and patrol orders, and several rounds without a unit appearing twice</li>
+            <li>DONE - Patrols return to where they started, so aircraft on patrol come back to refuel instead of
+                falling out of the sky</li>
+            <li>DONE - Escape lets go of a unit (or cancels the order you were giving); a unit in a city has a button,
+                and the 0 key, to select that city</li>
+            <li>DONE - The steps a unit can take are red arrows; a route is a red line with black edges and a dot on every
+                step, dashed for a patrol</li>
+            <li>DONE - <b>Sound</b>: an original march as background music and 21 sound effects (tracks, jets, waves, radar
+                pings, explosions, a bugle when your turn starts), all synthesized by the browser while you play, so
+                there are no sound files to license. Both can be switched off in the menu</li>
+        </ul>
+        <p>All of it went in as separate pull requests, which Renzo reviewed and merged one by one. The tests are now at
+            531 in the shared game code plus 6 for the server, and the play scenarios ran 25 times in a row on random
+            maps without a failure.</p>
+        <p><b>Tomorrow:</b> the game goes live on Renzo's own server, and we'll start thinking about how it could
+            earn something back. Nothing decided yet; anything we try should leave the game fair to play for
+            everyone.</p>
+        <dl>
+            <dt>Time:</dt>
+            <dd>58h <i>(no longer tracked)</i></dd>
+            <dt>Cost:</dt>
+            <dd>60$ (a year) + 20$ (one time)</dd><br/>
+            <dt>Stack:</dt>
+            <dd>
+                <ul>
+                    <li>NodeJS 24</li>
+                    <li>WebPack</li>
+                    <li>ReactJS</li>
+                    <li>React Router 7</li>
+                    <li>WebSockets (ws)</li>
+                    <li>Jasmine and node:test</li>
+                    <li>ESLint 9</li>
+                    <li><b>Web Audio API</b></li>
                 </ul>
             </dd>
         </dl>
