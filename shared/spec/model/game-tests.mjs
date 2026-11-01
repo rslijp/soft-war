@@ -1181,4 +1181,36 @@ describe("game", function(){
             expect(foreign.produce).not.toHaveBeenCalled();
         });
     });
+    describe("nextTurn with players who are out", function(){
+        afterEach(function(){
+            MessageBus.clear();
+        });
+        it("should skip players who lost or surrendered", function(){
+            //Given
+            var players = [0, 1, 2].map(i => new humanPlayer(i, "" + i, "Name", "Color", [], map));
+            var gameInstance = new game({code: "code", name: "name", turn: 1, currentPlayer: 0}, map, players);
+            players[1].state = "lost";
+
+            //When
+            gameInstance.nextTurn();
+
+            //Then
+            expect(gameInstance.currentPlayerIndex).toEqual(2);
+            expect(gameInstance.turn).toEqual(1);
+        });
+        it("should start a new round when the last players are out", function(){
+            //Given
+            var players = [0, 1, 2].map(i => new humanPlayer(i, "" + i, "Name", "Color", [], map));
+            var gameInstance = new game({code: "code", name: "name", turn: 4, currentPlayer: 0}, map, players);
+            players[1].state = "lost";
+            players[2].state = "lost";
+
+            //When
+            gameInstance.nextTurn();
+
+            //Then
+            expect(gameInstance.currentPlayerIndex).toEqual(0);
+            expect(gameInstance.turn).toEqual(5);
+        });
+    });
 });

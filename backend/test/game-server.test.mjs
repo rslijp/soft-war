@@ -22,18 +22,22 @@ function newGame(code, emails) {
 
 const stored = new Map();
 const saves = [];
+const turnStarts = [];
 let server, port, games;
 
 before(async () => {
     stored.set("vsai", newGame("vsai", ["one@example.com", ""]));
     stored.set("duel", newGame("duel", ["one@example.com", "two@example.com"]));
+    stored.set("letter", newGame("letter", ["one@example.com", "two@example.com"]));
+    stored.set("changed", newGame("changed", ["one@example.com", "two@example.com"]));
     games = gameServer({
         findGame: async (code) => stored.has(code) ? structuredClone(stored.get(code)) : null,
         saveGame: async (code, state) => {
             saves.push({code, turn: state.turn});
             stored.set(code, structuredClone(state));
         },
-        unloadAfter: 50
+        unloadAfter: 50,
+        onTurnEnded: (game, running) => turnStarts.push({code: game.code, player: game.currentPlayerIndex, watching: running.isWatching(game.currentPlayerIndex)})
     });
     server = http.createServer();
     // the "session": who you are comes from the ?as= query parameter
@@ -123,4 +127,31 @@ test("only the player whose turn it is can act", async () => {
     one.socket.close();
     two.socket.close();
     await Promise.all([one.closed, two.closed]);
+});
+
+test("the turn hook knows when the next player isn't watching (for the your-turn email)", async () => {
+    const one = open("letter", "one@example.com");
+    await one.until(m => m.type === "view");
+    one.command("next-turn");
+    await new Promise(resolve => setTimeout(resolve, 100));
+    assert.deepEqual(turnStarts.find(t => t.code === "letter"), {code: "letter", player: 1, watching: false});
+    one.socket.close();
+    await one.closed;
+});
+
+test("screens reconnect to a game that changed elsewhere", async () => {
+    const one = open("changed", "one@example.com");
+    await one.until(m => m.type === "view");
+
+    // e.g. a surrender: the running game is saved and stopped, the database changes
+    await games.close("changed");
+    assert.equal(await one.closed, 4001);
+    const state = stored.get("changed");
+    state.players[1].status = "surrendered";
+
+    const again = open("changed", "one@example.com");
+    const view = await again.until(m => m.type === "view");
+    assert.equal(view.view.players[1].state, "lost");
+    again.socket.close();
+    await again.closed;
 });

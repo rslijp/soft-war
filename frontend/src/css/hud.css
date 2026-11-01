@@ -194,3 +194,35 @@
         display: none;
     }
 }
+
+/* whose turn it is, when it isn't yours (or the connection to the game is gone) */
+.turn-banner {
+    position: fixed;
+    z-index: 50;
+    top: calc(var(--top-bar-height) + var(--legend-size) + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 16px;
+    background: #11140F;
+    border: 1px solid #A4AC95;
+    color: #ECE6D3;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+}
+.turn-banner span {
+    margin-left: 12px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: none;
+    color: #A4AC95;
+}
+.turn-banner-alert {
+    border-color: #E5402F;
+}

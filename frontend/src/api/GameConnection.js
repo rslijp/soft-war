@@ -26,7 +26,8 @@ export function screenConnection(sendCommand) {
 
     function deliver(message) {
         if (message.type === "map") {
-            gameView = new GameView(message.map);
+            // after reconnecting the map comes again; it never changes, so the screen keeps its model
+            if (!gameView) gameView = new GameView(message.map);
         } else if (message.type === "view") {
             gameView.update(message.view);
             resolveReady(gameView);
@@ -68,29 +69,55 @@ export function watchGame() {
     };
 }
 
-// A game that runs on the server: commands go up the WebSocket, its messages come down.
+// A game that runs on the server: commands go up the WebSocket, its messages come down. When the
+// connection breaks (or the server says the game changed, 4001), it connects again and the screen
+// keeps going with the fresh state. The server refusing (no such game any more, not your game) ends it.
 export function remoteGame(code) {
     if (running) running.stop();
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const socket = new WebSocket(`${protocol}//${window.location.host}/api/game-socket?code=${encodeURIComponent(code)}`);
+    const url = `${protocol}//${window.location.host}/api/game-socket?code=${encodeURIComponent(code)}`;
+    let socket = null;
+    let stopped = false;
+    let retries = 0;
+    let rejectStart;
+    const started = new Promise((resolve, reject) => rejectStart = reject);
     const pending = [];
     const connection = screenConnection((name, args) => {
         const message = JSON.stringify({type: "command", name, args});
-        if (socket.readyState === WebSocket.OPEN) socket.send(message);
+        if (socket && socket.readyState === WebSocket.OPEN) socket.send(message);
         else pending.push(message);
     });
-    socket.addEventListener("open", () => pending.splice(0).forEach(m => socket.send(m)));
-    socket.addEventListener("message", (event) => connection.receive(JSON.parse(event.data)));
-    const failed = new Promise((resolve, reject) => socket.addEventListener("close", (event) => {
-        // 4xxx: the server refused (no such game, not your game); otherwise the connection broke
-        MessageBus.send("event:connection-closed", event.code, event.reason);
-        reject(new Error(event.reason || "The connection to the game was closed"));
-    }));
+
+    function connect() {
+        socket = new WebSocket(url);
+        socket.addEventListener("open", () => {
+            retries = 0;
+            pending.splice(0).forEach(m => socket.send(m));
+            MessageBus.send("event:connection-open");
+        });
+        socket.addEventListener("message", (event) => connection.receive(JSON.parse(event.data)));
+        socket.addEventListener("close", (event) => {
+            if (stopped) return;
+            const refused = event.code >= 4000 && event.code !== 4001;
+            if (refused) {
+                stopped = true;
+                MessageBus.send("event:game-closed", event.code, event.reason);
+                rejectStart(new Error(event.reason || "The game is not available"));
+                return;
+            }
+            MessageBus.send("event:connection-lost");
+            const wait = event.code === 4001 ? 0 : Math.min(10000, 500 * 2 ** retries++);
+            setTimeout(() => !stopped && connect(), wait);
+        });
+    }
+    connect();
+
     running = {stop: () => {
+        stopped = true;
         connection.close();
-        socket.close();
+        if (socket) socket.close();
     }};
-    return Promise.race([connection.ready, failed]).then(gameView => ({gameView}));
+    return Promise.race([connection.ready, started]).then(gameView => ({gameView}));
 }
 
 // A game that runs in this browser (against the AI, or the dev game): the same host the server

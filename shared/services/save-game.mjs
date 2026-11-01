@@ -72,6 +72,8 @@ export function deserializeGameState(raw){
         if(rawPlayer.fogOfWar) player.fogOfWar = new fogOfWar(rawPlayer.fogOfWar, map);
         if(rawPlayer.discoveredTiles) player.fogOfWar.discoveredTiles = rawPlayer.discoveredTiles;
         if(rawPlayer.messages) player.messages=rawPlayer.messages;
+        // a player who surrendered stays in the game's list, but is out
+        if(rawPlayer.status==='surrendered') player.state='lost';
         if(rawPlayer.embarking) player.messages=rawPlayer.embarking;
         return player;
     });

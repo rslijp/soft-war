@@ -4,7 +4,7 @@ import {deserializeGameState} from "../../services/save-game.mjs";
 import {gameHost} from "../../services/game-host.mjs";
 import {unitRef} from "../../services/commands.mjs";
 
-function newHost(players = ["", ""]) {
+function newHost(players = ["", ""], change = () => {}) {
     let world, list;
     while (!list) {
         world = generateMap("REGULAR", 48, 48);
@@ -16,6 +16,7 @@ function newHost(players = ["", ""]) {
     }
     // the first extra player is a human in these specs
     if (list[1]) list[1].type = "Human";
+    change(list);
     return gameHost(() => deserializeGameState({code: "spec", name: "spec", turn: 1, currentPlayer: 0, players: list, map: world}));
 }
 
@@ -132,5 +133,14 @@ describe("a hosted game", function() {
         expect(model.spectator().fogOfWar.visible(own.at)).toBeTruthy();
         expect(model.dimensions()).toEqual({width: 48, height: 48});
         expect(model.world().world[own.at.y][own.at.x].type).toEqual("L");
+    });
+
+    it("should pass the turn on when the player to move surrendered", function() {
+        //Given/When
+        host = newHost(["", ""], (players) => players[0].status = "surrendered");
+
+        //Then
+        expect(host.game.currentPlayerIndex).toEqual(1);
+        expect(host.game.player(0).hasLost()).toBeTruthy();
     });
 });

@@ -37,6 +37,7 @@ function GamePage() {
         else showDialog(next);
     };
     const [state, setState] = useState('initializing');
+    const [connection, setConnection] = useState('open');
     const [renderIteration, setRenderIteration] = useState(0);
     const stateRef = useRef();
 
@@ -48,6 +49,9 @@ function GamePage() {
     const [viewPort, setViewPort] = useState({startX: position.x, startY: position.y, deltaX: 0, deltaY: 0, width: dimensions.width, height: dimensions.height});
 
     stateRef.current = {state: state, viewPort: viewPort, renderIteration: renderIteration};
+
+    // whose screen this is (gameState.viewer) and whose turn it is can differ in a game between humans
+    const myTurn = () => gameState.currentPlayerIndex === gameState.viewer;
 
     const newTurn = (messages) => {
         // a new turn may propose to end it right away; then that waits until the messages are read
@@ -123,6 +127,9 @@ function GamePage() {
             MessageBus.register("event:confirm-order", confirmOrder, this),
             MessageBus.register("event:propose-end-turn", endTurn, this),
             MessageBus.register("event:unit-out-of-fuel", outOfFuel, this),
+            MessageBus.register("event:connection-lost", () => setConnection('lost'), this),
+            MessageBus.register("event:connection-open", () => setConnection('open'), this),
+            MessageBus.register("event:game-closed", gameClosed, this),
             // and what the screen asks itself
             MessageBus.register("screen-update", render, this),
             MessageBus.register("cursor-select", focusOnTile, this),
@@ -142,7 +149,13 @@ function GamePage() {
         const messages =  [{variant: "danger", text: "But be aware IT IS UNDER CONSTRUCTION"}];
         messages.push("Welcome back. Enjoy the game!");
         gameState.players.forEach((p,i) => messages.push(`Player ${i+1} ${p.name} (${p.type})`));
-        MessageBus.send("new-turn", messages);
+        if (myTurn()) {
+            // starting the turn also selects the first unit
+            MessageBus.send("new-turn", messages);
+        } else {
+            messages.push({variant: "info", text: `It's ${gameState.currentPlayer().name}'s turn. You'll get a dispatch when it's yours.`});
+            showDialog({name: 'messages', messages: messages, hide: true});
+        }
         focusOnTile(gameState.position(position));
     }, [state]);
 
@@ -157,6 +170,12 @@ function GamePage() {
         center: <GameView state={gameState} range={viewPort}/>
     };
 
+    // the game ended or was closed elsewhere (everybody else surrendered, or you're not in it)
+    function gameClosed(code, reason) {
+        pendingDialogs.current = [];
+        showDialog({name: 'game-closed', messages: [{variant: "warning", text: reason || "This game is not available any more."}]});
+    }
+
     const renderDialog=(dialog)=>{
         const close = ()=>{
             // e.g. ending the turn can already have opened the next turn's messages
@@ -165,6 +184,9 @@ function GamePage() {
             showDialog(next);
             if (!next) MessageBus.send("game-view-focus");
         };
+        if (dialog.name === 'game-closed') {
+            return <FlashMessagesDialog messages={dialog.messages} onClose={() => document.location.hash = "#/your-games"}/>;
+        }
         if(gameState.currentPlayer().type==='AI') return;
         const dialogs = {
             'surrender': () => <SurrenderDialog code={dialog.code} onClose={close}/>,
@@ -181,8 +203,11 @@ function GamePage() {
     };
 
 
+    const waitingFor = myTurn() ? null : gameState.currentPlayer();
     return <>
         {dialog ? renderDialog(dialog) : null}
+        {connection === 'lost' ? <div className={"turn-banner turn-banner-alert"} role={"status"}>Connection lost <span>Reconnecting…</span></div> :
+            waitingFor ? <div className={"turn-banner"} role={"status"}>Waiting for {waitingFor.name} <span>{waitingFor.type === 'AI' ? "the AI is moving" : "it's their turn"}</span></div> : null}
         <KeyBoardHandler state={gameState}/>
         <ScrollableViewPort
             dimensions={gameState.dimensions()}

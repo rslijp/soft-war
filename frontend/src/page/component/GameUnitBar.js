@@ -96,7 +96,8 @@ function GameUnitBar({gameState, openDialog}) {
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
                 <ButtonGroup className="bottom-bar-space" style={{"marginRight": "0px"}}>
-                    <Button variant={"warning"} size={"xs"}
+                    <Button variant={"warning"} size={"xs"} title={"End turn"}
+                        disabled={gameState.currentPlayerIndex !== gameState.viewer}
                         onClick={() => MessageBus.send("propose-end-turn")}><FontAwesomeIcon
                             icon={faForwardStep}/></Button>
                     <Button variant={"danger"} size={"xs"}

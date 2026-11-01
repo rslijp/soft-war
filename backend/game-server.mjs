@@ -7,6 +7,8 @@
 //
 // Screen -> server: {type: "command", name, args}
 // Server -> screen: the host's messages (map, view, event; see softwar-shared/services/game-host.mjs)
+// The server closes a screen's socket with 4001 when the game changed elsewhere (a player surrendered):
+// the screen connects again and gets the new state.
 import {WebSocketServer} from "ws";
 import {deserializeGameState, serializeGameState} from "softwar-shared/services/save-game.mjs";
 import {gameHost} from "softwar-shared/services/game-host.mjs";
@@ -25,12 +27,14 @@ export function gameServer({findGame, saveGame, onTurnEnded = () => {}, unloadAf
                     return null;
                 }
                 const running = {code, state, screens: new Set(), idle: null};
+                running.isWatching = (index) => [...running.screens].some(s => s.player === index);
                 running.host = gameHost(() => deserializeGameState(state), {
                     onTurnEnded: (game) => {
                         save(running);
-                        onTurnEnded(game, running.state);
+                        onTurnEnded(game, running);
                     }
                 });
+                loading.running = running;
                 return running;
             }).catch(e => {
                 games.delete(code);
@@ -51,8 +55,12 @@ export function gameServer({findGame, saveGame, onTurnEnded = () => {}, unloadAf
         return saveGame(running.code, state).catch(e => console.error("Saving game " + running.code + " failed", e));
     }
 
+    // Saved one last time and stopped; after this nothing saves it again (the database may change).
     function unload(running) {
-        games.delete(running.code);
+        if (running.closed) return Promise.resolve();
+        running.closed = true;
+        clearTimeout(running.idle);
+        if (games.get(running.code) && games.get(running.code).running === running) games.delete(running.code);
         return save(running).then(() => running.host.stop());
     }
 
@@ -65,6 +73,7 @@ export function gameServer({findGame, saveGame, onTurnEnded = () => {}, unloadAf
         clearTimeout(running.idle);
         const screen = {
             player,
+            close: (code, reason) => socket.close(code, reason),
             send: (message) => {
                 if (socket.readyState === socket.OPEN) socket.send(JSON.stringify(message));
             }
@@ -86,7 +95,7 @@ export function gameServer({findGame, saveGame, onTurnEnded = () => {}, unloadAf
         socket.on("close", () => {
             running.host.detach(screen);
             running.screens.delete(screen);
-            if (running.screens.size === 0) {
+            if (running.screens.size === 0 && !running.closed) {
                 running.idle = setTimeout(() => unload(running), unloadAfter);
             }
         });
@@ -122,7 +131,9 @@ export function gameServer({findGame, saveGame, onTurnEnded = () => {}, unloadAf
         // (surrender, accepting an invitation). Its next screen loads it again.
         close: (code) => {
             const loading = games.get(code);
-            return loading ? loading.then(running => running && unload(running)) : Promise.resolve();
+            return loading ? loading.then(running => running && unload(running).then(() => {
+                running.screens.forEach(s => s.close(4001, "The game changed"));
+            })) : Promise.resolve();
         },
         running: (code) => games.get(code),
         saveAll: () => Promise.all([...games.values()].map(p => p.then(running => running && save(running))))

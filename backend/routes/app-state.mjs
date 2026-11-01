@@ -229,39 +229,35 @@ router.put('/pending-game/:code', async function(req, res, next) {
     });
 });
 
+// Surrender: you are out. The game goes on for the others, or ends when only one player, or no human, is left.
 router.delete('/game/:code', async function(req, res, next) {
     const user = req.session.passport.user._json;
     try {
+        // a running game is saved and stopped first; its other screens reconnect to the new state
         await games.close(req.params.code);
         const gameState = await retrieveExistingGame(req.params.code, user);
+        findPlayer(gameState, user).status = 'surrendered';
 
-        const activePlayers = gameState.players.filter(p => p.status === 'active');
-        const lostPlayers = gameState.players.filter(p => p.status !== 'active');
-        const status = activePlayers.length > 1 ? 'active' : 'finished';
-        if (activePlayers.length === 1) {
-            if (activePlayers[0].type === 'Human') winnerEmail(activePlayers[0].id, gameState.name);
-            const lostHumanPlayers = lostPlayers.filter(p => p.type === 'Human');
-            if (lostHumanPlayers.length > 0) lostEmail(lostHumanPlayers.map(p => p.id), gameState.name);
-        }
-        if (activePlayers.length === 0) {
-            const lostHumanPlayers = lostPlayers.filter(p => p.type === 'Human');
-            if (lostHumanPlayers.length > 0) lostEmail(lostHumanPlayers.map(p => p.id), gameState.name);
-        }
+        const playing = gameState.players.filter(p => p.status === 'accepted');
+        const humansPlaying = playing.filter(p => p.type === 'Human');
+        const status = playing.length > 1 && humansPlaying.length > 0 ? 'active' : 'finished';
+        gameState.status = status;
 
+        let collection = await appStates();
         if (status === 'finished') {
-            let collection = await appStates();//connection.collection("app-state");
+            const winner = playing.length === 1 ? playing[0] : null;
+            if (winner && winner.type === 'Human') winnerEmail(winner.id, gameState.name);
+            const losers = gameState.players.filter(p => p.type === 'Human' && p !== winner).map(p => p.id);
+            if (losers.length > 0) lostEmail(losers, gameState.name);
             const result = await collection.deleteOne({code: req.params.code});
             if (result.deletedCount === 1) {
                 gameState._id = undefined;
                 await saveFinishedGame(gameState);
-            } else {
-                console.log("No documents matched the query. Deleted 0 documents.");
             }
         } else {
-            // eslint-disable-next-line no-undef -- collection is undefined here; fix in Step 2
-            return collection.replaceOne({code: req.params.code}, gameState, {upsert: true});
+            await collection.replaceOne({code: req.params.code}, gameState, {upsert: true});
         }
-        res.send({status: status}).status(200);
+        res.send({status: status});
     } catch (e){
         console.error(e.message);
         res.sendStatus(e.httpCode || 500);
